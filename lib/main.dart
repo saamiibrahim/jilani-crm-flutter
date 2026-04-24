@@ -28,7 +28,7 @@ class JalaniApp extends StatelessWidget {
         builder: (context, appState, _) {
           if (appState.isLoading && !appState.isLoggedIn) {
             return const Scaffold(
-              body: Center(child: CircularProgressIndicator(color: DesignSystem.primaryGold)),
+              body: Center(child: CircularProgressIndicator(color: DesignSystem.primaryContainer)),
             );
           }
           if (appState.isLoggedIn) {

@@ -47,7 +47,7 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
                     // Lead Status Dropdown
                     DropdownButtonFormField<String>(
                       decoration: const InputDecoration(labelText: 'Lead Status'),
-                      dropdownColor: DesignSystem.cardDark,
+                      dropdownColor: DesignSystem.surfaceContainer,
                       value: _selectedStatus,
                       items: _statuses.map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
                       onChanged: (val) {
@@ -61,7 +61,7 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
                     // Call Outcome Dropdown
                     DropdownButtonFormField<String>(
                       decoration: const InputDecoration(labelText: 'Call Outcome'),
-                      dropdownColor: DesignSystem.cardDark,
+                      dropdownColor: DesignSystem.surfaceContainer,
                       value: _selectedOutcome,
                       items: _outcomes.map((o) => DropdownMenuItem(value: o, child: Text(o))).toList(),
                       onChanged: (val) {
@@ -91,7 +91,7 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
                     // Add Task Toggle
                     Container(
                       decoration: BoxDecoration(
-                        color: DesignSystem.cardDark,
+                        color: DesignSystem.surfaceContainer,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: SwitchListTile(
@@ -102,7 +102,7 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
                             _addTask = val;
                           });
                         },
-                        activeColor: DesignSystem.primaryGold,
+                        activeColor: DesignSystem.primaryContainer,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -115,7 +115,7 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
                         labelText: 'Notes',
                         alignLabelWithHint: true,
                         suffixIcon: IconButton(
-                          icon: const Icon(Icons.mic, color: DesignSystem.primaryGold),
+                          icon: const Icon(Icons.mic, color: DesignSystem.primaryContainer),
                           onPressed: () {
                             // Start voice dictation
                           },
@@ -132,7 +132,7 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
               width: double.infinity,
               padding: const EdgeInsets.all(16.0),
               decoration: const BoxDecoration(
-                color: DesignSystem.backgroundDark,
+                color: DesignSystem.surfaceContainerLow,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black26,

@@ -11,39 +11,57 @@ class DashboardScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Row(
-            children: [
-              Container(
-                width: 32,
-                height: 32,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: DesignSystem.primaryGold, width: 1.5),
-                ),
-                child: ClipOval(
-                  child: Image.asset(
-                    'assets/image_0.png',
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => const Icon(
-                      Icons.apartment,
-                      color: DesignSystem.primaryGold,
-                      size: 20,
-                    ),
-                  ),
-                ),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/jilani_logo.png',
+              width: 36,
+              height: 36,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => const Icon(
+                Icons.apartment,
+                color: DesignSystem.primaryContainer,
+                size: 24,
               ),
-              const SizedBox(width: 12),
-            ],
-          ),
+            ),
+            const SizedBox(width: 12),
+            Text(
+              'JILANI CRM',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: DesignSystem.primaryContainer,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 1.5,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.person_outline, color: DesignSystem.primaryGold),
+              icon: const Icon(Icons.search, color: DesignSystem.primaryContainer),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.person_outline, color: DesignSystem.primaryContainer),
               onPressed: () {},
             ),
             const SizedBox(width: 8),
           ],
-          bottom: const TabBar(
-            tabs: [
+          bottom: TabBar(
+            indicatorColor: DesignSystem.primaryContainer,
+            labelColor: DesignSystem.primaryContainer,
+            unselectedLabelColor: DesignSystem.onSurfaceVariant,
+            indicatorWeight: 3,
+            dividerColor: Colors.white.withValues(alpha: 0.05),
+            labelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.5,
+            ),
+            unselectedLabelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.5,
+            ),
+            tabs: const [
               Tab(text: 'MY PIPELINE'),
               Tab(text: 'MY PRODUCTIVITY'),
             ],
@@ -60,8 +78,9 @@ class DashboardScreen extends StatelessWidget {
                   // User Profile and Top Stats
                   Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFAFAD2), // Light yellow bg from image
+                      color: DesignSystem.surfaceContainer,
                       borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                     ),
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -71,40 +90,49 @@ class DashboardScreen extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                const CircleAvatar(
-                                  radius: 16,
-                                  backgroundColor: Color(0xFFE8EAF6),
-                                  child: Icon(Icons.person, color: Colors.indigo, size: 20),
+                                Container(
+                                  width: 32,
+                                  height: 32,
+                                  decoration: const BoxDecoration(
+                                    color: DesignSystem.surfaceContainerHigh,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(Icons.person, color: DesignSystem.primaryContainer, size: 20),
                                 ),
                                 const SizedBox(width: 12),
                                 Text(
                                   'sandesha',
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: Colors.black87,
+                                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    color: DesignSystem.onSurface,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ],
                             ),
-                            const Icon(Icons.workspace_premium, color: DesignSystem.primaryGold),
+                            const Icon(Icons.workspace_premium, color: DesignSystem.primaryContainer),
                           ],
                         ),
                         const SizedBox(height: 16),
                         ...DummyData.metrics.map((metric) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          padding: const EdgeInsets.symmetric(vertical: 6.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 metric.label,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: Colors.black54,
+                                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  color: DesignSystem.onSurfaceVariant,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                               Text(
                                 metric.value,
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: Colors.black87,
-                                  fontFamily: 'Playfair Display', // Enforcing Playfair
+                                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                  color: DesignSystem.primary,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
@@ -116,8 +144,12 @@ class DashboardScreen extends StatelessWidget {
                   const SizedBox(height: 24),
                   
                   // Status Breakdown Section
-                  Card(
-                    margin: EdgeInsets.zero,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: DesignSystem.surfaceContainer,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -127,13 +159,28 @@ class DashboardScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Status',
-                                style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20),
+                                'STATUS',
+                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                  color: DesignSystem.onSurfaceVariant,
+                                  letterSpacing: 1.5,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                              Text(
-                                'Contacted leads: 106',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: DesignSystem.textSecondary,
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: DesignSystem.surfaceContainerHigh.withValues(alpha: 0.5),
+                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                                ),
+                                child: Text(
+                                  '106 CONTACTED',
+                                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                    color: DesignSystem.primaryContainer,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ],
@@ -152,11 +199,20 @@ class DashboardScreen extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(item.label, style: Theme.of(context).textTheme.bodyMedium),
+                                      Text(
+                                        item.label, 
+                                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                          color: DesignSystem.onSurface,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                       Text(
                                         item.value,
-                                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                          fontSize: 16,
+                                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                          color: DesignSystem.primary,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                     ],

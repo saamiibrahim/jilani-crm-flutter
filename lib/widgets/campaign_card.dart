@@ -14,89 +14,134 @@ class CampaignCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            // Left side with icon and texts
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.list_alt, color: DesignSystem.statusGreen, size: 20),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          campaign.title,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Text(
-                        '${campaign.completed}',
-                        style: const TextStyle(
-                          color: DesignSystem.statusRed,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        ' / ${campaign.total} Pending Leads',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: DesignSystem.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+    // Get progress percentage
+    final double progress = campaign.total > 0 ? campaign.completed / campaign.total : 0.0;
+    
+    // Choose icon based on title to simulate the design
+    IconData cardIcon = Icons.phone_in_talk;
+    if (campaign.title.contains('Facebook')) { cardIcon = Icons.filter_none; }
+    else if (campaign.title.contains('Azizi')) { cardIcon = Icons.location_city; }
+    else if (campaign.title.contains('Sobha')) { cardIcon = Icons.home_work; }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        color: DesignSystem.surfaceContainer,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Icon Box
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: DesignSystem.surfaceContainerHigh,
+              borderRadius: BorderRadius.circular(8),
             ),
-            const SizedBox(width: 16),
-            // Right side prominent start calling button
-            SizedBox(
-              width: 100,
-              height: 80,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+            child: Icon(cardIcon, color: DesignSystem.primaryContainer, size: 24),
+          ),
+          const SizedBox(width: 14),
+          
+          // Middle Content
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  campaign.title,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    color: DesignSystem.onSurface,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                onPressed: onStartCalling,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                const SizedBox(height: 6),
+                Row(
                   children: [
-                    const Icon(Icons.phone_in_talk, size: 24, color: DesignSystem.backgroundDark),
-                    const SizedBox(height: 4),
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: progress == 0 ? DesignSystem.primaryContainer.withValues(alpha: 0.4) : DesignSystem.primaryContainer,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
                     Text(
-                      'Start\ncalling',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: DesignSystem.backgroundDark,
+                      '${campaign.completed}/${campaign.total} Pending Leads',
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: DesignSystem.onSurfaceVariant,
                         fontSize: 12,
-                        height: 1.2,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 8),
+                // Progress Bar
+                Container(
+                  height: 2.5,
+                  width: 110,
+                  decoration: BoxDecoration(
+                    color: DesignSystem.surfaceContainerHigh,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  child: FractionallySizedBox(
+                    alignment: Alignment.centerLeft,
+                    widthFactor: progress,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: DesignSystem.primaryContainer,
+                        borderRadius: BorderRadius.circular(2),
+                        boxShadow: [
+                          BoxShadow(
+                            color: DesignSystem.primaryContainer.withValues(alpha: 0.4),
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          const SizedBox(width: 12),
+          
+          // Right Call Button
+          InkWell(
+            onTap: onStartCalling,
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              width: 52,
+              height: 52,
+              decoration: BoxDecoration(
+                color: DesignSystem.primaryContainer,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: DesignSystem.primaryContainer.withValues(alpha: 0.15),
+                    offset: const Offset(0, 4),
+                    blurRadius: 15,
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.call,
+                color: DesignSystem.onPrimaryContainer,
+                size: 22,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Campaigns - Real Estate CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#fff8f3",
+                    "surface-container-low": "#1a1c1c",
+                    "surface-container-highest": "#38342f",
+                    "tertiary": "#fcf8f7",
+                    "on-surface-variant": "#d1c5b5",
+                    "surface-bright": "#3d3933",
+                    "inverse-surface": "#e9e1da",
+                    "on-tertiary-container": "#626060",
+                    "surface": "#121414",
+                    "on-primary": "#422c00",
+                    "on-tertiary": "#313030",
+                    "outline-muted": "#4e4538",
+                    "surface-container": "#221f1b",
+                    "on-secondary": "#303030",
+                    "surface-tint": "#e7c182",
+                    "surface-container-high": "#282a2b",
+                    "on-background": "#e9e1da",
+                    "on-secondary-fixed": "#1b1c1b",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "secondary-container": "#474746",
+                    "on-primary-container": "#795c27",
+                    "on-surface": "#e9e1da",
+                    "primary-container": "#ffd796",
+                    "error": "#ffb4ab",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "on-primary-fixed": "#271900",
+                    "surface-dim": "#16130f",
+                    "inverse-on-surface": "#34302b",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "primary-fixed": "#ffdeaa",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "tertiary-fixed": "#e5e2e1",
+                    "secondary-fixed": "#e4e2e1",
+                    "outline-gold": "#e8ba6a",
+                    "on-secondary-fixed-variant": "#474746",
+                    "secondary": "#c8c6c5",
+                    "on-error": "#690005",
+                    "surface-container-lowest": "#110e0a",
+                    "on-primary-fixed-variant": "#5c420f",
+                    "outline-variant": "#4e463a",
+                    "surface-variant": "#38342f",
+                    "accent-gold": "#eebf6f",
+                    "background": "#16130f",
+                    "primary-fixed-dim": "#e7c182",
+                    "inverse-primary": "#765a25",
+                    "on-secondary-container": "#b6b5b4",
+                    "error-container": "#93000a",
+                    "on-error-container": "#ffdad6",
+                    "outline": "#9a8f81",
+                    "tertiary-container": "#dfdcdb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "safe-margin": "20px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "gutter": "16px",
+                    "xs": "8px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "sm": "12px"
+            },
+            "fontFamily": {
+                    "label-sm": ["inter"],
+                    "body-md": ["inter"],
+                    "headline-lg": ["manrope"],
+                    "body-sm": ["inter"],
+                    "body-lg": ["inter"],
+                    "label-lg": ["inter"],
+                    "label-md": ["inter"],
+                    "headline-xl": ["manrope"],
+                    "headline-md": ["manrope"]
+            },
+            "fontSize": {
+                    "label-sm": ["10px", {"lineHeight": "12px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-lg": ["14px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-xl": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #16130f;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="bg-stone-950 text-[#ffd796] flex justify-between items-center w-full px-5 py-4 border-b border-white/10 sticky top-0 z-40">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-white/10">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="professional portrait of a high-end real estate consultant in a dark suit with soft cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy7nprfpu6qJAX_w6MNxNzV9oOc0Qctof9sPZYsPjmdBLXz5CyJDPOaCR-9tiUzD8zjZhtUxgFYHnVOLxJd4gBBkYQx4omv9XlzaK7UUN9DTUHMLuDrNjfBMlawxzn2_nCuTqwIE91RjwOrW7zyUW7dLOMuRbsskmQyNonba5BzaoXXy_RWCIQ3WB0txuHo8qCXSpQ2v-XFHz0p27_LwJufz-u56pJcdATJQvB71KGB8PNGWr5HqjgbBt10Tkzbnchzu3Q6dT7Lp4"/>
+</div>
+<h1 class="font-['Manrope'] font-bold tracking-tight text-lg text-[#ffd796]">Campaigns</h1>
+</div>
+<button class="material-symbols-outlined text-[#ffd796] active:opacity-80 transition-colors">add</button>
+</header>
+<main class="px-safe-margin pt-lg pb-32">
+<!-- Section Header -->
+<div class="flex items-center justify-between mb-xl">
+<div class="flex flex-col">
+<span class="font-label-sm text-on-surface-variant tracking-widest uppercase mb-1">Live Status</span>
+<h2 class="font-headline-lg text-primary uppercase">PENDING LEADS</h2>
+</div>
+<div class="bg-surface-container-high px-3 py-1 rounded-full border border-outline-muted">
+<span class="font-label-lg text-accent-gold">144 TOTAL</span>
+</div>
+</div>
+<!-- Campaign Grid / List -->
+<div class="grid grid-cols-1 gap-gutter">
+<!-- Campaign Card 1 -->
+<div class="bg-surface-container p-md rounded-xl border border-white/5 relative overflow-hidden group">
+<div class="flex items-start justify-between">
+<div class="flex gap-md">
+<div class="w-12 h-12 rounded-lg bg-surface-variant flex items-center justify-center text-accent-gold">
+<span class="material-symbols-outlined text-3xl" data-icon="phone_in_talk">phone_in_talk</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-md text-primary mb-1">Cold Calling - Sky Hills</h3>
+<div class="flex items-center gap-2 mb-2">
+<div class="w-2 h-2 rounded-full bg-accent-gold"></div>
+<span class="font-label-md text-on-surface-variant">3/5 Pending Leads</span>
+</div>
+<!-- Progress Mini-Bar -->
+<div class="w-32 h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="w-[60%] h-full bg-accent-gold shadow-[0_0_8px_rgba(238,191,111,0.4)]"></div>
+</div>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary-container p-4 rounded-xl shadow-[0_4px_20px_rgba(255,215,150,0.15)] active:scale-90 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="call" data-weight="fill" style="font-variation-settings: 'FILL' 1;">call</span>
+</button>
+</div>
+</div>
+<!-- Campaign Card 2 -->
+<div class="bg-surface-container p-md rounded-xl border border-white/5 relative overflow-hidden group">
+<div class="flex items-start justify-between">
+<div class="flex gap-md">
+<div class="w-12 h-12 rounded-lg bg-surface-variant flex items-center justify-center text-accent-gold">
+<span class="material-symbols-outlined text-3xl" data-icon="location_city">location_city</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-md text-primary mb-1">Azizi Venice</h3>
+<div class="flex items-center gap-2 mb-2">
+<div class="w-2 h-2 rounded-full bg-accent-gold"></div>
+<span class="font-label-md text-on-surface-variant">12/20 Pending Leads</span>
+</div>
+<div class="w-32 h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="w-[60%] h-full bg-accent-gold shadow-[0_0_8px_rgba(238,191,111,0.4)]"></div>
+</div>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary-container p-4 rounded-xl shadow-[0_4px_20px_rgba(255,215,150,0.15)] active:scale-90 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="call" data-weight="fill" style="font-variation-settings: 'FILL' 1;">call</span>
+</button>
+</div>
+</div>
+<!-- Campaign Card 3 -->
+<div class="bg-surface-container p-md rounded-xl border border-white/5 relative overflow-hidden group">
+<div class="flex items-start justify-between">
+<div class="flex gap-md">
+<div class="w-12 h-12 rounded-lg bg-surface-variant flex items-center justify-center text-accent-gold">
+<span class="material-symbols-outlined text-3xl" data-icon="home_work">home_work</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-md text-primary mb-1">Sobha Hartland</h3>
+<div class="flex items-center gap-2 mb-2">
+<div class="w-2 h-2 rounded-full bg-accent-gold/40"></div>
+<span class="font-label-md text-on-surface-variant">0/8 Pending Leads</span>
+</div>
+<div class="w-32 h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="w-0 h-full bg-accent-gold"></div>
+</div>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary-container p-4 rounded-xl shadow-[0_4px_20px_rgba(255,215,150,0.15)] active:scale-90 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="call" data-weight="fill" style="font-variation-settings: 'FILL' 1;">call</span>
+</button>
+</div>
+</div>
+<!-- Campaign Card 4 -->
+<div class="bg-surface-container p-md rounded-xl border border-white/5 relative overflow-hidden group">
+<div class="flex items-start justify-between">
+<div class="flex gap-md">
+<div class="w-12 h-12 rounded-lg bg-surface-variant flex items-center justify-center text-accent-gold">
+<span class="material-symbols-outlined text-3xl" data-icon="ad_group">ad_group</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-md text-primary mb-1">Facebook Leads - Luxury</h3>
+<div class="flex items-center gap-2 mb-2">
+<div class="w-2 h-2 rounded-full bg-accent-gold"></div>
+<span class="font-label-md text-on-surface-variant">42/50 Pending Leads</span>
+</div>
+<div class="w-32 h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="w-[84%] h-full bg-accent-gold shadow-[0_0_8px_rgba(238,191,111,0.4)]"></div>
+</div>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary-container p-4 rounded-xl shadow-[0_4px_20px_rgba(255,215,150,0.15)] active:scale-90 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="call" data-weight="fill" style="font-variation-settings: 'FILL' 1;">call</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Floating Stats (Bento Element) -->
+<div class="mt-xl grid grid-cols-2 gap-md">
+<div class="bg-surface-container-low p-lg rounded-xl border border-outline-muted flex flex-col items-center">
+<span class="font-headline-xl text-accent-gold">88%</span>
+<span class="font-label-sm uppercase tracking-widest text-on-surface-variant">Reach Rate</span>
+</div>
+<div class="bg-surface-container-low p-lg rounded-xl border border-outline-muted flex flex-col items-center">
+<span class="font-headline-xl text-primary">12</span>
+<span class="font-label-sm uppercase tracking-widest text-on-surface-variant">Closures</span>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-stone-900 z-50 rounded-t-none border-t border-white/5 shadow-[0_-4px_20px_rgba(255,215,150,0.05)]">
+<!-- Campaigns (Active) -->
+<a class="flex flex-col items-center justify-center text-[#ffd796] bg-stone-800/50 rounded-lg py-1 px-4 scale-95 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="campaign" data-weight="fill" style="font-variation-settings: 'FILL' 1;">campaign</span>
+<span class="font-['Manrope'] text-[10px] font-semibold uppercase tracking-wider mt-1">Campaigns</span>
+</a>
+<!-- Tasks -->
+<a class="flex flex-col items-center justify-center text-white/40 py-1 hover:text-[#ffd796]/80 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+<span class="font-['Manrope'] text-[10px] font-semibold uppercase tracking-wider mt-1">Tasks</span>
+</a>
+<!-- Leads -->
+<a class="flex flex-col items-center justify-center text-white/40 py-1 hover:text-[#ffd796]/80 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-['Manrope'] text-[10px] font-semibold uppercase tracking-wider mt-1">Leads</span>
+</a>
+<!-- Dashboard -->
+<a class="flex flex-col items-center justify-center text-white/40 py-1 hover:text-[#ffd796]/80 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-['Manrope'] text-[10px] font-semibold uppercase tracking-wider mt-1">Dashboard</span>
+</a>
+</nav>
+</body></html>
