@@ -23,12 +23,12 @@ class LeadsScreen extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             Text(
-              'JILANI CRM',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              'JILANI PROPERTIES',
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 color: DesignSystem.primaryContainer,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 1.5,
-                fontSize: 16,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 2.0,
+                fontSize: 14,
               ),
             ),
           ],
@@ -38,25 +38,39 @@ class LeadsScreen extends StatelessWidget {
             icon: const Icon(Icons.search, color: DesignSystem.primaryContainer),
             onPressed: () {},
           ),
-          IconButton(
-            icon: const Icon(Icons.person_outline, color: DesignSystem.primaryContainer),
-            onPressed: () {},
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: DesignSystem.primaryContainer.withValues(alpha: 0.3)),
+            ),
+            child: const ClipOval(
+              child: Icon(Icons.person, color: DesignSystem.onSurfaceVariant, size: 20),
+            ),
           ),
-          const SizedBox(width: 8),
         ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0),
+          child: Container(
+            color: Colors.white.withValues(alpha: 0.05),
+            height: 1.0,
+          ),
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 16.0, bottom: 8.0),
             child: Row(
               children: [
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    height: 48,
                     decoration: BoxDecoration(
-                      color: DesignSystem.surfaceContainer,
+                      color: DesignSystem.surfaceContainerLow,
                       border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -70,6 +84,7 @@ class LeadsScreen extends StatelessWidget {
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         )),
+                        const SizedBox(width: 4),
                         const Icon(Icons.keyboard_arrow_down, size: 18, color: DesignSystem.onSurfaceVariant),
                       ],
                     ),
@@ -78,9 +93,9 @@ class LeadsScreen extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    height: 48,
                     decoration: BoxDecoration(
-                      color: DesignSystem.surfaceContainer,
+                      color: DesignSystem.surfaceContainerLow,
                       border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -102,7 +117,7 @@ class LeadsScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 12.0),
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 16.0, bottom: 12.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,7 +167,7 @@ class LeadsScreen extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
               itemCount: 4, // Dummy count
               itemBuilder: (context, index) {
                 return _buildLeadCard(context, index);
@@ -161,10 +176,23 @@ class LeadsScreen extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: DesignSystem.primaryContainer,
-        child: const Icon(Icons.person_add, color: DesignSystem.onPrimaryContainer),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(28),
+          boxShadow: [
+            BoxShadow(
+              color: DesignSystem.primaryContainer.withValues(alpha: 0.15),
+              blurRadius: 20,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: DesignSystem.primaryContainer,
+          elevation: 0,
+          child: const Icon(Icons.person_add, color: DesignSystem.surfaceContainerLow, size: 28),
+        ),
       ),
     );
   }
@@ -175,11 +203,11 @@ class LeadsScreen extends StatelessWidget {
     final colors = [DesignSystem.statusGreen, DesignSystem.statusRed, DesignSystem.primaryContainer, Colors.deepPurpleAccent];
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16.0),
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
         color: DesignSystem.surfaceContainer,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Column(
@@ -193,19 +221,19 @@ class LeadsScreen extends StatelessWidget {
                   Container(
                     width: 36,
                     height: 36,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: DesignSystem.surfaceContainerHigh,
-                      shape: BoxShape.circle,
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Icon(Icons.person, color: DesignSystem.primaryContainer, size: 20),
+                    child: const Icon(Icons.person, color: DesignSystem.primaryContainer, size: 18),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 10),
                   Text(
                     names[index % names.length],
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: DesignSystem.onSurface,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
@@ -213,33 +241,47 @@ class LeadsScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: colors[index % colors.length].withValues(alpha: 0.1),
-                  border: Border.all(color: colors[index % colors.length].withValues(alpha: 0.3)),
-                  borderRadius: BorderRadius.circular(6),
+                  color: DesignSystem.surfaceContainerLow,
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                  borderRadius: BorderRadius.circular(24),
                 ),
-                child: Text(
-                  statuses[index % statuses.length].toUpperCase(),
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: colors[index % colors.length],
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.5,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: colors[index % colors.length],
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      statuses[index % statuses.length].toUpperCase(),
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: colors[index % colors.length],
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: 6,
+            runSpacing: 6,
             children: [
-              _buildTag('Visit Done', DesignSystem.primaryContainer),
-              if (index % 2 == 0) _buildTag('2BHK', DesignSystem.primaryContainer),
-              if (index != 2) _buildTag('Studio', DesignSystem.onSurfaceVariant),
+              _buildTag(context, 'Visit Done', DesignSystem.primaryContainer),
+              if (index % 2 == 0) _buildTag(context, '2BHK', DesignSystem.primaryContainer),
+              if (index != 2) _buildTag(context, 'Studio', DesignSystem.onSurfaceVariant),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Align(
             alignment: Alignment.centerRight,
             child: Text(
@@ -256,17 +298,17 @@ class LeadsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTag(String text, Color color) {
+  Widget _buildTag(BuildContext context, String text, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
-        borderRadius: BorderRadius.circular(4),
+        color: DesignSystem.surfaceContainerLow,
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
         text.toUpperCase(),
-        style: TextStyle(
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
           color: color,
           fontSize: 10,
           fontWeight: FontWeight.w600,

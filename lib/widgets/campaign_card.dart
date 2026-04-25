@@ -25,10 +25,10 @@ class CampaignCard extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: DesignSystem.surfaceContainer,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Row(
@@ -36,15 +36,15 @@ class CampaignCard extends StatelessWidget {
         children: [
           // Icon Box
           Container(
-            width: 46,
-            height: 46,
+            width: 48,
+            height: 48,
             decoration: BoxDecoration(
               color: DesignSystem.surfaceContainerHigh,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(cardIcon, color: DesignSystem.primaryContainer, size: 24),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: 16),
           
           // Middle Content
           Expanded(
@@ -87,8 +87,8 @@ class CampaignCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 // Progress Bar
                 Container(
-                  height: 2.5,
-                  width: 110,
+                  height: 3,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     color: DesignSystem.surfaceContainerHigh,
                     borderRadius: BorderRadius.circular(2),
@@ -114,15 +114,15 @@ class CampaignCard extends StatelessWidget {
             ),
           ),
           
-          const SizedBox(width: 12),
+          const SizedBox(width: 16),
           
           // Right Call Button
           InkWell(
             onTap: onStartCalling,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12), // rounded-xl
             child: Container(
-              width: 52,
-              height: 52,
+              width: 56, // 24 icon + 16 padding on each side (p-4)
+              height: 56,
               decoration: BoxDecoration(
                 color: DesignSystem.primaryContainer,
                 borderRadius: BorderRadius.circular(12),
@@ -130,14 +130,14 @@ class CampaignCard extends StatelessWidget {
                   BoxShadow(
                     color: DesignSystem.primaryContainer.withValues(alpha: 0.15),
                     offset: const Offset(0, 4),
-                    blurRadius: 15,
+                    blurRadius: 20,
                   ),
                 ],
               ),
               child: const Icon(
                 Icons.call,
                 color: DesignSystem.onPrimaryContainer,
-                size: 22,
+                size: 24,
               ),
             ),
           ),

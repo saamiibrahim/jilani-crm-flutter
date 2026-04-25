@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#303030",
+                    "on-error": "#690005",
+                    "surface-bright": "#37393a",
+                    "on-secondary-fixed-variant": "#474746",
+                    "tertiary": "#dfdcdb",
+                    "error": "#ffb4ab",
+                    "on-tertiary-container": "#4f4e4e",
+                    "on-secondary-container": "#b7b5b4",
+                    "on-primary-fixed": "#271900",
+                    "on-primary-container": "#694900",
+                    "on-surface-variant": "#d2c5b3",
+                    "outline": "#9b8f7f",
+                    "surface-container-highest": "#333535",
+                    "surface-container-high": "#282a2b",
+                    "primary": "#ffd796",
+                    "on-surface": "#e2e2e2",
+                    "tertiary-fixed": "#e5e2e1",
+                    "surface-container-low": "#1a1c1c",
+                    "on-error-container": "#ffdad6",
+                    "error-container": "#93000a",
+                    "background": "#121414",
+                    "secondary": "#c8c6c5",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "inverse-surface": "#e2e2e2",
+                    "inverse-primary": "#7b5810",
+                    "inverse-on-surface": "#2f3131",
+                    "tertiary-container": "#c3c0c0",
+                    "primary-fixed": "#ffdeaa",
+                    "primary-container": "#e8ba6a",
+                    "outline-variant": "#4e4538",
+                    "surface-container-lowest": "#0c0f0f",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "surface-container": "#1e2020",
+                    "surface-dim": "#121414",
+                    "on-primary": "#422c00",
+                    "on-tertiary": "#313030",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "surface-tint": "#eebf6f",
+                    "primary-fixed-dim": "#eebf6f",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "surface-variant": "#333535",
+                    "on-primary-fixed-variant": "#5f4100",
+                    "secondary-container": "#474746",
+                    "surface": "#121414",
+                    "secondary-fixed": "#e4e2e1",
+                    "on-background": "#e2e2e2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "xs": "8px",
+                    "sm": "12px",
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["manrope"],
+                    "headline-md": ["manrope"],
+                    "body-lg": ["inter"],
+                    "label-md": ["inter"],
+                    "headline-lg": ["manrope"],
+                    "body-md": ["inter"],
+                    "label-lg": ["inter"],
+                    "label-sm": ["inter"],
+                    "body-sm": ["inter"]
+            },
+            "fontSize": {
+                    "headline-xl": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-lg": ["14px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "label-sm": ["10px", {"lineHeight": "12px", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #1A1A1A;
+            color: #e2e2e2;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md bg-[#1A1A1A]">
+<!-- TopAppBar Section -->
+<header class="bg-[#1A1A1A] dark:bg-[#1A1A1A] flex justify-between items-center px-5 h-16 w-full z-50 docked full-width top-0 border-b border-[#FFFFFF]/[0.05] fixed top-0 left-0 right-0">
+<div class="flex items-center gap-4">
+<button class="text-[#E8BA6A] hover:bg-[#262626] transition-colors p-2 rounded-lg">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-[#E8BA6A] font-manrope font-bold tracking-tight text-lg">Lead Details</h1>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-[#E8BA6A] font-extrabold tracking-widest text-sm mr-2">JILLANI</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-[#E8BA6A]/30">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="professional real estate agent headshot with sharp suit and confident smile in a modern office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSVB_cZm9sN2rB_PI04e62YVAjxeN7yGAtfzm_GCx9G65c8BTuy4YPppzNqvevL9Od4ZEQi-p__RaNSXOzSPEUVams6C0l6AfTwiGRLWHb9vRSOx5puHQlorMQ2z2pWsCP7uoa2NkEaz1_ePaqewq4rHL6VZOK14KcdQwXS704RrA9MIASf60N7-BvcGCb7Kf20l6hbDwbMMwt9lVNpfrQtI-ZTpOG0QOLl1RiQY58vs5NypvUy4J2EwAisPKKjVD3AXZF34TTxg"/>
+</div>
+</div>
+</header>
+<main class="pt-20 pb-24 px-margin-mobile max-w-2xl mx-auto">
+<!-- Lead Identity & Status Header -->
+<section class="mb-xl">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-xs">Alexander Sterling</h2>
+<div class="flex items-center gap-xs">
+<span class="bg-[#262626] px-3 py-1 rounded-full flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#E8BA6A]"></span>
+<span class="text-label-sm font-label-sm text-[#E8BA6A] uppercase tracking-wider">High Priority</span>
+</span>
+<span class="text-label-sm font-label-sm text-[#FFFFFF]/50 uppercase tracking-wider">Acquired 2 days ago</span>
+</div>
+</div>
+</div>
+<!-- Quick Action Bar -->
+<div class="grid grid-cols-3 gap-sm mt-lg">
+<button class="flex flex-col items-center justify-center gap-1 bg-[#E8BA6A] py-3 rounded-xl transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[#1A1A1A]">call</span>
+<span class="text-label-sm font-bold text-[#1A1A1A]">CALL</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 border border-[#E8BA6A] py-3 rounded-xl transition-transform active:scale-95 text-[#E8BA6A]">
+<span class="material-symbols-outlined">chat</span>
+<span class="text-label-sm font-bold">WHATSAPP</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 border border-[#E8BA6A] py-3 rounded-xl transition-transform active:scale-95 text-[#E8BA6A]">
+<span class="material-symbols-outlined">mail</span>
+<span class="text-label-sm font-bold">EMAIL</span>
+</button>
+</div>
+</section>
+<!-- Bento Grid Details -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-md mb-xl">
+<!-- Property Interest -->
+<div class="bg-[#262626] p-md rounded-xl border border-[#FFFFFF]/[0.05] relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-[#E8BA6A]/5 rounded-bl-full -mr-8 -mt-8 transition-all group-hover:bg-[#E8BA6A]/10"></div>
+<p class="text-label-sm font-label-sm text-[#FFFFFF]/50 uppercase tracking-widest mb-xs">Property Interest</p>
+<h3 class="text-headline-md font-headline-md text-on-surface">The Penthouse, Marina Bay</h3>
+<p class="text-body-sm font-body-sm text-secondary mt-1">4 Bedroom Luxury Suite</p>
+</div>
+<!-- Financials -->
+<div class="bg-[#262626] p-md rounded-xl border border-[#FFFFFF]/[0.05]">
+<p class="text-label-sm font-label-sm text-[#FFFFFF]/50 uppercase tracking-widest mb-xs">Budget Range</p>
+<div class="flex items-baseline gap-2">
+<span class="text-[#E8BA6A] text-headline-lg font-headline-lg">$4.5M - $5.2M</span>
+</div>
+<p class="text-body-sm font-body-sm text-secondary mt-1">Ready with 30% Downpayment</p>
+</div>
+<!-- Source & Lead Info -->
+<div class="bg-[#262626] p-md rounded-xl border border-[#FFFFFF]/[0.05]">
+<p class="text-label-sm font-label-sm text-[#FFFFFF]/50 uppercase tracking-widest mb-xs">Lead Source</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#E8BA6A] text-xl">language</span>
+<span class="text-body-md font-body-md">Direct Website Inquiry</span>
+</div>
+</div>
+<!-- Campaign -->
+<div class="bg-[#262626] p-md rounded-xl border border-[#FFFFFF]/[0.05]">
+<p class="text-label-sm font-label-sm text-[#FFFFFF]/50 uppercase tracking-widest mb-xs">Assigned Agent</p>
+<div class="flex items-center gap-3">
+<div class="w-6 h-6 rounded-full bg-[#E8BA6A]/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs text-[#E8BA6A]" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<span class="text-body-md font-body-md">Sarah Jenkins (Senior)</span>
+</div>
+</div>
+</section>
+<!-- Status Stepper -->
+<section class="mb-xl">
+<h3 class="text-label-lg font-label-lg text-on-surface mb-lg uppercase tracking-widest">Lead Progression</h3>
+<div class="relative pl-8 border-l border-[#FFFFFF]/10 space-y-xl">
+<!-- Step 1 -->
+<div class="relative">
+<div class="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-[#E8BA6A] border-4 border-[#1A1A1A]"></div>
+<div>
+<p class="text-label-sm font-label-sm text-[#E8BA6A] uppercase mb-1">Step 1: Contacted</p>
+<p class="text-body-md font-body-md text-on-surface">Initial call completed on Oct 24th.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative">
+<div class="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-[#E8BA6A] border-4 border-[#1A1A1A]"></div>
+<div>
+<p class="text-label-sm font-label-sm text-[#E8BA6A] uppercase mb-1">Step 2: Viewing Scheduled</p>
+<p class="text-body-md font-body-md text-on-surface">Scheduled for Saturday, Oct 28th at 11:00 AM.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative">
+<div class="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-[#262626] border-4 border-[#1A1A1A]"></div>
+<div>
+<p class="text-label-sm font-label-sm text-[#FFFFFF]/40 uppercase mb-1">Step 3: Financial Verification</p>
+<p class="text-body-md font-body-md text-[#FFFFFF]/40">Awaiting bank pre-approval documents.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Activity History -->
+<section>
+<div class="flex justify-between items-center mb-md">
+<h3 class="text-label-lg font-label-lg text-on-surface uppercase tracking-widest">Activity History</h3>
+<button class="text-label-sm font-label-sm text-[#E8BA6A] uppercase tracking-widest hover:underline">Log New</button>
+</div>
+<div class="space-y-sm">
+<!-- Activity Card 1 -->
+<div class="bg-[#262626] p-md rounded-xl flex gap-md items-start">
+<div class="bg-surface-container-highest p-2 rounded-lg">
+<span class="material-symbols-outlined text-[#E8BA6A]">phone_callback</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<h4 class="text-body-md font-semibold text-on-surface">Follow-up Call</h4>
+<span class="text-label-sm text-[#FFFFFF]/40">2h ago</span>
+</div>
+<p class="text-body-sm text-secondary">Discussed the balcony orientation and sunset views. Client seems very keen on the high floor units.</p>
+</div>
+</div>
+<!-- Activity Card 2 -->
+<div class="bg-[#262626] p-md rounded-xl flex gap-md items-start">
+<div class="bg-surface-container-highest p-2 rounded-lg">
+<span class="material-symbols-outlined text-[#E8BA6A]">mail</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<h4 class="text-body-md font-semibold text-on-surface">Sent Brochure</h4>
+<span class="text-label-sm text-[#FFFFFF]/40">Yesterday</span>
+</div>
+<p class="text-body-sm text-secondary">Emailed the digital portfolio of Marina Bay Penthouse and community floor plans.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Section -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#1A1A1A] border-t border-[#FFFFFF]/[0.05] shadow-[0px_-4px_20px_rgba(232,186,106,0.1)]">
+<button class="flex flex-col items-center justify-center text-[#FFFFFF]/50 hover:text-[#E8BA6A]/80 transition-transform active:scale-95">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-manrope text-[10px] font-medium uppercase tracking-wider mt-1">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#E8BA6A] font-bold hover:text-[#E8BA6A]/80 transition-transform active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-manrope text-[10px] font-medium uppercase tracking-wider mt-1">Leads</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#FFFFFF]/50 hover:text-[#E8BA6A]/80 transition-transform active:scale-95">
+<span class="material-symbols-outlined">history</span>
+<span class="font-manrope text-[10px] font-medium uppercase tracking-wider mt-1">Activity</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#FFFFFF]/50 hover:text-[#E8BA6A]/80 transition-transform active:scale-95">
+<span class="material-symbols-outlined">person</span>
+<span class="font-manrope text-[10px] font-medium uppercase tracking-wider mt-1">Profile</span>
+</button>
+</nav>
+</body></html>

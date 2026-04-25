@@ -11,75 +11,99 @@ class DashboardScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/jilani_logo.png',
-              width: 36,
-              height: 36,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) => const Icon(
-                Icons.apartment,
-                color: DesignSystem.primaryContainer,
-                size: 24,
+          title: Row(
+            children: [
+              Image.asset(
+                'assets/jilani_logo.png',
+                width: 36,
+                height: 36,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) => const Icon(
+                  Icons.apartment,
+                  color: DesignSystem.primaryContainer,
+                  size: 24,
+                ),
               ),
-            ),
-            const SizedBox(width: 12),
-            Text(
-              'JILANI CRM',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: DesignSystem.primaryContainer,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 1.5,
-                fontSize: 16,
+              const SizedBox(width: 12),
+              Text(
+                'JILANI PROPERTIES',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: DesignSystem.primaryContainer,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 2.0,
+                  fontSize: 14,
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
           actions: [
             IconButton(
               icon: const Icon(Icons.search, color: DesignSystem.primaryContainer),
               onPressed: () {},
             ),
-            IconButton(
-              icon: const Icon(Icons.person_outline, color: DesignSystem.primaryContainer),
-              onPressed: () {},
+            Container(
+              margin: const EdgeInsets.only(right: 16),
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: DesignSystem.primaryContainer.withValues(alpha: 0.3)),
+              ),
+              child: const ClipOval(
+                child: Icon(Icons.person, color: DesignSystem.onSurfaceVariant, size: 20),
+              ),
             ),
-            const SizedBox(width: 8),
           ],
-          bottom: TabBar(
-            indicatorColor: DesignSystem.primaryContainer,
-            labelColor: DesignSystem.primaryContainer,
-            unselectedLabelColor: DesignSystem.onSurfaceVariant,
-            indicatorWeight: 3,
-            dividerColor: Colors.white.withValues(alpha: 0.05),
-            labelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.5,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(49.0), // 48 for TabBar + 1 for border
+            child: Column(
+              children: [
+                TabBar(
+                  indicatorColor: DesignSystem.primaryContainer,
+                  labelColor: DesignSystem.primaryContainer,
+                  unselectedLabelColor: DesignSystem.onSurfaceVariant,
+                  indicatorWeight: 3,
+                  dividerColor: Colors.transparent,
+                  labelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.5,
+                  ),
+                  unselectedLabelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.5,
+                  ),
+                  tabs: const [
+                    Tab(text: 'MY PIPELINE'),
+                    Tab(text: 'MY PRODUCTIVITY'),
+                  ],
+                ),
+                Container(
+                  color: Colors.white.withValues(alpha: 0.05),
+                  height: 1.0,
+                ),
+              ],
             ),
-            unselectedLabelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              letterSpacing: 0.5,
-            ),
-            tabs: const [
-              Tab(text: 'MY PIPELINE'),
-              Tab(text: 'MY PRODUCTIVITY'),
-            ],
           ),
         ),
         body: TabBarView(
           children: [
             // Pipeline Tab
             SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    'Dashboard Overview',
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  const SizedBox(height: 24),
+                  
                   // User Profile and Top Stats
                   Container(
                     decoration: BoxDecoration(
                       color: DesignSystem.surfaceContainer,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                     ),
                     padding: const EdgeInsets.all(16.0),
@@ -101,7 +125,7 @@ class DashboardScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 12),
                                 Text(
-                                  'sandesha',
+                                  'Alexander Agent',
                                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                     color: DesignSystem.onSurface,
                                     fontSize: 14,
@@ -130,7 +154,7 @@ class DashboardScreen extends StatelessWidget {
                               Text(
                                 metric.value,
                                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  color: DesignSystem.primary,
+                                  color: DesignSystem.primaryContainer,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -147,7 +171,7 @@ class DashboardScreen extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       color: DesignSystem.surfaceContainer,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                     ),
                     child: Padding(
@@ -210,14 +234,14 @@ class DashboardScreen extends StatelessWidget {
                                       Text(
                                         item.value,
                                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                          color: DesignSystem.primary,
+                                          color: DesignSystem.primaryContainer,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: 8),
                                   // Progress bar indicator
                                   Stack(
                                     children: [

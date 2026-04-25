@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/dummy_data.dart';
 import '../widgets/campaign_card.dart';
 import '../theme/design_system.dart';
+import 'wrap_up_screen.dart';
 
 class CampaignsScreen extends StatefulWidget {
   const CampaignsScreen({super.key});
@@ -14,12 +15,7 @@ class _CampaignsScreenState extends State<CampaignsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: DesignSystem.background,
       appBar: AppBar(
-        // backgroundColor: DesignSystem.surfaceContainerLow,
-        // shape: Border(
-        //   bottom: BorderSide(color: Colors.white.withValues(alpha: 0.05)),
-        // ),
         title: Row(
           children: [
             Image.asset(
@@ -35,42 +31,52 @@ class _CampaignsScreenState extends State<CampaignsScreen> {
             ),
             const SizedBox(width: 12),
             Text(
-              'JILANI CRM',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              'JILANI PROPERTIES',
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 color: DesignSystem.primaryContainer,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 1.5,
-                fontSize: 16,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 2.0,
+                fontSize: 14,
               ),
             ),
           ],
         ),
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.search,
-              color: DesignSystem.primaryContainer,
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: DesignSystem.primaryContainer.withValues(alpha: 0.3),
+              ),
             ),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.person_outline,
-              color: DesignSystem.primaryContainer,
+            child: const ClipOval(
+              child: Icon(
+                Icons.person,
+                color: DesignSystem.onSurfaceVariant,
+                size: 20,
+              ),
             ),
-            onPressed: () {},
           ),
-          const SizedBox(width: 8),
         ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0),
+          child: Container(
+            color: Colors.white.withValues(alpha: 0.05),
+            height: 1.0,
+          ),
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.only(
-              left: 16.0,
-              right: 16.0,
-              top: 24.0,
+              left: 20.0,
+              right: 20.0,
+              top: 16.0,
               bottom: 12.0,
             ),
             child: Row(
@@ -80,16 +86,16 @@ class _CampaignsScreenState extends State<CampaignsScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Text(
-                    //   'LIVE STATUS',
-                    //   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    //     color: DesignSystem.onSurfaceVariant,
-                    //     letterSpacing: 1.5,
-                    //     fontSize: 10,
-                    //     fontWeight: FontWeight.w600,
-                    //   ),
-                    // ),
-                    // const SizedBox(height: 6),
+                    Text(
+                      'Campaigns',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: DesignSystem.onSurfaceVariant,
+                        letterSpacing: 1.5,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
                     Text(
                       'PENDING LEADS',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -130,7 +136,7 @@ class _CampaignsScreenState extends State<CampaignsScreen> {
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
+                horizontal: 20.0,
                 vertical: 8.0,
               ),
               itemCount: DummyData.campaigns.length,
@@ -139,7 +145,12 @@ class _CampaignsScreenState extends State<CampaignsScreen> {
                 return CampaignCard(
                   campaign: campaign,
                   onStartCalling: () {
-                    // Start calling flow
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const WrapUpScreen(),
+                      ),
+                    );
                   },
                 );
               },

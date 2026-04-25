@@ -16,10 +16,10 @@ class TaskItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: DesignSystem.surfaceContainer,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Row(
@@ -29,9 +29,9 @@ class TaskItemTile extends StatelessWidget {
           GestureDetector(
             onTap: () => onChanged(!task.isCompleted),
             child: Container(
-              margin: const EdgeInsets.only(top: 2, right: 14),
-              width: 22,
-              height: 22,
+              margin: const EdgeInsets.only(top: 2, right: 16),
+              width: 24,
+              height: 24,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: task.isCompleted ? DesignSystem.primaryContainer : Colors.transparent,
@@ -41,7 +41,7 @@ class TaskItemTile extends StatelessWidget {
                 ),
               ),
               child: task.isCompleted
-                  ? const Icon(Icons.check, size: 14, color: DesignSystem.onPrimaryContainer)
+                  ? const Icon(Icons.check, size: 16, color: DesignSystem.onPrimaryContainer)
                   : null,
             ),
           ),
@@ -70,25 +70,36 @@ class TaskItemTile extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       decoration: BoxDecoration(
-                        color: task.statusColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: task.statusColor.withValues(alpha: 0.3)),
+                        color: DesignSystem.surfaceContainerLow,
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(color: task.isCompleted ? Colors.white.withValues(alpha: 0.05) : task.statusColor.withValues(alpha: 0.2)),
                       ),
-                      child: Text(
-                        task.status.toUpperCase(),
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: task.statusColor,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.5,
-                        ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              color: task.statusColor,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            task.status.toUpperCase(),
+                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                              color: task.isCompleted ? Colors.white70 : task.statusColor,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 12),
                 // Task Type and Date Row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

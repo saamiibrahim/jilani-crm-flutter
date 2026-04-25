@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jillani Properties - Leads Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#303030",
+                    "on-error": "#690005",
+                    "surface-bright": "#37393a",
+                    "on-secondary-fixed-variant": "#474746",
+                    "tertiary": "#dfdcdb",
+                    "error": "#ffb4ab",
+                    "on-tertiary-container": "#4f4e4e",
+                    "on-secondary-container": "#b7b5b4",
+                    "on-primary-fixed": "#271900",
+                    "on-primary-container": "#694900",
+                    "on-surface-variant": "#d2c5b3",
+                    "outline": "#9b8f7f",
+                    "surface-container-highest": "#333535",
+                    "surface-container-high": "#282a2b",
+                    "primary": "#ffd796",
+                    "on-surface": "#e2e2e2",
+                    "tertiary-fixed": "#e5e2e1",
+                    "surface-container-low": "#1a1c1c",
+                    "on-error-container": "#ffdad6",
+                    "error-container": "#93000a",
+                    "background": "#121414",
+                    "secondary": "#c8c6c5",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "inverse-surface": "#e2e2e2",
+                    "inverse-primary": "#7b5810",
+                    "inverse-on-surface": "#2f3131",
+                    "tertiary-container": "#c3c0c0",
+                    "primary-fixed": "#ffdeaa",
+                    "primary-container": "#e8ba6a",
+                    "outline-variant": "#4e4538",
+                    "surface-container-lowest": "#0c0f0f",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "surface-container": "#1e2020",
+                    "surface-dim": "#121414",
+                    "on-primary": "#422c00",
+                    "on-tertiary": "#313030",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "surface-tint": "#eebf6f",
+                    "primary-fixed-dim": "#eebf6f",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "surface-variant": "#333535",
+                    "on-primary-fixed-variant": "#5f4100",
+                    "secondary-container": "#474746",
+                    "surface": "#121414",
+                    "secondary-fixed": "#e4e2e1",
+                    "on-background": "#e2e2e2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "xs": "8px",
+                    "sm": "12px",
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "manrope": ["Manrope", "sans-serif"],
+                    "inter": ["Inter", "sans-serif"],
+                    "headline-xl": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Manrope"],
+                    "body-md": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-xl": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-lg": ["14px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "label-sm": ["10px", {"lineHeight": "12px", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .luxury-glow {
+            box-shadow: 0px 4px 20px rgba(232, 186, 106, 0.15);
+        }
+        body {
+            background-color: #121414;
+            color: #e2e2e2;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-inter">
+<!-- TopAppBar -->
+<header class="bg-[#1A1A1A] text-[#E8BA6A] flex justify-between items-center px-5 h-16 w-full z-50 fixed top-0 border-b border-[#FFFFFF]/[0.05]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:bg-[#262626] p-2 transition-colors rounded-full">menu</span>
+<h1 class="font-manrope font-extrabold tracking-widest text-[#E8BA6A]">JILLANI PROPERTIES</h1>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-[#E8BA6A]/30">
+<img alt="Agent Profile" class="w-full h-full object-cover" data-alt="Professional headshot of a luxury real estate agent in a tailored suit with a confident smile and soft office lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1urDh8GU6ptHAd9JHzinf59ACl57r6icKpsfhtU38ekk2IT8KajN2KdRbEPzsM1plupIABxljI46cRSoJlLbKU2WAFzSKw1qEQxJHzSseNFyu-nTif7wv0fTAYAOAHd3x2gDauaDSkxCKoLofA1qESp1Nm_dY3u6sRwaoLfIybdTfE8WxD3PLdX990Fa48VdvaPmpz6_Tf6KFj-0lpl2FNlI42hg_GqkY-fwt1IWt5c9dxPu50KIH4UQNTgLLTFKUhoRRosPnqg"/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-20 pb-28 px-margin-mobile max-w-2xl mx-auto">
+<!-- Search & Branding Section -->
+<section class="mb-xl">
+<h2 class="font-manrope text-headline-xl text-on-surface mb-md">Leads Dashboard</h2>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-white/40">search</span>
+<input class="w-full bg-[#262626] border-b border-white/20 focus:border-[#E8BA6A] focus:ring-0 text-body-md py-4 pl-12 pr-4 transition-all outline-none" placeholder="Search leads, properties, or locations..." type="text"/>
+</div>
+</section>
+<!-- Filter Chips -->
+<section class="mb-xl flex gap-xs overflow-x-auto no-scrollbar pb-2">
+<button class="flex-shrink-0 px-4 py-2 bg-[#E8BA6A] text-[#1A1A1A] font-label-lg rounded-full">All Leads</button>
+<button class="flex-shrink-0 px-4 py-2 bg-[#262626] text-white/70 border border-white/5 font-label-lg rounded-full hover:bg-[#333333] transition-colors">New</button>
+<button class="flex-shrink-0 px-4 py-2 bg-[#262626] text-white/70 border border-white/5 font-label-lg rounded-full hover:bg-[#333333] transition-colors">Follow-up</button>
+<button class="flex-shrink-0 px-4 py-2 bg-[#262626] text-white/70 border border-white/5 font-label-lg rounded-full hover:bg-[#333333] transition-colors">Closed</button>
+<button class="flex-shrink-0 px-4 py-2 bg-[#262626] text-white/70 border border-white/5 font-label-lg rounded-full hover:bg-[#333333] transition-colors">High Priority</button>
+</section>
+<!-- Leads List -->
+<section class="space-y-sm">
+<!-- Lead Card 1 -->
+<div class="bg-[#262626] p-md rounded-lg luxury-glow border border-white/5 group active:scale-[0.98] transition-transform">
+<div class="flex justify-between items-start mb-base">
+<div>
+<h3 class="font-manrope text-headline-md text-[#E8BA6A]">Alexander Thorne</h3>
+<p class="text-label-md text-white/50 uppercase tracking-widest mt-1">3-Bedroom Penthouse • Downtown</p>
+</div>
+<div class="flex items-center gap-2 bg-[#1A1A1A] px-3 py-1 rounded-full border border-[#E8BA6A]/20">
+<span class="w-2 h-2 rounded-full bg-[#E8BA6A]"></span>
+<span class="text-label-sm text-[#E8BA6A] uppercase">New Lead</span>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center gap-2 text-white/40">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span class="text-body-sm italic">Last contact: 14m ago</span>
+</div>
+<div class="flex gap-2">
+<button class="p-2 bg-[#1A1A1A] border border-white/10 rounded-full hover:border-[#E8BA6A]/50 transition-colors">
+<span class="material-symbols-outlined text-[#E8BA6A] text-[20px]">call</span>
+</button>
+<button class="p-2 bg-[#1A1A1A] border border-white/10 rounded-full hover:border-[#E8BA6A]/50 transition-colors">
+<span class="material-symbols-outlined text-[#E8BA6A] text-[20px]">mail</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Lead Card 2 -->
+<div class="bg-[#262626] p-md rounded-lg border border-white/5 active:scale-[0.98] transition-transform">
+<div class="flex justify-between items-start mb-base">
+<div>
+<h3 class="font-manrope text-headline-md text-white/90">Elena Rodriguez</h3>
+<p class="text-label-md text-white/50 uppercase tracking-widest mt-1">Waterfront Villa • Palm Jumeirah</p>
+</div>
+<div class="flex items-center gap-2 bg-[#1A1A1A] px-3 py-1 rounded-full border border-white/5">
+<span class="w-2 h-2 rounded-full bg-blue-400"></span>
+<span class="text-label-sm text-white/70 uppercase">Follow-up</span>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center gap-2 text-white/40">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span class="text-body-sm italic">Last contact: 2 hours ago</span>
+</div>
+<div class="flex gap-2">
+<button class="p-2 bg-[#1A1A1A] border border-white/10 rounded-full">
+<span class="material-symbols-outlined text-[#E8BA6A] text-[20px]">call</span>
+</button>
+<button class="p-2 bg-[#1A1A1A] border border-white/10 rounded-full">
+<span class="material-symbols-outlined text-[#E8BA6A] text-[20px]">mail</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Lead Card 3 -->
+<div class="bg-[#262626] p-md rounded-lg border border-white/5 active:scale-[0.98] transition-transform">
+<div class="flex justify-between items-start mb-base">
+<div>
+<h3 class="font-manrope text-headline-md text-white/90">Marcus Sterling</h3>
+<p class="text-label-md text-white/50 uppercase tracking-widest mt-1">Commercial Office • DIFC</p>
+</div>
+<div class="flex items-center gap-2 bg-[#1A1A1A] px-3 py-1 rounded-full border border-white/5">
+<span class="w-2 h-2 rounded-full bg-orange-400"></span>
+<span class="text-label-sm text-white/70 uppercase">Negotiation</span>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center gap-2 text-white/40">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span class="text-body-sm italic">Last contact: 1 day ago</span>
+</div>
+<div class="flex gap-2">
+<button class="p-2 bg-[#1A1A1A] border border-white/10 rounded-full">
+<span class="material-symbols-outlined text-[#E8BA6A] text-[20px]">call</span>
+</button>
+<button class="p-2 bg-[#1A1A1A] border border-white/10 rounded-full">
+<span class="material-symbols-outlined text-[#E8BA6A] text-[20px]">mail</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Lead Card 4 -->
+<div class="bg-[#262626] p-md rounded-lg border border-white/5 opacity-60 active:scale-[0.98] transition-transform">
+<div class="flex justify-between items-start mb-base">
+<div>
+<h3 class="font-manrope text-headline-md text-white/90">Sophia Chen</h3>
+<p class="text-label-md text-white/50 uppercase tracking-widest mt-1">Studio Apartment • Marina</p>
+</div>
+<div class="flex items-center gap-2 bg-[#1A1A1A] px-3 py-1 rounded-full border border-white/5">
+<span class="w-2 h-2 rounded-full bg-green-400"></span>
+<span class="text-label-sm text-white/70 uppercase">Closed</span>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center gap-2 text-white/40">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span class="text-body-sm italic">Last contact: 3 days ago</span>
+</div>
+<div class="flex gap-2">
+<button class="p-2 bg-[#1A1A1A] border border-white/10 rounded-full">
+<span class="material-symbols-outlined text-[#E8BA6A] text-[20px]">call</span>
+</button>
+<button class="p-2 bg-[#1A1A1A] border border-white/10 rounded-full">
+<span class="material-symbols-outlined text-[#E8BA6A] text-[20px]">mail</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Floating Action Button -->
+<button class="fixed right-6 bottom-24 w-14 h-14 bg-[#E8BA6A] text-[#1A1A1A] rounded-full flex items-center justify-center luxury-glow active:scale-90 transition-transform z-40">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#1A1A1A] border-t border-[#FFFFFF]/[0.05] shadow-[0px_-4px_20px_rgba(232,186,106,0.1)]">
+<div class="flex flex-col items-center justify-center text-[#FFFFFF]/50 hover:text-[#E8BA6A]/80 transition-transform active:scale-95">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-manrope text-[10px] font-medium uppercase tracking-wider mt-1">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#E8BA6A] font-bold transition-transform active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-manrope text-[10px] font-medium uppercase tracking-wider mt-1">Leads</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#FFFFFF]/50 hover:text-[#E8BA6A]/80 transition-transform active:scale-95">
+<span class="material-symbols-outlined">history</span>
+<span class="font-manrope text-[10px] font-medium uppercase tracking-wider mt-1">Activity</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#FFFFFF]/50 hover:text-[#E8BA6A]/80 transition-transform active:scale-95">
+<span class="material-symbols-outlined">person</span>
+<span class="font-manrope text-[10px] font-medium uppercase tracking-wider mt-1">Profile</span>
+</div>
+</nav>
+</body></html>

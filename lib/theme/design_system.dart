@@ -11,9 +11,10 @@ class DesignSystem {
   static const Color secondary = Color(0xFFC8C6C5);
   static const Color onSecondary = Color(0xFF303030);
   
-  static const Color surface = Color(0xFF121414); // surface / background
-  static const Color surfaceContainerLow = Color(0xFF1A1A1A); // Tertiary in brand guidelines (Background)
-  static const Color surfaceContainer = Color(0xFF262626); // Secondary in brand guidelines (Cards/Inputs)
+  // Updated Colors based on Jillani Executive CRM Design System
+  static const Color surface = Color(0xFF121414); // Base background
+  static const Color surfaceContainerLow = Color(0xFF1A1A1A); // Tertiary (App Bars / Nav)
+  static const Color surfaceContainer = Color(0xFF262626); // Secondary (Cards/Inputs)
   static const Color surfaceContainerHigh = Color(0xFF333333); // Level 2 (Modals/Overlays)
   
   static const Color onSurface = Color(0xFFE2E2E2);
@@ -26,21 +27,21 @@ class DesignSystem {
   
   static const Color textNeutral = Color(0xFFFFFFFF);
 
-  // Status Colors (from previous if needed, otherwise use primary for active)
+  // Status Colors
   static const Color statusGreen = Color(0xFF4CAF50);
   static const Color statusRed = Color(0xFFF44336);
 
   static ThemeData get themeData {
     return ThemeData(
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: surfaceContainerLow,
+      scaffoldBackgroundColor: surface,
       primaryColor: primaryContainer,
       colorScheme: const ColorScheme.dark(
         primary: primaryContainer,
         onPrimary: onPrimaryContainer,
         secondary: surfaceContainer,
         onSecondary: onSurface,
-        surface: surfaceContainer,
+        surface: surface,
         onSurface: onSurface,
         error: error,
         onError: onError,
@@ -75,10 +76,10 @@ class DesignSystem {
         color: surfaceContainer, // Level 1 (Cards/Inputs)
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8), // 0.5rem (8px) for cards
-          side: const BorderSide(color: Colors.transparent), // Borderless look, or thin line if needed
+          side: BorderSide(color: Colors.white.withValues(alpha: 0.05)), // Thin border for luxury
         ),
         elevation: 0,
-        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 20), // 20px mobile safe margin, 12px gutter
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20), // 20px mobile safe margin
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -136,15 +137,15 @@ class DesignSystem {
         foregroundColor: surfaceContainerLow,
         elevation: 8,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(28), // Fully rounded for FAB
         ),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: surfaceContainerLow,
         selectedItemColor: primaryContainer,
         unselectedItemColor: onSurfaceVariant,
-        selectedLabelStyle: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 12),
-        unselectedLabelStyle: GoogleFonts.inter(fontWeight: FontWeight.w400, fontSize: 12),
+        selectedLabelStyle: GoogleFonts.manrope(fontWeight: FontWeight.w600, fontSize: 10, letterSpacing: 1.0),
+        unselectedLabelStyle: GoogleFonts.manrope(fontWeight: FontWeight.w500, fontSize: 10, letterSpacing: 1.0),
         type: BottomNavigationBarType.fixed,
         elevation: 10,
       ),

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Analytics Dashboard - Jillani Properties</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#303030",
+                        "on-error": "#690005",
+                        "surface-bright": "#37393a",
+                        "on-secondary-fixed-variant": "#474746",
+                        "tertiary": "#dfdcdb",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#4f4e4e",
+                        "on-secondary-container": "#b7b5b4",
+                        "on-primary-fixed": "#271900",
+                        "on-primary-container": "#694900",
+                        "on-surface-variant": "#d2c5b3",
+                        "outline": "#9b8f7f",
+                        "surface-container-highest": "#333535",
+                        "surface-container-high": "#282a2b",
+                        "primary": "#ffd796",
+                        "on-surface": "#e2e2e2",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-container-low": "#1a1c1c",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "background": "#121414",
+                        "secondary": "#c8c6c5",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "inverse-surface": "#e2e2e2",
+                        "inverse-primary": "#7b5810",
+                        "inverse-on-surface": "#2f3131",
+                        "tertiary-container": "#c3c0c0",
+                        "primary-fixed": "#ffdeaa",
+                        "primary-container": "#e8ba6a",
+                        "outline-variant": "#4e4538",
+                        "surface-container-lowest": "#0c0f0f",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "surface-container": "#1e2020",
+                        "surface-dim": "#121414",
+                        "on-primary": "#422c00",
+                        "on-tertiary": "#313030",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface-tint": "#eebf6f",
+                        "primary-fixed-dim": "#eebf6f",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "surface-variant": "#333535",
+                        "on-primary-fixed-variant": "#5f4100",
+                        "secondary-container": "#474746",
+                        "surface": "#121414",
+                        "secondary-fixed": "#e4e2e1",
+                        "on-background": "#e2e2e2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xs": "8px",
+                        "sm": "12px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["manrope"],
+                        "headline-md": ["manrope"],
+                        "body-lg": ["inter"],
+                        "label-md": ["inter"],
+                        "headline-lg": ["manrope"],
+                        "body-md": ["inter"],
+                        "label-lg": ["inter"],
+                        "label-sm": ["inter"],
+                        "body-sm": ["inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-lg": ["14px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "label-sm": ["10px", {"lineHeight": "12px", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #121414;
+            color: #e2e2e2;
+        }
+        .luxury-border {
+            border: 1px solid rgba(232, 186, 106, 0.15);
+        }
+        .glass-panel {
+            background: rgba(38, 38, 38, 0.8);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md antialiased overflow-x-hidden pb-24">
+<!-- TopAppBar -->
+<header class="bg-[#1A1A1A] text-[#E8BA6A] font-manrope font-bold tracking-tight text-lg border-b border-[#FFFFFF]/[0.05] flex justify-between items-center px-5 h-16 w-full z-50 fixed top-0">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#E8BA6A] hover:bg-[#262626] transition-colors p-2 rounded-full">menu</button>
+<span class="text-[#E8BA6A] font-extrabold tracking-widest uppercase">Jillani Properties</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-label-md text-[#FFFFFF]/50 hidden md:block">Premier Tier Agent</span>
+<div class="w-8 h-8 rounded-full bg-[#E8BA6A] flex items-center justify-center text-[#1A1A1A] font-bold text-xs overflow-hidden">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="professional headshot of a luxury real estate agent in a dark suit with soft office lighting background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTP50yJ1-Kjx66fW9eLQlvZRXg-rgEqFkCPjpudrEBiBGzc1XpatwtjMzpBAir35OCNfHFOP4h_M-4ruSw6RybmYauhf-lnrQHPCL6dAAElTqqf8TatM43w52vIRfWR-lYL8Oz_6bYrl_hpODJ7dUoowU1KpdhiuGbII0tT-ncRjHl5bMCLRMTL1SqDnbHDTfpAPpI43K1YtksGJ-SHlIB3mipIqNTr6t8wJhW--HFGvNZ8VF-qvRKt47EDF6RTxZVBogqwZqTGw"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="mt-20 px-margin-mobile max-w-5xl mx-auto space-y-xl">
+<!-- Header & Date Filter -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface">Analytics</h1>
+<p class="font-body-md text-[#FFFFFF]/50">Executive performance overview</p>
+</div>
+<div class="flex items-center bg-[#262626] rounded-xl px-4 py-2 luxury-border">
+<span class="material-symbols-outlined text-[#E8BA6A] text-sm mr-2">calendar_today</span>
+<span class="font-label-lg text-label-lg uppercase">Last 30 Days</span>
+<span class="material-symbols-outlined text-[#FFFFFF]/50 text-sm ml-2">expand_more</span>
+</div>
+</div>
+<!-- Bento Grid Metrics -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-sm">
+<!-- Total Leads -->
+<div class="bg-[#262626] p-lg rounded-xl luxury-border flex flex-col justify-between aspect-square md:aspect-auto">
+<span class="material-symbols-outlined text-[#E8BA6A] text-xl">group</span>
+<div class="mt-xl">
+<p class="text-label-sm font-label-sm uppercase tracking-widest text-[#FFFFFF]/50">Total Leads</p>
+<p class="font-headline-lg text-headline-lg text-on-surface">1,284</p>
+<p class="text-[10px] text-primary flex items-center mt-1">
+<span class="material-symbols-outlined text-xs mr-1">trending_up</span>
+                        +12.5% vs LW
+                    </p>
+</div>
+</div>
+<!-- Conversion Rate -->
+<div class="bg-[#262626] p-lg rounded-xl luxury-border flex flex-col justify-between aspect-square md:aspect-auto">
+<span class="material-symbols-outlined text-[#E8BA6A] text-xl">handshake</span>
+<div class="mt-xl">
+<p class="text-label-sm font-label-sm uppercase tracking-widest text-[#FFFFFF]/50">Conversion</p>
+<p class="font-headline-lg text-headline-lg text-on-surface">4.8%</p>
+<p class="text-[10px] text-primary flex items-center mt-1">
+<span class="material-symbols-outlined text-xs mr-1">trending_up</span>
+                        +0.3% vs LW
+                    </p>
+</div>
+</div>
+<!-- New Leads This Week -->
+<div class="bg-[#262626] p-lg rounded-xl luxury-border flex flex-col justify-between aspect-square md:aspect-auto">
+<span class="material-symbols-outlined text-[#E8BA6A] text-xl">person_add</span>
+<div class="mt-xl">
+<p class="text-label-sm font-label-sm uppercase tracking-widest text-[#FFFFFF]/50">New Leads</p>
+<p class="font-headline-lg text-headline-lg text-on-surface">42</p>
+<p class="text-[10px] text-error flex items-center mt-1">
+<span class="material-symbols-outlined text-xs mr-1">trending_down</span>
+                        -4% vs LW
+                    </p>
+</div>
+</div>
+<!-- Active Deals -->
+<div class="bg-[#262626] p-lg rounded-xl luxury-border flex flex-col justify-between aspect-square md:aspect-auto">
+<span class="material-symbols-outlined text-[#E8BA6A] text-xl">real_estate_agent</span>
+<div class="mt-xl">
+<p class="text-label-sm font-label-sm uppercase tracking-widest text-[#FFFFFF]/50">Active Deals</p>
+<p class="font-headline-lg text-headline-lg text-on-surface">18</p>
+<p class="text-[10px] text-[#FFFFFF]/30 flex items-center mt-1">
+                        Stable trend
+                    </p>
+</div>
+</div>
+</div>
+<!-- Charts Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Lead Source Chart (Bar) -->
+<div class="md:col-span-2 bg-[#262626] p-lg rounded-xl luxury-border">
+<div class="flex justify-between items-center mb-xl">
+<h3 class="font-headline-md text-headline-md">Leads by Source</h3>
+<span class="material-symbols-outlined text-[#FFFFFF]/30">more_horiz</span>
+</div>
+<div class="space-y-md">
+<!-- Bar Item -->
+<div class="space-y-xs">
+<div class="flex justify-between text-label-md">
+<span>Zillow Premier</span>
+<span class="text-[#E8BA6A]">45%</span>
+</div>
+<div class="h-1.5 w-full bg-[#1A1A1A] rounded-full overflow-hidden">
+<div class="h-full bg-[#E8BA6A] w-[45%]"></div>
+</div>
+</div>
+<!-- Bar Item -->
+<div class="space-y-xs">
+<div class="flex justify-between text-label-md">
+<span>Organic Search</span>
+<span class="text-[#E8BA6A]">28%</span>
+</div>
+<div class="h-1.5 w-full bg-[#1A1A1A] rounded-full overflow-hidden">
+<div class="h-full bg-[#E8BA6A] w-[28%] opacity-80"></div>
+</div>
+</div>
+<!-- Bar Item -->
+<div class="space-y-xs">
+<div class="flex justify-between text-label-md">
+<span>Social Media</span>
+<span class="text-[#E8BA6A]">15%</span>
+</div>
+<div class="h-1.5 w-full bg-[#1A1A1A] rounded-full overflow-hidden">
+<div class="h-full bg-[#E8BA6A] w-[15%] opacity-60"></div>
+</div>
+</div>
+<!-- Bar Item -->
+<div class="space-y-xs">
+<div class="flex justify-between text-label-md">
+<span>Referrals</span>
+<span class="text-[#E8BA6A]">12%</span>
+</div>
+<div class="h-1.5 w-full bg-[#1A1A1A] rounded-full overflow-hidden">
+<div class="h-full bg-[#E8BA6A] w-[12%] opacity-40"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Lead Status (Radial Concept) -->
+<div class="bg-[#262626] p-lg rounded-xl luxury-border flex flex-col items-center justify-center text-center">
+<h3 class="font-headline-md text-headline-md mb-xl self-start">Lead Status</h3>
+<div class="relative w-32 h-32 flex items-center justify-center mb-lg">
+<!-- SVG Radial Chart -->
+<svg class="w-full h-full -rotate-90">
+<circle cx="64" cy="64" fill="transparent" r="58" stroke="#1A1A1A" stroke-width="10"></circle>
+<circle cx="64" cy="64" fill="transparent" r="58" stroke="#E8BA6A" stroke-dasharray="364.4" stroke-dashoffset="100" stroke-width="10"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-headline-lg text-headline-lg">72%</span>
+<span class="text-[8px] uppercase tracking-tighter text-[#FFFFFF]/50">Engaged</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md w-full">
+<div class="text-left">
+<div class="flex items-center gap-1.5">
+<div class="w-2 h-2 rounded-full bg-[#E8BA6A]"></div>
+<span class="text-label-sm text-[#FFFFFF]/50">Hot</span>
+</div>
+<p class="font-label-lg mt-1">24</p>
+</div>
+<div class="text-left">
+<div class="flex items-center gap-1.5">
+<div class="w-2 h-2 rounded-full bg-[#E8BA6A] opacity-40"></div>
+<span class="text-label-sm text-[#FFFFFF]/50">Cold</span>
+</div>
+<p class="font-label-lg mt-1">112</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activity Asymmetric Layout -->
+<div class="space-y-md">
+<h3 class="font-headline-md text-headline-md">High-Priority Shifts</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<!-- Activity Item -->
+<div class="bg-[#262626] p-md rounded-xl luxury-border flex gap-md items-center">
+<div class="w-12 h-12 bg-[#E8BA6A]/10 rounded-lg flex items-center justify-center text-[#E8BA6A]">
+<span class="material-symbols-outlined" data-weight="fill">campaign</span>
+</div>
+<div class="flex-1">
+<p class="font-label-lg text-on-surface">Marketing Tools</p>
+<p class="text-body-sm text-[#FFFFFF]/50">Facebook Ad Campaign "Luxury Lofts" reached 5k impressions.</p>
+</div>
+<span class="material-symbols-outlined text-[#FFFFFF]/30">chevron_right</span>
+</div>
+<!-- Activity Item -->
+<div class="bg-[#262626] p-md rounded-xl luxury-border flex gap-md items-center">
+<div class="w-12 h-12 bg-primary-container/10 rounded-lg flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined" data-weight="fill">analytics</span>
+</div>
+<div class="flex-1">
+<p class="font-label-lg text-on-surface">Analytics Spike</p>
+<p class="text-body-sm text-[#FFFFFF]/50">Abid Jillani's portfolio views increased by 40% today.</p>
+</div>
+<span class="material-symbols-outlined text-[#FFFFFF]/30">chevron_right</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-[#1A1A1A] text-[#E8BA6A] border-t border-[#FFFFFF]/[0.05] shadow-[0px_-4px_20px_rgba(232,186,106,0.1)] fixed bottom-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2">
+<button class="flex flex-col items-center justify-center text-[#FFFFFF]/50 hover:text-[#E8BA6A]/80 Active: scale-95 transition-transform">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-manrope text-[10px] font-medium uppercase tracking-wider">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#FFFFFF]/50 hover:text-[#E8BA6A]/80 Active: scale-95 transition-transform">
+<span class="material-symbols-outlined">group</span>
+<span class="font-manrope text-[10px] font-medium uppercase tracking-wider">Leads</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#E8BA6A] font-bold Active: scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="font-manrope text-[10px] font-medium uppercase tracking-wider">Activity</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#FFFFFF]/50 hover:text-[#E8BA6A]/80 Active: scale-95 transition-transform">
+<span class="material-symbols-outlined">person</span>
+<span class="font-manrope text-[10px] font-medium uppercase tracking-wider">Profile</span>
+</button>
+</nav>
+<!-- NavigationDrawer (Sidebar for Desktop Simulation) -->
+<aside class="hidden lg:flex fixed inset-y-0 left-0 z-[60] w-72 bg-[#262626] flex-col p-6 shadow-2xl transition-all duration-300 ease-in-out">
+<div class="mb-xl">
+<h2 class="text-[#E8BA6A] font-bold text-xl uppercase tracking-widest mb-md">Jillani</h2>
+<div class="flex items-center gap-3 p-3 bg-[#1A1A1A] rounded-xl luxury-border">
+<img alt="Agent Profile Picture" class="w-10 h-10 rounded-full border border-[#E8BA6A]/20" data-alt="close-up of a premium real estate agent avatar, dark background, professional and sleek" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfkFQZxB8K7lhccDrScZraOn8e0xSq2zcAxGyd4Dw_5MH4TUlIYkvnvwSwrfhxQ9JzMBwoOOqfEto5pjxjJfCfXhl5L2pu8Mlh56PNFFCt8aqShCiAGgejxXNbxKGnQ2EkY6ioYsz8sFz7dNINeruIx0EEjNC8NxHvJofu4L4DzAlrfWQlUS1596XS6mbCqh-CRD910-OVA1-FXFp8rlw8icHkgwPl-EklFYHU-9i3DUj9swbEOtBQ9CrvT9l1sKGnFOifDjtIlg"/>
+<div>
+<p class="font-manrope text-sm font-semibold text-on-surface">Jillani Agent</p>
+<p class="text-[10px] text-[#E8BA6A] uppercase tracking-wider">Premier Tier</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-xs divide-y divide-[#FFFFFF]/[0.05]">
+<div class="py-sm space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-[#E8BA6A]/10 text-[#E8BA6A] border-l-4 border-[#E8BA6A] font-manrope text-sm font-semibold" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#FFFFFF]/70 hover:bg-[#333333] transition-colors font-manrope text-sm font-semibold" href="#">
+<span class="material-symbols-outlined">hub</span>
+<span>Team Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#FFFFFF]/70 hover:bg-[#333333] transition-colors font-manrope text-sm font-semibold" href="#">
+<span class="material-symbols-outlined">campaign</span>
+<span>Marketing Tools</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#FFFFFF]/70 hover:bg-[#333333] transition-colors font-manrope text-sm font-semibold" href="#">
+<span class="material-symbols-outlined">archive</span>
+<span>Archived Leads</span>
+</a>
+</div>
+<div class="py-sm">
+<a class="flex items-center gap-3 px-4 py-3 text-[#FFFFFF]/70 hover:bg-[#333333] transition-colors font-manrope text-sm font-semibold" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span>Support</span>
+</a>
+</div>
+</nav>
+<div class="mt-auto pt-sm border-t border-[#FFFFFF]/[0.05]">
+<p class="text-[10px] text-[#FFFFFF]/30 uppercase tracking-widest text-center">v1.0.4 • Jillani Properties</p>
+</div>
+</aside>
+</body></html>

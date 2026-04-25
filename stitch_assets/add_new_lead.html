@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jillani Properties - Add New Lead</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #1A1A1A;
+            font-family: 'Inter', sans-serif;
+        }
+        .luxury-border {
+            border: 1px solid rgba(232, 186, 106, 0.15);
+        }
+        .custom-glow {
+            box-shadow: 0px 4px 20px rgba(232, 186, 106, 0.1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#303030",
+                      "on-error": "#690005",
+                      "surface-bright": "#37393a",
+                      "on-secondary-fixed-variant": "#474746",
+                      "tertiary": "#dfdcdb",
+                      "error": "#ffb4ab",
+                      "on-tertiary-container": "#4f4e4e",
+                      "on-secondary-container": "#b7b5b4",
+                      "on-primary-fixed": "#271900",
+                      "on-primary-container": "#694900",
+                      "on-surface-variant": "#d2c5b3",
+                      "outline": "#9b8f7f",
+                      "surface-container-highest": "#333535",
+                      "surface-container-high": "#282a2b",
+                      "primary": "#ffd796",
+                      "on-surface": "#e2e2e2",
+                      "tertiary-fixed": "#e5e2e1",
+                      "surface-container-low": "#1a1c1c",
+                      "on-error-container": "#ffdad6",
+                      "error-container": "#93000a",
+                      "background": "#121414",
+                      "secondary": "#c8c6c5",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "inverse-surface": "#e2e2e2",
+                      "inverse-primary": "#7b5810",
+                      "inverse-on-surface": "#2f3131",
+                      "tertiary-container": "#c3c0c0",
+                      "primary-fixed": "#ffdeaa",
+                      "primary-container": "#e8ba6a",
+                      "outline-variant": "#4e4538",
+                      "surface-container-lowest": "#0c0f0f",
+                      "secondary-fixed-dim": "#c8c6c5",
+                      "surface-container": "#1e2020",
+                      "surface-dim": "#121414",
+                      "on-primary": "#422c00",
+                      "on-tertiary": "#313030",
+                      "on-tertiary-fixed-variant": "#474746",
+                      "surface-tint": "#eebf6f",
+                      "primary-fixed-dim": "#eebf6f",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "on-secondary-fixed": "#1b1c1c",
+                      "surface-variant": "#333535",
+                      "on-primary-fixed-variant": "#5f4100",
+                      "secondary-container": "#474746",
+                      "surface": "#121414",
+                      "secondary-fixed": "#e4e2e1",
+                      "on-background": "#e2e2e2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "xs": "8px",
+                      "sm": "12px",
+                      "xl": "32px",
+                      "gutter": "16px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "headline-xl": ["manrope"],
+                      "headline-md": ["manrope"],
+                      "body-lg": ["inter"],
+                      "label-md": ["inter"],
+                      "headline-lg": ["manrope"],
+                      "body-md": ["inter"],
+                      "label-lg": ["inter"],
+                      "label-sm": ["inter"],
+                      "body-sm": ["inter"]
+              },
+              "fontSize": {
+                      "headline-xl": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-lg": ["14px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "label-sm": ["10px", {"lineHeight": "12px", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-32">
+<!-- Top AppBar (from JSON) -->
+<header class="bg-[#1A1A1A] dark:bg-[#1A1A1A] text-[#E8BA6A] font-manrope font-bold tracking-tight text-lg docked full-width top-0 border-b border-[#FFFFFF]/[0.05] flex justify-between items-center px-5 h-16 w-full z-50 fixed">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:bg-[#262626] p-2 rounded transition-colors" data-icon="close">close</span>
+<h1 class="text-[#E8BA6A] font-extrabold tracking-widest uppercase text-sm">Add New Lead</h1>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#262626] border border-[#E8BA6A]/20 flex items-center justify-center overflow-hidden">
+<img alt="Agent Profile Picture" class="w-full h-full object-cover" data-alt="Professional headshot of a luxury real estate agent in a dark suit with a confident expression and soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV0qgEiVBL1elxGjLWYCQSsOFjCtAgk6D05IbjnkhJzMRLl5Z_kcDDeVliMNBAxISJq-osF0PbSX1QcEXHqr4mafG3jedapxODPqnf0k3DQdypa4VfX5ZVegQ_ykTbx427ooHh-TNb4zrHqxsCvZHkXwa7oIofuhQGv3RYu40aGIlPktWkvQL7qvJlwrFFmL9jiGQJxna2V2jzHjCGLTYpW1l39XcS8FFUaD4FRzs8z8DY7OGx8kBOBAcf2pj5KQ2P5CEeYz01xw"/>
+</div>
+</div>
+</header>
+<main class="pt-24 px-margin-mobile max-w-lg mx-auto">
+<!-- Brand Narrative Header -->
+<div class="mb-xl text-center">
+<h2 class="font-headline-xl text-headline-xl text-on-background mb-base">Capture Excellence</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Onboard your next premium client with precision.</p>
+</div>
+<!-- Form Section -->
+<section class="space-y-lg">
+<!-- Input: Name -->
+<div class="group">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs transition-colors group-focus-within:text-primary-container" for="name">Full Name</label>
+<div class="relative">
+<input class="w-full bg-[#262626] border-0 border-b border-[#FFFFFF]/20 text-on-surface font-body-md py-3 px-0 focus:ring-0 focus:border-primary-container transition-all placeholder:text-[#FFFFFF]/30" id="name" placeholder="Enter client's legal name" type="text"/>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Input: Phone -->
+<div class="group">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs group-focus-within:text-primary-container" for="phone">Phone Number</label>
+<input class="w-full bg-[#262626] border-0 border-b border-[#FFFFFF]/20 text-on-surface font-body-md py-3 px-0 focus:ring-0 focus:border-primary-container transition-all placeholder:text-[#FFFFFF]/30" id="phone" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+<!-- Input: Email -->
+<div class="group">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs group-focus-within:text-primary-container" for="email">Email Address</label>
+<input class="w-full bg-[#262626] border-0 border-b border-[#FFFFFF]/20 text-on-surface font-body-md py-3 px-0 focus:ring-0 focus:border-primary-container transition-all placeholder:text-[#FFFFFF]/30" id="email" placeholder="client@example.com" type="email"/>
+</div>
+</div>
+<!-- Input: Property of Interest -->
+<div class="group">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs group-focus-within:text-primary-container" for="property">Property of Interest</label>
+<div class="relative flex items-center">
+<input class="w-full bg-[#262626] border-0 border-b border-[#FFFFFF]/20 text-on-surface font-body-md py-3 px-0 pr-10 focus:ring-0 focus:border-primary-container transition-all placeholder:text-[#FFFFFF]/30" id="property" placeholder="e.g. The Penthouse at Azure" type="text"/>
+<span class="material-symbols-outlined absolute right-0 text-on-surface-variant" data-icon="domain">domain</span>
+</div>
+</div>
+<!-- Custom Dropdowns (Lead Source & Status) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="group">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs group-focus-within:text-primary-container" for="source">Lead Source</label>
+<select class="w-full bg-[#262626] border-0 border-b border-[#FFFFFF]/20 text-on-surface font-body-md py-3 px-0 focus:ring-0 focus:border-primary-container transition-all appearance-none cursor-pointer" id="source">
+<option value="referral">Referral</option>
+<option value="website">Direct Website</option>
+<option value="social">Social Media</option>
+<option value="campaign">Marketing Campaign</option>
+<option value="partner">Broker Partner</option>
+</select>
+</div>
+<div class="group">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs group-focus-within:text-primary-container" for="status">Initial Status</label>
+<select class="w-full bg-[#262626] border-0 border-b border-[#FFFFFF]/20 text-on-surface font-body-md py-3 px-0 focus:ring-0 focus:border-primary-container transition-all appearance-none cursor-pointer" id="status">
+<option value="new">New Lead</option>
+<option value="contacted">Attempted Contact</option>
+<option value="qualified">Qualified prospect</option>
+<option value="meeting">Meeting Scheduled</option>
+</select>
+</div>
+</div>
+<!-- Visual Lead Card Preview (Asymmetric Layout element) -->
+<div class="pt-xl">
+<p class="font-label-sm text-label-sm text-[#E8BA6A] uppercase tracking-widest mb-md">Quick Summary Preview</p>
+<div class="bg-[#262626] p-md rounded luxury-border flex items-start gap-4">
+<div class="w-12 h-12 bg-[#1A1A1A] flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-primary-container" data-icon="person_add">person_add</span>
+</div>
+<div>
+<p class="font-headline-md text-on-surface" id="preview-name">Untitled Prospect</p>
+<p class="font-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+                            Priority Status: Premium
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Primary Action Button -->
+<div class="fixed bottom-0 left-0 w-full p-margin-mobile bg-gradient-to-t from-[#1A1A1A] via-[#1A1A1A] to-transparent z-40">
+<div class="max-w-lg mx-auto">
+<button class="w-full bg-[#E8BA6A] text-[#1A1A1A] font-manrope font-bold py-4 rounded-xl custom-glow active:scale-95 transition-transform flex items-center justify-center gap-2 uppercase tracking-widest text-sm">
+                    Create Lead
+                    <span class="material-symbols-outlined text-xl" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Navigation suppressed for Transactional screen per "Destination Rule" -->
+<!-- Footer Decorative Element -->
+<div class="mt-xl px-margin-mobile opacity-20 text-center pointer-events-none">
+<p class="font-label-sm tracking-[0.2em] text-on-surface-variant">JILLANI PROPERTIES CRM v1.0.4</p>
+</div>
+</body></html>
