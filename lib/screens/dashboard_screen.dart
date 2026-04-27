@@ -103,7 +103,7 @@ class DashboardScreen extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       color: DesignSystem.surfaceContainer,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(4),
                       border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                     ),
                     padding: const EdgeInsets.all(16.0),
@@ -171,7 +171,7 @@ class DashboardScreen extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       color: DesignSystem.surfaceContainer,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(4),
                       border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                     ),
                     child: Padding(
@@ -195,7 +195,7 @@ class DashboardScreen extends StatelessWidget {
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                 decoration: BoxDecoration(
                                   color: DesignSystem.surfaceContainerHigh.withValues(alpha: 0.5),
-                                  borderRadius: BorderRadius.circular(6),
+                                  borderRadius: BorderRadius.circular(4),
                                   border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                                 ),
                                 child: Text(
@@ -250,7 +250,7 @@ class DashboardScreen extends StatelessWidget {
                                         width: double.infinity,
                                         decoration: BoxDecoration(
                                           color: Colors.white10,
-                                          borderRadius: BorderRadius.circular(2),
+                                          borderRadius: BorderRadius.circular(4),
                                         ),
                                       ),
                                       Container(
@@ -258,7 +258,7 @@ class DashboardScreen extends StatelessWidget {
                                         width: MediaQuery.of(context).size.width * (int.parse(item.value) / 150.0).clamp(0.0, 1.0),
                                         decoration: BoxDecoration(
                                           color: item.color,
-                                          borderRadius: BorderRadius.circular(2),
+                                          borderRadius: BorderRadius.circular(4),
                                         ),
                                       ),
                                     ],

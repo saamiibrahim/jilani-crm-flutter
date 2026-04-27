@@ -72,7 +72,7 @@ class LeadsScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: DesignSystem.surfaceContainerLow,
                       border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -97,7 +97,7 @@ class LeadsScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: DesignSystem.surfaceContainerLow,
                       border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -150,7 +150,7 @@ class LeadsScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                     color: DesignSystem.surfaceContainerHigh.withValues(alpha: 0.5),
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(4),
                     border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                   ),
                   child: Text(
@@ -178,7 +178,7 @@ class LeadsScreen extends StatelessWidget {
       ),
       floatingActionButton: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: BorderRadius.circular(4),
           boxShadow: [
             BoxShadow(
               color: DesignSystem.primaryContainer.withValues(alpha: 0.15),
@@ -207,7 +207,7 @@ class LeadsScreen extends StatelessWidget {
       padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
         color: DesignSystem.surfaceContainer,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Column(
@@ -223,7 +223,7 @@ class LeadsScreen extends StatelessWidget {
                     height: 36,
                     decoration: BoxDecoration(
                       color: DesignSystem.surfaceContainerHigh,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: const Icon(Icons.person, color: DesignSystem.primaryContainer, size: 18),
                   ),
@@ -243,7 +243,7 @@ class LeadsScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: DesignSystem.surfaceContainerLow,
                   border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(4),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -304,7 +304,7 @@ class LeadsScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: DesignSystem.surfaceContainerLow,
         border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
         text.toUpperCase(),

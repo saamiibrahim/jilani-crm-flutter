@@ -92,7 +92,7 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
                     Container(
                       decoration: BoxDecoration(
                         color: DesignSystem.surfaceContainer,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(4),
                       ),
                       child: SwitchListTile(
                         title: const Text('+ Add Task'),
@@ -163,7 +163,7 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
       children: [
         InkWell(
           onTap: () {},
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(4),
           child: CircleAvatar(
             radius: 28,
             backgroundColor: color.withOpacity(0.15),

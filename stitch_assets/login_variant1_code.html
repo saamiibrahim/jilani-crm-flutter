@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#dbe3f0",
+                        "primary-fixed-dim": "#e9c176",
+                        "secondary-fixed": "#e1e2e7",
+                        "outline": "#9a8f80",
+                        "surface-container": "#182029",
+                        "inverse-surface": "#dbe3f0",
+                        "on-tertiary-fixed-variant": "#44474a",
+                        "surface": "#0c141d",
+                        "secondary": "#c4c6cb",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#383b3e",
+                        "on-surface-variant": "#d1c5b4",
+                        "surface-container-highest": "#2e353f",
+                        "tertiary-fixed-dim": "#c5c6ca",
+                        "tertiary": "#c5c6ca",
+                        "on-error": "#690005",
+                        "outline-variant": "#4e4639",
+                        "tertiary-fixed": "#e1e2e6",
+                        "surface-tint": "#e9c176",
+                        "surface-bright": "#323a44",
+                        "on-primary-fixed": "#261900",
+                        "on-tertiary-fixed": "#191c1f",
+                        "on-secondary-container": "#b6b8bd",
+                        "on-surface": "#dbe3f0",
+                        "inverse-primary": "#775a19",
+                        "surface-variant": "#2e353f",
+                        "secondary-container": "#46494d",
+                        "tertiary-container": "#a3a5a9",
+                        "surface-container-high": "#232b34",
+                        "primary-container": "#c5a059",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#c4c6cb",
+                        "primary-fixed": "#ffdea5",
+                        "surface-dim": "#0c141d",
+                        "on-primary": "#412d00",
+                        "on-primary-container": "#4e3700",
+                        "background": "#0c141d",
+                        "surface-container-low": "#141c25",
+                        "on-tertiary": "#2e3134",
+                        "on-secondary-fixed": "#191c20",
+                        "on-secondary": "#2e3135",
+                        "surface-container-lowest": "#070f17",
+                        "on-secondary-fixed-variant": "#44474b",
+                        "inverse-on-surface": "#29313b",
+                        "error-container": "#93000a",
+                        "primary": "#e9c176",
+                        "on-primary-fixed-variant": "#5d4201"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-comfortable": "16px",
+                        "margin-page": "32px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "stack-compact": "8px",
+                        "section-gap": "40px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "data-tabular": ["Inter"],
+                        "header-sm": ["Manrope"],
+                        "display-md": ["Manrope"],
+                        "display-lg": ["Manrope"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "data-tabular": ["13px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                        "header-sm": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "display-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md overflow-hidden">
+<main class="flex-grow flex flex-col relative bg-[#0c141d] justify-center items-center">
+<!-- Decorative Ambient Background -->
+<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+<div class="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-primary-container/10 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[-5%] left-[-5%] w-[40%] h-[40%] bg-surface-container-highest/30 blur-[80px] rounded-full"></div>
+</div>
+<!-- New Layout Variation: Split-style arrangement -->
+<div class="flex-grow flex flex-col z-10 w-full max-w-[400px]">
+<!-- Prominent Branding Section (Top Header) -->
+<div class="pt-16 pb-8 px-margin-page flex flex-col items-center">
+<div class="mb-4 w-24 h-24 flex items-center justify-center">
+<img alt="Jillani Properties Logo" class="w-full h-full object-contain" data-alt="Jilani Properties official gold and dark emblem logo" src="https://lh3.googleusercontent.com/aida/ADBb0ujTOZlv-X-0ArHTItnLL1pHYEk6NUB6UPLPFyFmLPlMDd6B-SN_hcKbNKuoxB7VDjZReKYA0Ukgr_5XyQZWSbhykfXj1jnBPZvOyny_tbNgB9NsRMBXJgSRaOSq8vXbafardpU54Dd0XIQ0m249QVBiqv1LDiE07IbLG1DKPrORKTpfQnmm4z9am0Dtgg1oOKFK35QpcCBiymvABMzgXJ7uW6cp7AU8iMLzZSFCn_G-NILAb40jB9tKmsdZ7q0ZeXEiVBrH_g"/>
+</div>
+<div class="flex flex-col items-center text-center">
+<h1 class="font-display-md text-display-md text-on-surface tracking-[0.3em] uppercase">JILLANI PROPERTIES</h1>
+<div class="h-[2px] w-24 bg-primary-container mt-2"></div>
+</div>
+</div>
+<!-- Login Content Area -->
+<div class="flex-grow flex items-start justify-center px-margin-page">
+<div class="w-full max-w-[400px]">
+<div class="bg-surface-container-low/40 border-y border-outline-variant/30 backdrop-blur-md -mx-margin-page px-margin-page py-10 sm:rounded-xl sm:border-x sm:mx-0 sm:shadow-2xl">
+<div class="flex flex-col gap-8">
+<!-- Input Fields Grouping -->
+<div class="flex flex-col gap-4">
+<!-- Email Field -->
+<div class="flex flex-col gap-unit">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase ml-1" for="email">Email Address</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-lowest/50 border-b border-outline-variant/50 px-4 py-4 text-body-md text-on-surface focus:outline-none focus:border-primary-container transition-all placeholder:text-surface-container-highest" id="email" placeholder="executive@jillani.com" type="email"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-outline-variant group-focus-within:text-primary-container">
+<span class="material-symbols-outlined text-[20px]">alternate_email</span>
+</div>
+</div>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col gap-unit">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase ml-1" for="password">Password</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-lowest/50 border-b border-outline-variant/50 px-4 py-4 text-body-md text-on-surface focus:outline-none focus:border-primary-container transition-all placeholder:text-surface-container-highest" id="password" placeholder="••••••••" type="password"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-outline-variant group-focus-within:text-primary-container">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Row & Button -->
+<div class="flex flex-col gap-6">
+<div class="flex justify-end">
+<a class="font-label-caps text-[10px] text-primary hover:text-primary-fixed-dim transition-colors uppercase tracking-widest" href="#">
+                                        Forgot Password?
+                                    </a>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container font-label-caps text-label-caps py-5 rounded-lg uppercase tracking-[0.25em] hover:bg-primary transition-all active:scale-[0.98] shadow-xl shadow-primary-container/20">
+                                    Sign In
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

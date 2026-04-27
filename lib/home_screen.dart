@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           child: AlertDialog(
             backgroundColor: Theme.of(screenContext).colorScheme.surface,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(4),
               side: const BorderSide(color: Color(0xFFC5A059), width: 1.5), // Subtle gold border
             ),
             title: Text(
@@ -237,7 +237,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   margin: const EdgeInsets.only(bottom: 16.0),
                   color: Theme.of(context).colorScheme.surface,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(4),
                     side: BorderSide(
                       color: const Color(0xFFC5A059).withOpacity(0.3),
                       width: 1,
@@ -274,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                             // Metallic gold gradient button feeling
                             Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(4),
                                 gradient: const LinearGradient(
                                   colors: [Color(0xFFD4AF37), Color(0xFFAA8028)], // Gold gradient approximation
                                   begin: Alignment.topLeft,

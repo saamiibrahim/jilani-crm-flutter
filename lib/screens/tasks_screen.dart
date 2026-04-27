@@ -185,7 +185,7 @@ class _TasksScreenState extends State<TasksScreen> {
                           color: DesignSystem.surfaceContainerHigh.withValues(
                             alpha: 0.5,
                           ),
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(4),
                           border: Border.all(
                             color: Colors.white.withValues(alpha: 0.05),
                           ),

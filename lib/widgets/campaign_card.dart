@@ -28,7 +28,7 @@ class CampaignCard extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: DesignSystem.surfaceContainer,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Row(
@@ -40,7 +40,7 @@ class CampaignCard extends StatelessWidget {
             height: 48,
             decoration: BoxDecoration(
               color: DesignSystem.surfaceContainerHigh,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(4),
             ),
             child: Icon(cardIcon, color: DesignSystem.primaryContainer, size: 24),
           ),
@@ -91,7 +91,7 @@ class CampaignCard extends StatelessWidget {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: DesignSystem.surfaceContainerHigh,
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                   child: FractionallySizedBox(
                     alignment: Alignment.centerLeft,
@@ -99,7 +99,7 @@ class CampaignCard extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         color: DesignSystem.primaryContainer,
-                        borderRadius: BorderRadius.circular(2),
+                        borderRadius: BorderRadius.circular(4),
                         boxShadow: [
                           BoxShadow(
                             color: DesignSystem.primaryContainer.withValues(alpha: 0.4),
@@ -119,13 +119,13 @@ class CampaignCard extends StatelessWidget {
           // Right Call Button
           InkWell(
             onTap: onStartCalling,
-            borderRadius: BorderRadius.circular(12), // rounded-xl
+            borderRadius: BorderRadius.circular(4), // rounded-xl
             child: Container(
               width: 56, // 24 icon + 16 padding on each side (p-4)
               height: 56,
               decoration: BoxDecoration(
                 color: DesignSystem.primaryContainer,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(4),
                 boxShadow: [
                   BoxShadow(
                     color: DesignSystem.primaryContainer.withValues(alpha: 0.15),
