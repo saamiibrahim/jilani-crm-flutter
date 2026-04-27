@@ -5,6 +5,7 @@ import 'app_state.dart';
 import 'screens/main_layout.dart';
 import 'login_screen.dart';
 import 'theme/design_system.dart';
+// import 'home_screen.dart';
 
 void main() {
   runApp(
@@ -28,11 +29,16 @@ class JalaniApp extends StatelessWidget {
         builder: (context, appState, _) {
           if (appState.isLoading && !appState.isLoggedIn) {
             return const Scaffold(
-              body: Center(child: CircularProgressIndicator(color: DesignSystem.primaryContainer)),
+              body: Center(
+                child: CircularProgressIndicator(
+                  color: DesignSystem.primaryContainer,
+                ),
+              ),
             );
           }
           if (appState.isLoggedIn) {
             return const MainLayout();
+            // return const HomeScreen();
           } else {
             return const LoginScreen();
           }

@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   Future<void> _makeCall(Lead lead) async {
     final appState = Provider.of<AppState>(context, listen: false);
     final Uri callUri = Uri.parse('tel:${lead.phoneNumber}');
-    
+
     // Set state flags immediately before launching the intent
     appState.isReturningFromCall = true;
     appState.activeLeadId = lead.id;
@@ -77,13 +77,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             backgroundColor: Theme.of(screenContext).colorScheme.surface,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
-              side: const BorderSide(color: Color(0xFFC5A059), width: 1.5), // Subtle gold border
+              side: const BorderSide(
+                color: Color(0xFFC5A059),
+                width: 1.5,
+              ), // Subtle gold border
             ),
             title: Text(
               'Call Outcome',
-              style: Theme.of(screenContext).textTheme.titleLarge?.copyWith(
-                    color: const Color(0xFFC5A059),
-                  ),
+              style: Theme.of(
+                screenContext,
+              ).textTheme.titleLarge?.copyWith(color: const Color(0xFFC5A059)),
             ),
             content: StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
@@ -92,12 +95,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   children: [
                     DropdownButtonFormField<String>(
                       value: selectedStatus,
-                      dropdownColor: Theme.of(screenContext).colorScheme.surface,
+                      dropdownColor: Theme.of(
+                        screenContext,
+                      ).colorScheme.surface,
                       items: statusOptions
-                          .map((status) => DropdownMenuItem(
-                                value: status,
-                                child: Text(status),
-                              ))
+                          .map(
+                            (status) => DropdownMenuItem(
+                              value: status,
+                              child: Text(status),
+                            ),
+                          )
                           .toList(),
                       onChanged: (value) {
                         setState(() {
@@ -132,18 +139,25 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   return appState.isLoading
                       ? const Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: CircularProgressIndicator(color: Color(0xFFC5A059)),
+                          child: CircularProgressIndicator(
+                            color: Color(0xFFC5A059),
+                          ),
                         )
                       : ElevatedButton(
                           onPressed: () async {
                             final notes = notesController.text.trim();
-                            await appState.updateLeadStatus(selectedStatus, notes);
-                            
+                            await appState.updateLeadStatus(
+                              selectedStatus,
+                              notes,
+                            );
+
                             // On success, close the modal and reset states
-                            if (appState.error == null && dialogContext.mounted) {
+                            if (appState.error == null &&
+                                dialogContext.mounted) {
                               appState.isReturningFromCall = false;
                               Navigator.of(dialogContext).pop();
-                            } else if (appState.error != null && dialogContext.mounted) {
+                            } else if (appState.error != null &&
+                                dialogContext.mounted) {
                               ScaffoldMessenger.of(dialogContext).showSnackBar(
                                 SnackBar(content: Text(appState.error!)),
                               );
@@ -176,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               ),
               child: ClipOval(
                 child: Image.asset(
-                  'assets/image_0.png', // Assuming user places a variant or scales it
+                  'assets/jilani_logo.png', // Assuming user places a variant or scales it
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) => const Icon(
                     Icons.apartment,
@@ -204,7 +218,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       body: Consumer<AppState>(
         builder: (context, appState, child) {
           if (appState.isLoading && appState.leads.isEmpty) {
-            return const Center(child: CircularProgressIndicator(color: Color(0xFFC5A059)));
+            return const Center(
+              child: CircularProgressIndicator(color: Color(0xFFC5A059)),
+            );
           }
 
           if (appState.error != null && appState.leads.isEmpty) {
@@ -250,9 +266,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       children: [
                         Text(
                           lead.name,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontSize: 22,
-                              ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.titleMedium?.copyWith(fontSize: 22),
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -276,7 +292,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4),
                                 gradient: const LinearGradient(
-                                  colors: [Color(0xFFD4AF37), Color(0xFFAA8028)], // Gold gradient approximation
+                                  colors: [
+                                    Color(0xFFD4AF37),
+                                    Color(0xFFAA8028),
+                                  ], // Gold gradient approximation
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
@@ -285,10 +304,20 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.transparent,
                                   shadowColor: Colors.transparent,
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 12,
+                                  ),
                                 ),
-                                icon: const Icon(Icons.phone, color: Colors.white, size: 20),
-                                label: const Text('CALL', style: TextStyle(letterSpacing: 1.2)),
+                                icon: const Icon(
+                                  Icons.phone,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                label: const Text(
+                                  'CALL',
+                                  style: TextStyle(letterSpacing: 1.2),
+                                ),
                                 onPressed: () => _makeCall(lead),
                               ),
                             ),
