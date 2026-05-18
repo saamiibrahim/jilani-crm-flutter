@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     DropdownButtonFormField<String>(
-                      value: selectedStatus,
+                      initialValue: selectedStatus,
                       dropdownColor: Theme.of(
                         screenContext,
                       ).colorScheme.surface,
@@ -255,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4),
                     side: BorderSide(
-                      color: const Color(0xFFC5A059).withOpacity(0.3),
+                      color: const Color(0xFFC5A059).withValues(alpha: 0.3),
                       width: 1,
                     ),
                   ),

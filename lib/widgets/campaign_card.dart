@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/dummy_data.dart';
 import '../theme/design_system.dart';
 
@@ -14,135 +15,119 @@ class CampaignCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get progress percentage
-    final double progress = campaign.total > 0 ? campaign.completed / campaign.total : 0.0;
-    
-    // Choose icon based on title to simulate the design
-    IconData cardIcon = Icons.phone_in_talk;
-    if (campaign.title.contains('Facebook')) { cardIcon = Icons.filter_none; }
-    else if (campaign.title.contains('Azizi')) { cardIcon = Icons.location_city; }
-    else if (campaign.title.contains('Sobha')) { cardIcon = Icons.home_work; }
+    final progress = campaign.total == 0
+        ? 0.0
+        : campaign.completed / campaign.total;
+    final canCall = campaign.leads.isNotEmpty;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16.0),
+      margin: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: DesignSystem.surfaceContainer,
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: DesignSystem.outlineVariant.withValues(alpha: 0.55),
+        ),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Icon Box
           Container(
-            width: 48,
-            height: 48,
+            width: 46,
+            height: 46,
             decoration: BoxDecoration(
               color: DesignSystem.surfaceContainerHigh,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: DesignSystem.primaryContainer.withValues(alpha: 0.12),
+              ),
             ),
-            child: Icon(cardIcon, color: DesignSystem.primaryContainer, size: 24),
+            child: Icon(
+              _campaignIcon(campaign.title),
+              color: DesignSystem.primaryContainer,
+              size: 22,
+            ),
           ),
-          const SizedBox(width: 16),
-          
-          // Middle Content
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   campaign.title,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: DesignSystem.onSurface,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    Container(
-                      width: 6,
-                      height: 6,
-                      decoration: BoxDecoration(
-                        color: progress == 0 ? DesignSystem.primaryContainer.withValues(alpha: 0.4) : DesignSystem.primaryContainer,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      '${campaign.completed}/${campaign.total} Pending Leads',
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: DesignSystem.onSurfaceVariant,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
                 const SizedBox(height: 8),
-                // Progress Bar
-                Container(
-                  height: 3,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: DesignSystem.surfaceContainerHigh,
-                    borderRadius: BorderRadius.circular(4),
+                Text(
+                  '${campaign.completed}/${campaign.total} Pending Leads',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: DesignSystem.onSurfaceVariant,
                   ),
-                  child: FractionallySizedBox(
-                    alignment: Alignment.centerLeft,
-                    widthFactor: progress,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: DesignSystem.primaryContainer,
-                        borderRadius: BorderRadius.circular(4),
-                        boxShadow: [
-                          BoxShadow(
-                            color: DesignSystem.primaryContainer.withValues(alpha: 0.4),
-                            blurRadius: 4,
-                          ),
-                        ],
-                      ),
-                    ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 12),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: LinearProgressIndicator(
+                    minHeight: 4,
+                    value: progress,
+                    color: DesignSystem.primaryContainer,
+                    backgroundColor: DesignSystem.surfaceContainerHigh,
                   ),
                 ),
               ],
             ),
           ),
-          
-          const SizedBox(width: 16),
-          
-          // Right Call Button
-          InkWell(
-            onTap: onStartCalling,
-            borderRadius: BorderRadius.circular(4), // rounded-xl
-            child: Container(
-              width: 56, // 24 icon + 16 padding on each side (p-4)
-              height: 56,
-              decoration: BoxDecoration(
-                color: DesignSystem.primaryContainer,
-                borderRadius: BorderRadius.circular(4),
-                boxShadow: [
-                  BoxShadow(
-                    color: DesignSystem.primaryContainer.withValues(alpha: 0.15),
-                    offset: const Offset(0, 4),
-                    blurRadius: 20,
+          const SizedBox(width: 14),
+          Tooltip(
+            message: canCall ? 'Start calling' : 'No pending leads',
+            child: InkWell(
+              key: ValueKey('campaign-call-${campaign.title}'),
+              onTap: canCall ? onStartCalling : null,
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: canCall
+                      ? DesignSystem.primaryContainer
+                      : DesignSystem.surfaceContainerHigh,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: canCall
+                        ? DesignSystem.primaryContainer
+                        : DesignSystem.outlineVariant,
                   ),
-                ],
-              ),
-              child: const Icon(
-                Icons.call,
-                color: DesignSystem.onPrimaryContainer,
-                size: 24,
+                ),
+                child: Icon(
+                  Icons.call,
+                  color: canCall
+                      ? DesignSystem.onPrimaryContainer
+                      : DesignSystem.onSurfaceVariant.withValues(alpha: 0.45),
+                  size: 22,
+                ),
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  IconData _campaignIcon(String title) {
+    final lower = title.toLowerCase();
+    if (lower.contains('azizi') || lower.contains('sky')) {
+      return Icons.apartment;
+    }
+    if (lower.contains('sobha')) return Icons.home_work;
+    if (lower.contains('portal')) return Icons.public;
+    if (lower.contains('manual')) return Icons.list_alt;
+    return Icons.phone_android;
   }
 }

@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import '../models/dummy_data.dart';
 import '../theme/design_system.dart';
+import 'crm_components.dart';
 
 class TaskItemTile extends StatelessWidget {
   final CrmTask task;
   final ValueChanged<bool?> onChanged;
 
-  const TaskItemTile({
-    super.key,
-    required this.task,
-    required this.onChanged,
-  });
+  const TaskItemTile({super.key, required this.task, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +31,26 @@ class TaskItemTile extends StatelessWidget {
               height: 24,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: task.isCompleted ? DesignSystem.primaryContainer : Colors.transparent,
+                color: task.isCompleted
+                    ? DesignSystem.primaryContainer
+                    : Colors.transparent,
                 border: Border.all(
-                  color: task.isCompleted ? DesignSystem.primaryContainer : DesignSystem.onSurfaceVariant.withValues(alpha: 0.5),
+                  color: task.isCompleted
+                      ? DesignSystem.primaryContainer
+                      : DesignSystem.onSurfaceVariant.withValues(alpha: 0.5),
                   width: 1.5,
                 ),
               ),
               child: task.isCompleted
-                  ? const Icon(Icons.check, size: 16, color: DesignSystem.onPrimaryContainer)
+                  ? const Icon(
+                      Icons.check,
+                      size: 16,
+                      color: DesignSystem.onPrimaryContainer,
+                    )
                   : null,
             ),
           ),
-          
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,10 +64,13 @@ class TaskItemTile extends StatelessWidget {
                       child: Text(
                         task.leadName,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: task.isCompleted ? DesignSystem.onSurfaceVariant : DesignSystem.onSurface,
+                          color: task.isCompleted
+                              ? DesignSystem.onSurfaceVariant
+                              : DesignSystem.onSurface,
                           fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          decoration: task.isCompleted ? TextDecoration.lineThrough : null,
+                          decoration: task.isCompleted
+                              ? TextDecoration.lineThrough
+                              : null,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -70,11 +78,18 @@ class TaskItemTile extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: DesignSystem.surfaceContainerLow,
                         borderRadius: BorderRadius.circular(4),
-                        border: Border.all(color: task.isCompleted ? Colors.white.withValues(alpha: 0.05) : task.statusColor.withValues(alpha: 0.2)),
+                        border: Border.all(
+                          color: task.isCompleted
+                              ? Colors.white.withValues(alpha: 0.05)
+                              : task.statusColor.withValues(alpha: 0.2),
+                        ),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -90,9 +105,12 @@ class TaskItemTile extends StatelessWidget {
                           const SizedBox(width: 8),
                           Text(
                             task.status.toUpperCase(),
-                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: task.isCompleted ? Colors.white70 : task.statusColor,
-                            ),
+                            style: Theme.of(context).textTheme.labelSmall
+                                ?.copyWith(
+                                  color: task.isCompleted
+                                      ? Colors.white70
+                                      : task.statusColor,
+                                ),
                           ),
                         ],
                       ),
@@ -107,8 +125,8 @@ class TaskItemTile extends StatelessWidget {
                       task.taskType.toLowerCase().contains('call')
                           ? Icons.phone_in_talk
                           : (task.taskType.toLowerCase().contains('whatsapp')
-                              ? Icons.message
-                              : Icons.group),
+                                ? Icons.message
+                                : Icons.group),
                       color: DesignSystem.onSurfaceVariant,
                       size: 16,
                     ),
@@ -117,23 +135,27 @@ class TaskItemTile extends StatelessWidget {
                       flex: 0,
                       child: Text(
                         task.taskType,
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: DesignSystem.onSurfaceVariant,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(
+                              color: DesignSystem.onSurfaceVariant,
+                              fontWeight: FontWeight.w500,
+                            ),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
                     ),
                     const SizedBox(width: 8),
-                    const Icon(Icons.calendar_today, size: 14, color: DesignSystem.onSurfaceVariant),
+                    const Icon(
+                      Icons.calendar_today,
+                      size: 14,
+                      color: DesignSystem.onSurfaceVariant,
+                    ),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(
-                        task.date,
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: DesignSystem.onSurfaceVariant,
-                        ),
+                        formatCrmDateTime(task.dueDate, task.dueTime),
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(color: DesignSystem.onSurfaceVariant),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),

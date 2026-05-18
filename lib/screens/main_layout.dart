@@ -14,26 +14,40 @@ class MainLayout extends StatefulWidget {
 
 class _MainLayoutState extends State<MainLayout> {
   int _currentIndex = 0;
+  final Set<int> _builtTabs = {0};
 
-  final List<Widget> _screens = [
-    const CampaignsScreen(),
-    const TasksScreen(),
-    const LeadsScreen(),
-    const DashboardScreen(),
-  ];
+  Widget _screenForIndex(int index) {
+    return switch (index) {
+      0 => const CampaignsScreen(),
+      1 => const TasksScreen(),
+      2 => const LeadsScreen(),
+      3 => const DashboardScreen(),
+      _ => const CampaignsScreen(),
+    };
+  }
 
   void _onTabTapped(int index) {
+    if (_currentIndex == index) return;
     setState(() {
       _currentIndex = index;
+      _builtTabs.add(index);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
+      body: Stack(
+        children: List.generate(4, (index) {
+          if (!_builtTabs.contains(index)) {
+            return const SizedBox.shrink();
+          }
+          final isActive = _currentIndex == index;
+          return Offstage(
+            offstage: !isActive,
+            child: TickerMode(enabled: isActive, child: _screenForIndex(index)),
+          );
+        }),
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -41,19 +55,15 @@ class _MainLayoutState extends State<MainLayout> {
           border: Border(
             top: BorderSide(color: Colors.white.withValues(alpha: 0.05)),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: DesignSystem.primaryContainer.withValues(alpha: 0.1),
-              offset: const Offset(0, -4),
-              blurRadius: 20,
-            ),
-          ],
         ),
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: _onTabTapped,
-          backgroundColor: Colors.transparent, // Let the container's color show
+          backgroundColor: Colors.transparent,
           elevation: 0,
+          iconSize: 23,
+          selectedFontSize: 10,
+          unselectedFontSize: 10,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.campaign_outlined),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+
 import '../models/dummy_data.dart';
-import '../widgets/campaign_card.dart';
 import '../theme/design_system.dart';
-import 'wrap_up_screen.dart';
+import '../widgets/campaign_card.dart';
+import '../widgets/crm_components.dart';
+import 'campaign_call_now_screen.dart';
+import 'settings_screen.dart';
 
 class CampaignsScreen extends StatefulWidget {
   const CampaignsScreen({super.key});
@@ -12,151 +15,122 @@ class CampaignsScreen extends StatefulWidget {
 }
 
 class _CampaignsScreenState extends State<CampaignsScreen> {
+  int get _pendingLeads {
+    return DummyData.campaigns.fold<int>(
+      0,
+      (sum, campaign) => sum + campaign.pending,
+    );
+  }
+
+  Future<void> _openCallingSession(Campaign campaign) async {
+    final results = await Navigator.push<List<WrapUpResult>>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CampaignCallNowScreen(campaign: campaign),
+      ),
+    );
+
+    if (!mounted || results == null) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Completed ${results.length} leads in ${campaign.title}'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/jilani_logo.png',
-              width: 36,
-              height: 36,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) => const Icon(
-                Icons.apartment,
-                color: DesignSystem.primaryContainer,
-                size: 24,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Text(
-              'JILANI PROPERTIES',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: DesignSystem.primaryContainer,
-                fontWeight: FontWeight.w800,
-                letterSpacing: 2.0,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
+      appBar: JilaniAppBar(
+        showLogoTitle: true,
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 16),
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: DesignSystem.primaryContainer.withValues(alpha: 0.3),
-              ),
-            ),
-            child: const ClipOval(
-              child: Icon(
-                Icons.person,
-                color: DesignSystem.onSurfaceVariant,
-                size: 20,
-              ),
-            ),
+          IconButton(icon: const Icon(Icons.search), onPressed: () {}),
+          ProfileButton(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const SettingsScreen()),
+              );
+            },
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: Colors.white.withValues(alpha: 0.05),
-            height: 1.0,
-          ),
-        ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20.0,
-              right: 20.0,
-              top: 16.0,
-              bottom: 12.0,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Campaigns',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: DesignSystem.onSurfaceVariant,
-                        letterSpacing: 1.5,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'PENDING LEADS',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: DesignSystem.onSurface,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: DesignSystem.surfaceContainerHigh.withValues(
-                      alpha: 0.5,
-                    ),
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.05),
-                    ),
-                  ),
-                  child: Text(
-                    '${DummyData.campaigns.fold<int>(0, (sum, item) => sum + item.completed)} TOTAL',
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: DesignSystem.primaryContainer,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
+      body: ScreenBackdrop(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 720),
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 8.0,
-              ),
-              itemCount: DummyData.campaigns.length,
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 96),
+              itemCount: DummyData.campaigns.length + 1,
               itemBuilder: (context, index) {
-                final campaign = DummyData.campaigns[index];
+                if (index == 0) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 18),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'CAMPAIGNS',
+                                style: Theme.of(context).textTheme.labelSmall
+                                    ?.copyWith(
+                                      color: DesignSystem.primaryContainer,
+                                      letterSpacing: 1.4,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                '$_pendingLeads PENDING LEADS',
+                                style: Theme.of(context).textTheme.titleSmall
+                                    ?.copyWith(
+                                      color: DesignSystem.onSurface,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 0.4,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: DesignSystem.surfaceContainerHigh,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: DesignSystem.outlineVariant.withValues(
+                                alpha: 0.7,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            '${DummyData.campaigns.length} ACTIVE',
+                            style: Theme.of(context).textTheme.labelMedium
+                                ?.copyWith(
+                                  color: DesignSystem.primaryContainer,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                final campaign = DummyData.campaigns[index - 1];
                 return CampaignCard(
+                  key: ValueKey('campaign-card-${campaign.title}'),
                   campaign: campaign,
-                  onStartCalling: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const WrapUpScreen(),
-                      ),
-                    );
-                  },
+                  onStartCalling: () => _openCallingSession(campaign),
                 );
               },
             ),
           ),
-        ],
+        ),
       ),
     );
   }

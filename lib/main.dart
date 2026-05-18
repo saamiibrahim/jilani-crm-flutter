@@ -25,6 +25,16 @@ class JalaniApp extends StatelessWidget {
       title: 'Jilani Properties',
       debugShowCheckedModeBanner: false,
       theme: DesignSystem.themeData,
+      builder: (context, child) {
+        final mediaQuery = MediaQuery.of(context);
+        final textScale = mediaQuery.textScaler.scale(1).clamp(0.9, 1.08).toDouble();
+        return MediaQuery(
+          data: mediaQuery.copyWith(
+            textScaler: TextScaler.linear(textScale),
+          ),
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       home: Consumer<AppState>(
         builder: (context, appState, _) {
           if (appState.isLoading && !appState.isLoggedIn) {

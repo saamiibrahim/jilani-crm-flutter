@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+
 import '../models/dummy_data.dart';
 import '../theme/design_system.dart';
+import '../widgets/crm_components.dart';
+import 'settings_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -10,274 +13,280 @@ class DashboardScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: [
-              Image.asset(
-                'assets/jilani_logo.png',
-                width: 36,
-                height: 36,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) => const Icon(
-                  Icons.apartment,
-                  color: DesignSystem.primaryContainer,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                'JILANI PROPERTIES',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: DesignSystem.primaryContainer,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 2.0,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
+        appBar: JilaniAppBar(
+          showLogoTitle: true,
           actions: [
-            IconButton(
-              icon: const Icon(Icons.search, color: DesignSystem.primaryContainer),
-              onPressed: () {},
-            ),
-            Container(
-              margin: const EdgeInsets.only(right: 16),
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: DesignSystem.primaryContainer.withValues(alpha: 0.3)),
-              ),
-              child: const ClipOval(
-                child: Icon(Icons.person, color: DesignSystem.onSurfaceVariant, size: 20),
+            ProfileButton(
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const SettingsScreen()),
               ),
             ),
           ],
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(49.0), // 48 for TabBar + 1 for border
+            preferredSize: const Size.fromHeight(49),
             child: Column(
               children: [
-                TabBar(
-                  indicatorColor: DesignSystem.primaryContainer,
-                  labelColor: DesignSystem.primaryContainer,
-                  unselectedLabelColor: DesignSystem.onSurfaceVariant,
-                  indicatorWeight: 3,
-                  dividerColor: Colors.transparent,
-                  labelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.5,
-                  ),
-                  unselectedLabelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.5,
-                  ),
-                  tabs: const [
+                const TabBar(
+                  tabs: [
                     Tab(text: 'MY PIPELINE'),
                     Tab(text: 'MY PRODUCTIVITY'),
                   ],
                 ),
                 Container(
-                  color: Colors.white.withValues(alpha: 0.05),
-                  height: 1.0,
+                  height: 1,
+                  color: Colors.white.withValues(alpha: 0.06),
                 ),
               ],
             ),
           ),
         ),
-        body: TabBarView(
-          children: [
-            // Pipeline Tab
-            SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        body: ScreenBackdrop(
+          child: TabBarView(
+            children: [
+              _DashboardTab(
+                metrics: DummyData.metrics,
+                title: 'Status',
+                totalLabel: 'Contacted leads',
+                total: 2,
+                breakdowns: DummyData.statusBreakdowns,
+                extraTitle: 'Lead sources',
+                extraBreakdowns: const [
+                  DashboardBreakdown(
+                    label: 'Facebook',
+                    value: 0,
+                    color: Color(0xFF1877F2),
+                  ),
+                  DashboardBreakdown(
+                    label: 'TikTok',
+                    value: 0,
+                    color: Color(0xFF111111),
+                  ),
+                  DashboardBreakdown(
+                    label: 'Website',
+                    value: 0,
+                    color: Color(0xFF7A3BD4),
+                  ),
+                  DashboardBreakdown(
+                    label: 'CSV/Manual',
+                    value: 3,
+                    color: DesignSystem.primaryContainer,
+                  ),
+                ],
+              ),
+              _DashboardTab(
+                metrics: const [
+                  DashboardMetric(label: 'Calls Made', value: '4'),
+                  DashboardMetric(label: 'Whatsapps Sent', value: '0'),
+                  DashboardMetric(label: 'Emails Sent', value: '0'),
+                  DashboardMetric(label: 'Texts Sent', value: '1'),
+                ],
+                title: 'Call outcomes',
+                totalLabel: 'Calls made',
+                total: 4,
+                breakdowns: DummyData.callOutcomeBreakdowns,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DashboardTab extends StatelessWidget {
+  final List<DashboardMetric> metrics;
+  final String title;
+  final String totalLabel;
+  final int total;
+  final List<DashboardBreakdown> breakdowns;
+  final String? extraTitle;
+  final List<DashboardBreakdown> extraBreakdowns;
+
+  const _DashboardTab({
+    required this.metrics,
+    required this.title,
+    required this.totalLabel,
+    required this.total,
+    required this.breakdowns,
+    this.extraTitle,
+    this.extraBreakdowns = const [],
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(18, 18, 18, 96),
+      children: [
+        _AgentMetricCard(metrics: metrics),
+        const SizedBox(height: 16),
+        _BreakdownCard(
+          title: title,
+          totalLabel: totalLabel,
+          total: total,
+          breakdowns: breakdowns,
+        ),
+        if (extraTitle != null) ...[
+          const SizedBox(height: 16),
+          _BreakdownCard(
+            title: extraTitle!,
+            totalLabel: '',
+            total: null,
+            breakdowns: extraBreakdowns,
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _AgentMetricCard extends StatelessWidget {
+  final List<DashboardMetric> metrics;
+
+  const _AgentMetricCard({required this.metrics});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: DesignSystem.primaryContainer.withValues(alpha: 0.18),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: DesignSystem.primaryContainer.withValues(alpha: 0.25),
+        ),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const LeadAvatar(radius: 22),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Ali yawar',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+                ),
+              ),
+              const Icon(
+                Icons.workspace_premium,
+                color: DesignSystem.primaryContainer,
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          ...metrics.map(
+            (metric) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
                 children: [
-                  Text(
-                    'Dashboard Overview',
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                  const SizedBox(height: 24),
-                  
-                  // User Profile and Top Stats
-                  Container(
-                    decoration: BoxDecoration(
-                      color: DesignSystem.surfaceContainer,
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                    ),
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: 32,
-                                  height: 32,
-                                  decoration: const BoxDecoration(
-                                    color: DesignSystem.surfaceContainerHigh,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(Icons.person, color: DesignSystem.primaryContainer, size: 20),
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  'Alexander Agent',
-                                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    color: DesignSystem.onSurface,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Icon(Icons.workspace_premium, color: DesignSystem.primaryContainer),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        ...DummyData.metrics.map((metric) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                metric.label,
-                                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  color: DesignSystem.onSurfaceVariant,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Text(
-                                metric.value,
-                                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  color: DesignSystem.primaryContainer,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )).toList(),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  
-                  // Status Breakdown Section
-                  Container(
-                    decoration: BoxDecoration(
-                      color: DesignSystem.surfaceContainer,
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'STATUS',
-                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  color: DesignSystem.onSurfaceVariant,
-                                  letterSpacing: 1.5,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: DesignSystem.surfaceContainerHigh.withValues(alpha: 0.5),
-                                  borderRadius: BorderRadius.circular(4),
-                                  border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                                ),
-                                child: Text(
-                                  '106 CONTACTED',
-                                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: DesignSystem.primaryContainer,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          ListView.separated(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: DummyData.breakdowns.length,
-                            separatorBuilder: (context, index) => const SizedBox(height: 12),
-                            itemBuilder: (context, index) {
-                              final item = DummyData.breakdowns[index];
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        item.label, 
-                                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                          color: DesignSystem.onSurface,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Text(
-                                        item.value,
-                                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                          color: DesignSystem.primaryContainer,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8),
-                                  // Progress bar indicator
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        height: 4,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white10,
-                                          borderRadius: BorderRadius.circular(4),
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 4,
-                                        width: MediaQuery.of(context).size.width * (int.parse(item.value) / 150.0).clamp(0.0, 1.0),
-                                        decoration: BoxDecoration(
-                                          color: item.color,
-                                          borderRadius: BorderRadius.circular(4),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ],
+                  Expanded(
+                    child: Text(
+                      metric.label,
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: DesignSystem.onSurfaceVariant,
+                        fontWeight: FontWeight.w700,
                       ),
+                    ),
+                  ),
+                  Text(
+                    metric.value,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: DesignSystem.onSurface,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ],
               ),
             ),
-            // Productivity Tab
-            const Center(child: Text('Productivity Data Here')),
-          ],
-        ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BreakdownCard extends StatelessWidget {
+  final String title;
+  final String totalLabel;
+  final int? total;
+  final List<DashboardBreakdown> breakdowns;
+
+  const _BreakdownCard({
+    required this.title,
+    required this.totalLabel,
+    required this.total,
+    required this.breakdowns,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final maxValue = breakdowns.fold<int>(
+      1,
+      (max, item) => item.value > max ? item.value : max,
+    );
+
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: DesignSystem.surfaceContainer,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+                ),
+              ),
+              if (total != null)
+                Text(
+                  '$totalLabel: $total',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: DesignSystem.onSurfaceVariant,
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          ...breakdowns.map(
+            (item) => Padding(
+              padding: const EdgeInsets.only(bottom: 14),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(child: Text(item.label)),
+                      Text(
+                        '${item.value}',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: LinearProgressIndicator(
+                      minHeight: 5,
+                      value: item.value == 0 ? 0 : item.value / maxValue,
+                      color: item.color,
+                      backgroundColor: DesignSystem.surfaceContainerHigh,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

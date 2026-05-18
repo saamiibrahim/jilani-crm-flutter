@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: Center(
                                       child: Text(
                                         'J',
-                                        style: GoogleFonts.manrope(
+                                        style: GoogleFonts.plusJakartaSans(
                                           fontSize: 36,
                                           fontWeight: FontWeight.w700,
                                           color: DesignSystem.primaryContainer,
@@ -138,9 +138,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               Text(
                                 'JILANI\nPROPERTIES',
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.manrope(
+                                style: GoogleFonts.plusJakartaSans(
                                   fontSize: 20,
-                                  fontWeight: FontWeight.w800,
+                                  fontWeight: FontWeight.w700,
                                   color: DesignSystem.primary,
                                   letterSpacing: 20 * 0.15, // tighter tracking
                                   height: 1.3,
@@ -190,14 +190,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   TextFormField(
                                     controller: _emailController,
                                     focusNode: _emailFocus,
-                                    style: GoogleFonts.inter(
+                                    style: GoogleFonts.plusJakartaSans(
                                       color: DesignSystem.onSurface,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                     ),
                                     decoration: InputDecoration(
                                       hintText: 'executive@jillani.com',
-                                      hintStyle: GoogleFonts.inter(
+                                      hintStyle: GoogleFonts.plusJakartaSans(
                                         color:
                                             DesignSystem.surfaceContainerHigh,
                                         fontSize: 14,
@@ -262,14 +262,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                     controller: _passwordController,
                                     focusNode: _passwordFocus,
                                     obscureText: true,
-                                    style: GoogleFonts.inter(
+                                    style: GoogleFonts.plusJakartaSans(
                                       color: DesignSystem.onSurface,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                     ),
                                     decoration: InputDecoration(
                                       hintText: '••••••••',
-                                      hintStyle: GoogleFonts.inter(
+                                      hintStyle: GoogleFonts.plusJakartaSans(
                                         color:
                                             DesignSystem.surfaceContainerHigh,
                                         fontSize: 14,
@@ -332,7 +332,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       onTap: () {},
                                       child: Text(
                                         'FORGOT PASSWORD?',
-                                        style: GoogleFonts.inter(
+                                        style: GoogleFonts.plusJakartaSans(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w700,
                                           letterSpacing:
@@ -369,7 +369,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       onPressed: _login,
                                       child: Text(
                                         'SIGN IN',
-                                        style: GoogleFonts.inter(
+                                        style: GoogleFonts.plusJakartaSans(
                                           fontSize: 11,
                                           fontWeight: FontWeight.w700,
                                           letterSpacing: 11 * 0.25, // 0.25em
@@ -402,7 +402,7 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.only(left: 1),
       child: Text(
         text,
-        style: GoogleFonts.inter(
+        style: GoogleFonts.plusJakartaSans(
           fontSize: 11,
           fontWeight: FontWeight.w700,
           letterSpacing: 11 * 0.05, // 0.05em

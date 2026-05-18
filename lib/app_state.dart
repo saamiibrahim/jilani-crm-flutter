@@ -52,23 +52,11 @@ class AppState extends ChangeNotifier {
   ];
 
   Future<void> initialize(String baseUrl, String apiKey) async {
-    // If credentials look like dummy/test, use dummy data
-    // if (baseUrl.isEmpty || apiKey.isEmpty || baseUrl == 'test' || apiKey == 'test') {
+    // Backend auth is not wired yet, so every login starts a local demo session.
     useDummyData = true;
     _apiService = null; // mark as "logged in" via dummy flag
     leads = List.from(_dummyLeads);
     notifyListeners();
-    return;
-    // }
-
-    _apiService = ApiService(baseUrl: baseUrl, apiKey: apiKey);
-
-    // Save to shared preferences
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('baseUrl', baseUrl);
-    await prefs.setString('apiKey', apiKey);
-
-    await fetchLeads();
   }
 
   Future<void> loadSavedCredentials() async {
