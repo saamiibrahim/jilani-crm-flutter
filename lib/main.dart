@@ -5,12 +5,19 @@ import 'app_state.dart';
 import 'screens/main_layout.dart';
 import 'login_screen.dart';
 import 'theme/design_system.dart';
-// import 'home_screen.dart';
+import 'theme_controller.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => AppState()..loadSavedCredentials(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => AppState()..loadSavedCredentials(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ThemeController()..load(),
+        ),
+      ],
       child: const JalaniApp(),
     ),
   );
@@ -21,13 +28,17 @@ class JalaniApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = context.watch<ThemeController>().mode;
     return MaterialApp(
       title: 'Jilani Properties',
       debugShowCheckedModeBanner: false,
-      theme: DesignSystem.themeData,
+      theme: DesignSystem.lightTheme,
+      darkTheme: DesignSystem.darkTheme,
+      themeMode: themeMode,
       builder: (context, child) {
         final mediaQuery = MediaQuery.of(context);
-        final textScale = mediaQuery.textScaler.scale(1).clamp(0.9, 1.08).toDouble();
+        final textScale =
+            mediaQuery.textScaler.scale(1).clamp(0.9, 1.08).toDouble();
         return MediaQuery(
           data: mediaQuery.copyWith(
             textScaler: TextScaler.linear(textScale),
@@ -38,17 +49,16 @@ class JalaniApp extends StatelessWidget {
       home: Consumer<AppState>(
         builder: (context, appState, _) {
           if (appState.isLoading && !appState.isLoggedIn) {
-            return const Scaffold(
+            return Scaffold(
               body: Center(
                 child: CircularProgressIndicator(
-                  color: DesignSystem.primaryContainer,
+                  color: context.palette.primaryContainer,
                 ),
               ),
             );
           }
           if (appState.isLoggedIn) {
             return const MainLayout();
-            // return const HomeScreen();
           } else {
             return const LoginScreen();
           }

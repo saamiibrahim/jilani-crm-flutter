@@ -30,13 +30,9 @@ class _LeadFilterScreenState extends State<LeadFilterScreen> {
     required Set<String> current,
     required ValueChanged<Set<String>> onChanged,
   }) async {
-    final selected = await showModalBottomSheet<Set<String>>(
+    final selected = await DesignSystem.luxeSheet<Set<String>>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: DesignSystem.surfaceContainerLow,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-      ),
       builder: (context) =>
           _MultiSelectSheet(title: title, options: options, selected: current),
     );
@@ -47,34 +43,36 @@ class _LeadFilterScreenState extends State<LeadFilterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final campaigns = DummyData.campaigns
-        .map((campaign) => campaign.title)
-        .toSet()
-        .toList();
+    final p = context.palette;
+    final campaigns =
+        DummyData.campaigns.map((campaign) => campaign.title).toSet().toList();
     final sources = DummyData.leads.map((lead) => lead.source).toSet().toList();
 
     return Scaffold(
       body: SafeArea(
         child: ScreenBackdrop(
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(18, 22, 18, 96),
+            padding: const EdgeInsets.fromLTRB(
+              Insets.s20,
+              Insets.s24,
+              Insets.s20,
+              96,
+            ),
             children: [
               Row(
                 children: [
                   Expanded(
                     child: Text(
                       'I want to see',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
                   TextButton.icon(
                     onPressed: _clear,
-                    icon: const Icon(Icons.delete, size: 18),
+                    icon: const Icon(Icons.delete_outline, size: 18),
                     label: const Text('Clear all'),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: Insets.s8),
                   CompactIconButton(
                     tooltip: 'Close',
                     icon: Icons.close,
@@ -83,7 +81,7 @@ class _LeadFilterScreenState extends State<LeadFilterScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: Insets.s24),
               _FilterRow(
                 label: 'Status',
                 count: _filter.statuses.length,
@@ -117,7 +115,7 @@ class _LeadFilterScreenState extends State<LeadFilterScreen> {
                       _filter = _filter.copyWith(campaigns: value),
                 ),
               ),
-              const SizedBox(height: 22),
+              const SizedBox(height: Insets.s20),
               _FilterRow(
                 label: 'Last Updated',
                 count: _filter.dateFilters.length,
@@ -168,16 +166,27 @@ class _LeadFilterScreenState extends State<LeadFilterScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        minimum: const EdgeInsets.fromLTRB(18, 10, 18, 20),
-        child: SizedBox(
-          height: 56,
-          width: double.infinity,
-          child: ElevatedButton(
-            key: const ValueKey('apply-filter-button'),
-            onPressed: _apply,
-            child: Text(
-              _filter.isEmpty ? 'Apply' : 'Apply (${_filter.selectedCount})',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: p.surface,
+          border: Border(top: BorderSide(color: p.divider)),
+        ),
+        child: SafeArea(
+          minimum: const EdgeInsets.fromLTRB(
+            Insets.s20,
+            Insets.s12,
+            Insets.s20,
+            Insets.s20,
+          ),
+          child: SizedBox(
+            height: 54,
+            width: double.infinity,
+            child: ElevatedButton(
+              key: const ValueKey('apply-filter-button'),
+              onPressed: _apply,
+              child: Text(
+                _filter.isEmpty ? 'Apply' : 'Apply (${_filter.selectedCount})',
+              ),
             ),
           ),
         ),
@@ -199,49 +208,52 @@ class _FilterRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(Radii.md),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+        margin: const EdgeInsets.only(bottom: Insets.s12),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Insets.s16,
+          vertical: Insets.s16,
+        ),
         decoration: BoxDecoration(
-          color: DesignSystem.surfaceContainer,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+          color: p.surfaceContainer,
+          borderRadius: BorderRadius.circular(Radii.md),
+          border: Border.all(color: p.outlineVariant),
         ),
         child: Row(
           children: [
             Expanded(
               child: Text(
                 label,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(fontWeight: FontWeight.w700),
               ),
             ),
             if (count > 0)
               Container(
-                width: 30,
-                height: 30,
+                width: 26,
+                height: 26,
                 alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  color: DesignSystem.primaryContainer,
+                decoration: BoxDecoration(
+                  color: p.primaryContainer,
                   shape: BoxShape.circle,
                 ),
                 child: Text(
                   '$count',
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: DesignSystem.onPrimaryContainer,
+                  style: DesignSystem.sans(
+                    color: p.onPrimaryContainer,
+                    fontSize: 12,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
-            const SizedBox(width: 12),
-            const Icon(
-              Icons.chevron_right,
-              color: DesignSystem.primaryContainer,
-            ),
+            const SizedBox(width: Insets.s12),
+            Icon(Icons.chevron_right, color: p.primaryContainer),
           ],
         ),
       ),
@@ -275,34 +287,41 @@ class _MultiSelectSheetState extends State<_MultiSelectSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 18, 20, 20),
+        padding: const EdgeInsets.fromLTRB(
+          Insets.s20,
+          Insets.s16,
+          Insets.s20,
+          Insets.s20,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               widget.title,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.w700),
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: Insets.s12),
             Flexible(
               child: ListView.separated(
                 shrinkWrap: true,
                 itemCount: widget.options.length,
-                separatorBuilder: (context, index) => Divider(
-                  height: 1,
-                  color: Colors.white.withValues(alpha: 0.06),
-                ),
+                separatorBuilder: (context, index) =>
+                    Divider(height: 1, color: p.divider),
                 itemBuilder: (context, index) {
                   final option = widget.options[index];
                   final selected = _selected.contains(option);
                   return CheckboxListTile(
                     value: selected,
                     title: Text(option),
+                    contentPadding: EdgeInsets.zero,
+                    controlAffinity: ListTileControlAffinity.leading,
                     onChanged: (value) {
                       setState(() {
                         if (value ?? false) {
@@ -316,9 +335,10 @@ class _MultiSelectSheetState extends State<_MultiSelectSheet> {
                 },
               ),
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: Insets.s12),
             SizedBox(
               width: double.infinity,
+              height: 54,
               child: ElevatedButton(
                 onPressed: () => Navigator.of(context).pop(_selected),
                 child: const Text('Apply'),

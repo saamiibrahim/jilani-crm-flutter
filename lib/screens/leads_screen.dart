@@ -39,8 +39,8 @@ class _LeadsScreenState extends State<LeadsScreen> {
 
   Future<void> _openFilter() async {
     final selected = await Navigator.of(context).push<FilterState>(
-      MaterialPageRoute(
-        builder: (_) => LeadFilterScreen(initialFilter: _filter),
+      DesignSystem.route(
+        LeadFilterScreen(initialFilter: _filter),
         fullscreenDialog: true,
       ),
     );
@@ -48,14 +48,16 @@ class _LeadsScreenState extends State<LeadsScreen> {
   }
 
   Future<void> _showAddLead() async {
-    await Navigator.of(
-      context,
-    ).push<void>(MaterialPageRoute(builder: (_) => const _AddLeadScreen()));
+    await Navigator.of(context).push<void>(
+      DesignSystem.route(const _AddLeadScreen()),
+    );
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
+    final leads = _visibleLeads;
     return Scaffold(
       appBar: JilaniAppBar(
         showLogoTitle: !_searching,
@@ -70,7 +72,7 @@ class _LeadsScreenState extends State<LeadsScreen> {
           ),
           ProfileButton(
             onTap: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(builder: (_) => const SettingsScreen()),
+              DesignSystem.route<void>(const SettingsScreen()),
             ),
           ),
         ],
@@ -81,18 +83,28 @@ class _LeadsScreenState extends State<LeadsScreen> {
           children: [
             if (_searching)
               Padding(
-                padding: const EdgeInsets.fromLTRB(18, 18, 18, 10),
+                padding: const EdgeInsets.fromLTRB(
+                  Insets.s20,
+                  Insets.s16,
+                  Insets.s20,
+                  Insets.s8,
+                ),
                 child: TextField(
                   autofocus: true,
                   decoration: const InputDecoration(
                     hintText: 'Search leads',
-                    suffixIcon: Icon(Icons.search),
+                    prefixIcon: Icon(Icons.search),
                   ),
                   onChanged: (value) => setState(() => _query = value),
                 ),
               ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
+              padding: const EdgeInsets.fromLTRB(
+                Insets.s20,
+                Insets.s16,
+                Insets.s20,
+                0,
+              ),
               child: Row(
                 children: [
                   Expanded(
@@ -104,7 +116,7 @@ class _LeadsScreenState extends State<LeadsScreen> {
                       onTap: _openFilter,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: Insets.s12),
                   Expanded(
                     child: _ToolbarButton(
                       icon: Icons.sort,
@@ -116,32 +128,45 @@ class _LeadsScreenState extends State<LeadsScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(18, 18, 18, 12),
+              padding: const EdgeInsets.fromLTRB(
+                Insets.s20,
+                Insets.s20,
+                Insets.s20,
+                Insets.s12,
+              ),
               child: Text(
-                'Total leads: ${_visibleLeads.length}',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                'Total leads: ${leads.length}',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(color: p.onSurfaceVariant),
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.fromLTRB(18, 0, 18, 96),
-                itemCount: _visibleLeads.length,
-                itemBuilder: (context, index) {
-                  final lead = _visibleLeads[index];
-                  return _LeadListCard(
-                    lead: lead,
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => LeadDetailScreen(lead: lead),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+              child: leads.isEmpty
+                  ? const _EmptyLeads()
+                  : ListView.builder(
+                      padding: const EdgeInsets.fromLTRB(
+                        Insets.s20,
+                        0,
+                        Insets.s20,
+                        96,
+                      ),
+                      itemCount: leads.length,
+                      itemBuilder: (context, index) {
+                        final lead = leads[index];
+                        return _LeadListCard(
+                          lead: lead,
+                          onTap: () {
+                            Navigator.of(context).push(
+                              DesignSystem.route<void>(
+                                LeadDetailScreen(lead: lead),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
             ),
           ],
         ),
@@ -149,7 +174,7 @@ class _LeadsScreenState extends State<LeadsScreen> {
       floatingActionButton: FloatingActionButton(
         key: const ValueKey('add-lead-fab'),
         onPressed: _showAddLead,
-        child: const Icon(Icons.person_add),
+        child: const Icon(Icons.person_add_alt_1),
       ),
     );
   }
@@ -176,6 +201,40 @@ class _ToolbarButton extends StatelessWidget {
   }
 }
 
+class _EmptyLeads extends StatelessWidget {
+  const _EmptyLeads();
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(Insets.s32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.group_outlined, size: 44, color: p.onSurfaceVariant),
+            const SizedBox(height: Insets.s16),
+            Text(
+              'No leads match',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: Insets.s8),
+            Text(
+              'Try clearing a filter or adding a new lead.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: p.onSurfaceVariant),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _LeadListCard extends StatelessWidget {
   final CrmLead lead;
   final VoidCallback onTap;
@@ -184,64 +243,98 @@ class _LeadListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
+    final accent = statusColor(lead.status);
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(Radii.md),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
+        margin: const EdgeInsets.only(bottom: Insets.s12),
         decoration: BoxDecoration(
-          color: DesignSystem.surfaceContainer,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+          color: p.surfaceContainer,
+          borderRadius: BorderRadius.circular(Radii.md),
+          border: Border.all(color: p.outlineVariant),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const LeadAvatar(radius: 19),
-                const SizedBox(width: 12),
-                Expanded(
+        clipBehavior: Clip.antiAlias,
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(width: 3, color: accent),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        lead.name,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          LeadAvatar(radius: 19, name: lead.name),
+                          const SizedBox(width: Insets.s12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  lead.name,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(fontWeight: FontWeight.w700),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 3),
+                                Text(
+                                  lead.campaign,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(color: p.onSurfaceVariant),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: Insets.s12),
+                          StatusChip(
+                            label: lead.status,
+                            color: accent,
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        lead.campaign,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: DesignSystem.onSurfaceVariant,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      const SizedBox(height: Insets.s12),
+                      Row(
+                        children: [
+                          if (lead.dealValue.trim().isNotEmpty) ...[
+                            Text(
+                              '\$${lead.dealValue}',
+                              style: DesignSystem.serif(
+                                color: p.primary,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            const Spacer(),
+                          ] else
+                            const Spacer(),
+                          Text(
+                            formatCrmDate(lead.lastUpdated),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(color: p.onSurfaceVariant),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: 12),
-                StatusChip(label: lead.status, color: statusColor(lead.status)),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                formatCrmDate(lead.lastUpdated),
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: DesignSystem.onSurfaceVariant,
-                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -321,52 +414,61 @@ class _AddLeadScreenState extends State<_AddLeadScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Scaffold(
       appBar: const JilaniAppBar(title: 'Add lead', showBack: true),
       body: ScreenBackdrop(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(18, 18, 18, 28),
+          padding: const EdgeInsets.fromLTRB(
+            Insets.s20,
+            Insets.s20,
+            Insets.s20,
+            Insets.s24,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const FieldLabel(label: 'First name', isRequired: true),
               TextField(
                 controller: _firstName,
+                onChanged: (_) => setState(() {}),
                 decoration: const InputDecoration(hintText: 'John'),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Last name'),
               TextField(
                 controller: _lastName,
                 decoration: const InputDecoration(hintText: 'Doe'),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Phone', isRequired: true),
               TextField(
                 controller: _phone,
+                onChanged: (_) => setState(() {}),
                 decoration: const InputDecoration(hintText: '+97140000000'),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Email'),
               TextField(
                 controller: _email,
                 decoration: const InputDecoration(hintText: 'john@email.com'),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Owner', isRequired: true),
               PickerField(
                 value: _owner,
                 hint: 'Select owner',
                 onTap: _pickOwner,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Lead status', isRequired: true),
               PickerField(
                 value: _status,
                 hint: 'Select status',
+                dotColor: statusColor(_status),
                 onTap: _pickStatus,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Notes'),
               TextField(
                 controller: _notes,
@@ -379,24 +481,35 @@ class _AddLeadScreenState extends State<_AddLeadScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        minimum: const EdgeInsets.fromLTRB(18, 10, 18, 20),
-        child: Row(
-          children: [
-            Expanded(
-              child: OutlinedButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Cancel'),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: p.surface,
+          border: Border(top: BorderSide(color: p.divider)),
+        ),
+        child: SafeArea(
+          minimum: const EdgeInsets.fromLTRB(
+            Insets.s20,
+            Insets.s12,
+            Insets.s20,
+            Insets.s20,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Cancel'),
+                ),
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: _canAdd ? _addLead : null,
-                child: const Text('Add lead'),
+              const SizedBox(width: Insets.s12),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: _canAdd ? _addLead : null,
+                  child: const Text('Add lead'),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

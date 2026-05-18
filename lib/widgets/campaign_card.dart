@@ -15,20 +15,18 @@ class CampaignCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final progress = campaign.total == 0
-        ? 0.0
-        : campaign.completed / campaign.total;
+    final p = context.palette;
+    final progress =
+        campaign.total == 0 ? 0.0 : campaign.completed / campaign.total;
     final canCall = campaign.leads.isNotEmpty;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 14),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: Insets.s12),
+      padding: const EdgeInsets.all(Insets.s16),
       decoration: BoxDecoration(
-        color: DesignSystem.surfaceContainer,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: DesignSystem.outlineVariant.withValues(alpha: 0.55),
-        ),
+        color: p.surfaceContainer,
+        borderRadius: BorderRadius.circular(Radii.md),
+        border: Border.all(color: p.outlineVariant),
       ),
       child: Row(
         children: [
@@ -36,19 +34,19 @@ class CampaignCard extends StatelessWidget {
             width: 46,
             height: 46,
             decoration: BoxDecoration(
-              color: DesignSystem.surfaceContainerHigh,
-              borderRadius: BorderRadius.circular(8),
+              color: p.surfaceContainerHigh,
+              borderRadius: BorderRadius.circular(Radii.sm),
               border: Border.all(
-                color: DesignSystem.primaryContainer.withValues(alpha: 0.12),
+                color: p.primaryContainer.withValues(alpha: 0.18),
               ),
             ),
             child: Icon(
               _campaignIcon(campaign.title),
-              color: DesignSystem.primaryContainer,
+              color: p.primaryContainer,
               size: 22,
             ),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: Insets.s12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,61 +54,59 @@ class CampaignCard extends StatelessWidget {
                 Text(
                   campaign.title,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: DesignSystem.onSurface,
-                    fontWeight: FontWeight.w700,
-                  ),
+                        color: p.onSurface,
+                        fontWeight: FontWeight.w700,
+                      ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Text(
                   '${campaign.completed}/${campaign.total} Pending Leads',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: DesignSystem.onSurfaceVariant,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: p.onSurfaceVariant,
+                      ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: Insets.s12),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(Radii.pill),
                   child: LinearProgressIndicator(
                     minHeight: 4,
                     value: progress,
-                    color: DesignSystem.primaryContainer,
-                    backgroundColor: DesignSystem.surfaceContainerHigh,
+                    color: p.primaryContainer,
+                    backgroundColor: p.surfaceContainerHigh,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: Insets.s12),
           Tooltip(
             message: canCall ? 'Start calling' : 'No pending leads',
             child: InkWell(
               key: ValueKey('campaign-call-${campaign.title}'),
               onTap: canCall ? onStartCalling : null,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(Radii.sm),
               child: Container(
-                width: 50,
-                height: 50,
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
                   color: canCall
-                      ? DesignSystem.primaryContainer
-                      : DesignSystem.surfaceContainerHigh,
-                  borderRadius: BorderRadius.circular(8),
+                      ? p.primaryContainer
+                      : p.surfaceContainerHigh,
+                  borderRadius: BorderRadius.circular(Radii.sm),
                   border: Border.all(
-                    color: canCall
-                        ? DesignSystem.primaryContainer
-                        : DesignSystem.outlineVariant,
+                    color: canCall ? p.primaryContainer : p.outlineVariant,
                   ),
                 ),
                 child: Icon(
                   Icons.call,
                   color: canCall
-                      ? DesignSystem.onPrimaryContainer
-                      : DesignSystem.onSurfaceVariant.withValues(alpha: 0.45),
-                  size: 22,
+                      ? p.onPrimaryContainer
+                      : p.onSurfaceVariant.withValues(alpha: 0.45),
+                  size: 21,
                 ),
               ),
             ),
@@ -125,7 +121,7 @@ class CampaignCard extends StatelessWidget {
     if (lower.contains('azizi') || lower.contains('sky')) {
       return Icons.apartment;
     }
-    if (lower.contains('sobha')) return Icons.home_work;
+    if (lower.contains('sobha')) return Icons.home_work_outlined;
     if (lower.contains('portal')) return Icons.public;
     if (lower.contains('manual')) return Icons.list_alt;
     return Icons.phone_android;

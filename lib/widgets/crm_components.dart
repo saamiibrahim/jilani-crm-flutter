@@ -4,6 +4,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/dummy_data.dart';
 import '../theme/design_system.dart';
 
+/// Brand medallion watermark — replaces the old dotted grid. Same constructor
+/// so existing call sites keep working.
 class DottedAccent extends StatelessWidget {
   final Alignment alignment;
   final double opacity;
@@ -11,7 +13,7 @@ class DottedAccent extends StatelessWidget {
   const DottedAccent({
     super.key,
     this.alignment = Alignment.topRight,
-    this.opacity = 0.1,
+    this.opacity = 0.05,
   });
 
   @override
@@ -20,37 +22,19 @@ class DottedAccent extends StatelessWidget {
       child: Align(
         alignment: alignment,
         child: RepaintBoundary(
-          child: CustomPaint(
-            size: const Size(180, 140),
-            painter: _DottedAccentPainter(opacity: opacity),
+          child: Opacity(
+            opacity: opacity,
+            child: Image.asset(
+              'assets/logo-monogram.png',
+              width: 300,
+              height: 300,
+              fit: BoxFit.contain,
+              errorBuilder: (_, _, _) => const SizedBox.shrink(),
+            ),
           ),
         ),
       ),
     );
-  }
-}
-
-class _DottedAccentPainter extends CustomPainter {
-  final double opacity;
-
-  const _DottedAccentPainter({required this.opacity});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = DesignSystem.primaryContainer.withValues(alpha: opacity)
-      ..style = PaintingStyle.fill;
-
-    for (var y = 10.0; y < size.height; y += 22) {
-      for (var x = 10.0; x < size.width; x += 22) {
-        canvas.drawCircle(Offset(x, y), 3.5, paint);
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _DottedAccentPainter oldDelegate) {
-    return oldDelegate.opacity != opacity;
   }
 }
 
@@ -63,8 +47,11 @@ class ScreenBackdrop extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const DottedAccent(alignment: Alignment.topRight, opacity: 0.12),
-        const DottedAccent(alignment: Alignment.bottomLeft, opacity: 0.08),
+        const Positioned(
+          right: -70,
+          bottom: -40,
+          child: DottedAccent(alignment: Alignment.bottomRight, opacity: 0.04),
+        ),
         child,
       ],
     );
@@ -93,6 +80,7 @@ class JilaniAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return AppBar(
       leading: showBack
           ? IconButton(
@@ -100,28 +88,40 @@ class JilaniAppBar extends StatelessWidget implements PreferredSizeWidget {
               onPressed: () => Navigator.of(context).pop(),
             )
           : null,
+      titleSpacing: showBack ? 0 : null,
       title: showLogoTitle
           ? Row(
               children: [
-                Image.asset(
-                  'assets/jilani_logo.png',
-                  width: 36,
-                  height: 36,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) => const Icon(
-                    Icons.apartment,
-                    color: DesignSystem.primaryContainer,
-                    size: 24,
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: p.primaryContainer.withValues(alpha: 0.14),
+                    borderRadius: BorderRadius.circular(Radii.sm),
+                    border: Border.all(
+                      color: p.primaryContainer.withValues(alpha: 0.30),
+                    ),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: Image.asset(
+                    'assets/jilani_logo.png',
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) => Icon(
+                      Icons.apartment,
+                      color: p.primaryContainer,
+                      size: 18,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'JILANI PROPERTIES',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: DesignSystem.primaryContainer,
+                    'JILLANI PROPERTIES',
+                    style: DesignSystem.sans(
+                      color: p.primaryContainer,
+                      fontSize: 13,
                       fontWeight: FontWeight.w700,
-                      letterSpacing: 1.2,
+                      letterSpacing: 1.4,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -135,10 +135,7 @@ class JilaniAppBar extends StatelessWidget implements PreferredSizeWidget {
           bottom ??
           PreferredSize(
             preferredSize: const Size.fromHeight(1),
-            child: Container(
-              color: Colors.white.withValues(alpha: 0.06),
-              height: 1,
-            ),
+            child: Container(color: p.divider, height: 1),
           ),
     );
   }
@@ -151,26 +148,21 @@ class ProfileButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Padding(
-      padding: const EdgeInsets.only(right: 16),
+      padding: const EdgeInsets.only(right: Insets.s16),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(Radii.sm),
         child: Container(
           width: 34,
           height: 34,
           decoration: BoxDecoration(
-            color: DesignSystem.surfaceContainerHigh,
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(
-              color: DesignSystem.outlineVariant.withValues(alpha: 0.8),
-            ),
+            color: p.surfaceContainerHigh,
+            borderRadius: BorderRadius.circular(Radii.sm),
+            border: Border.all(color: p.outlineVariant),
           ),
-          child: const Icon(
-            Icons.person,
-            color: DesignSystem.primaryContainer,
-            size: 20,
-          ),
+          child: Icon(Icons.person, color: p.primaryContainer, size: 19),
         ),
       ),
     );
@@ -181,36 +173,47 @@ class ActionTile extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onTap;
+  final bool primary;
 
   const ActionTile({
     super.key,
     required this.icon,
     required this.label,
     required this.onTap,
+    this.primary = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
+    final bg = primary ? p.primaryContainer : p.surfaceContainer;
+    final fg = primary ? p.onPrimaryContainer : p.primary;
+    final labelColor = primary ? p.onPrimaryContainer : p.onSurfaceVariant;
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(6),
+      borderRadius: BorderRadius.circular(Radii.sm),
       child: Container(
-        width: 82,
-        height: 60,
+        width: 84,
+        height: 62,
         decoration: BoxDecoration(
-          color: DesignSystem.primaryContainer,
-          borderRadius: BorderRadius.circular(6),
+          color: bg,
+          borderRadius: BorderRadius.circular(Radii.sm),
+          border: Border.all(
+            color: primary ? p.primaryContainer : p.outlineVariant,
+          ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: DesignSystem.onPrimaryContainer, size: 18),
+            Icon(icon, color: fg, size: 18),
             const SizedBox(height: 6),
             Text(
               label,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: DesignSystem.onPrimaryContainer,
+              style: DesignSystem.sans(
+                color: labelColor,
+                fontSize: 10,
                 fontWeight: FontWeight.w700,
+                letterSpacing: 0.2,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -256,30 +259,31 @@ class HorizontalActions extends StatelessWidget {
           ActionTile(
             icon: Icons.call,
             label: 'Call',
+            primary: true,
             onTap: () => _launch(context, Uri(scheme: 'tel', path: lead.phone)),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: Insets.s8),
           ActionTile(
-            icon: Icons.chat_bubble,
+            icon: Icons.chat_bubble_outline,
             label: 'WhatsApp',
             onTap: () => _launch(
               context,
               Uri.parse('https://wa.me/${lead.phone.replaceAll('+', '')}'),
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: Insets.s8),
           ActionTile(
             icon: Icons.calendar_today,
             label: 'Meeting',
             onTap: onMeeting ?? () {},
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: Insets.s8),
           ActionTile(
-            icon: Icons.comment,
+            icon: Icons.mode_comment_outlined,
             label: 'Comment',
             onTap: onComment ?? () {},
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: Insets.s8),
           ActionTile(
             icon: Icons.more_horiz,
             label: 'More',
@@ -293,19 +297,47 @@ class HorizontalActions extends StatelessWidget {
 
 class LeadAvatar extends StatelessWidget {
   final double radius;
+  final String? name;
 
-  const LeadAvatar({super.key, this.radius = 22});
+  const LeadAvatar({super.key, this.radius = 22, this.name});
+
+  String? get _initials {
+    final n = name?.trim();
+    if (n == null || n.isEmpty) return null;
+    final parts = n.split(RegExp(r'\s+'));
+    final letters = parts
+        .where((s) => s.isNotEmpty)
+        .map((s) => s[0])
+        .take(2)
+        .join();
+    return letters.toUpperCase();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: radius,
-      backgroundColor: DesignSystem.surfaceContainerHigh,
-      child: Icon(
-        Icons.person,
-        color: DesignSystem.primaryContainer,
-        size: radius,
+    final p = context.palette;
+    final initials = _initials;
+    return Container(
+      width: radius * 2,
+      height: radius * 2,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: p.primaryContainer.withValues(alpha: 0.14),
+        border: Border.all(
+          color: p.primaryContainer.withValues(alpha: 0.28),
+        ),
       ),
+      alignment: Alignment.center,
+      child: initials != null
+          ? Text(
+              initials,
+              style: DesignSystem.serif(
+                color: p.primary,
+                fontSize: radius * 0.8,
+                fontWeight: FontWeight.w700,
+              ),
+            )
+          : Icon(Icons.person, color: p.primary, size: radius),
     );
   }
 }
@@ -326,79 +358,88 @@ class LeadSummaryBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            const LeadAvatar(),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                lead.name,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            if (onAddLabel != null) ...[
-              const SizedBox(width: 8),
-              CompactIconButton(
-                tooltip: 'Add label',
-                icon: Icons.label,
-                onPressed: onAddLabel!,
-              ),
-            ],
-            if (onEdit != null) ...[
-              const SizedBox(width: 8),
-              CompactIconButton(
-                tooltip: 'Edit lead',
-                icon: Icons.edit,
-                filled: true,
-                onPressed: onEdit!,
-              ),
-            ],
-          ],
-        ),
-        const SizedBox(height: 16),
-        LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxWidth < 360) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InfoField(label: 'Phone', value: lead.phone),
-                  const SizedBox(height: 14),
-                  InfoField(label: 'Email', value: lead.email ?? '-'),
-                ],
-              );
-            }
-
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: InfoField(label: 'Phone', value: lead.phone),
+    final p = context.palette;
+    return Container(
+      padding: const EdgeInsets.all(Insets.s16),
+      decoration: BoxDecoration(
+        color: p.surfaceContainer,
+        borderRadius: BorderRadius.circular(Radii.md),
+        border: Border.all(color: p.outlineVariant),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              LeadAvatar(radius: 24, name: lead.name),
+              const SizedBox(width: Insets.s12),
+              Expanded(
+                child: Text(
+                  lead.name,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(fontWeight: FontWeight.w700),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: InfoField(label: 'Email', value: lead.email ?? '-'),
+              ),
+              if (onAddLabel != null) ...[
+                const SizedBox(width: Insets.s8),
+                CompactIconButton(
+                  tooltip: 'Add label',
+                  icon: Icons.label_outline,
+                  onPressed: onAddLabel!,
                 ),
               ],
-            );
-          },
-        ),
-        if (showOwner) ...[
-          const SizedBox(height: 14),
-          InfoField(label: 'Owner', value: lead.owner),
+              if (onEdit != null) ...[
+                const SizedBox(width: Insets.s8),
+                CompactIconButton(
+                  tooltip: 'Edit lead',
+                  icon: Icons.edit_outlined,
+                  filled: true,
+                  onPressed: onEdit!,
+                ),
+              ],
+            ],
+          ),
+          const SizedBox(height: Insets.s16),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth < 360) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InfoField(label: 'Phone', value: lead.phone),
+                    const SizedBox(height: Insets.s12),
+                    InfoField(label: 'Email', value: lead.email ?? '-'),
+                  ],
+                );
+              }
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: InfoField(label: 'Phone', value: lead.phone),
+                  ),
+                  const SizedBox(width: Insets.s20),
+                  Expanded(
+                    child: InfoField(label: 'Email', value: lead.email ?? '-'),
+                  ),
+                ],
+              );
+            },
+          ),
+          if (showOwner) ...[
+            const SizedBox(height: Insets.s12),
+            InfoField(label: 'Owner', value: lead.owner),
+          ],
+          const SizedBox(height: Insets.s12),
+          InfoField(label: 'Campaign', value: lead.campaignTitle),
+          const SizedBox(height: Insets.s12),
+          InfoField(label: 'Notes', value: lead.notes ?? '-'),
         ],
-        const SizedBox(height: 14),
-        InfoField(label: 'Campaign', value: lead.campaignTitle),
-        const SizedBox(height: 14),
-        InfoField(label: 'Notes', value: lead.notes ?? '-'),
-      ],
+      ),
     );
   }
 }
@@ -419,6 +460,7 @@ class CompactIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Tooltip(
       message: tooltip,
       child: IconButton(
@@ -427,18 +469,12 @@ class CompactIconButton extends StatelessWidget {
           fixedSize: const Size(40, 40),
           minimumSize: const Size(40, 40),
           padding: EdgeInsets.zero,
-          backgroundColor: filled
-              ? DesignSystem.surfaceContainerHigh
-              : Colors.transparent,
-          foregroundColor: filled
-              ? DesignSystem.primaryContainer
-              : DesignSystem.onSurface,
-          side: filled
-              ? null
-              : BorderSide(
-                  color: DesignSystem.outlineVariant.withValues(alpha: 0.9),
-                ),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+          backgroundColor: filled ? p.surfaceContainerHigh : Colors.transparent,
+          foregroundColor: filled ? p.primaryContainer : p.onSurface,
+          side: filled ? null : BorderSide(color: p.outlineVariant),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(Radii.sm),
+          ),
         ),
         icon: Icon(icon, size: 18),
       ),
@@ -454,22 +490,26 @@ class InfoField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: DesignSystem.onSurfaceVariant,
+          label.toUpperCase(),
+          style: DesignSystem.sans(
+            color: p.primaryContainer,
+            fontSize: 10,
             fontWeight: FontWeight.w700,
+            letterSpacing: 1.2,
           ),
         ),
         const SizedBox(height: 6),
         Text(
           value,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: DesignSystem.onSurface),
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(color: p.onSurface),
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
         ),
@@ -487,11 +527,11 @@ class StatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: DesignSystem.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withValues(alpha: 0.55)),
+        color: color.withValues(alpha: 0.14),
+        borderRadius: BorderRadius.circular(Radii.pill),
+        border: Border.all(color: color.withValues(alpha: 0.45)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -504,9 +544,11 @@ class StatusChip extends StatelessWidget {
           const SizedBox(width: 7),
           Text(
             label,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: DesignSystem.onSurface,
-              fontWeight: FontWeight.w600,
+            style: DesignSystem.sans(
+              color: color,
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.6,
             ),
           ),
         ],
@@ -523,19 +565,23 @@ class FieldLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: Insets.s8),
       child: RichText(
         text: TextSpan(
-          text: label,
-          style: Theme.of(
-            context,
-          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+          text: label.toUpperCase(),
+          style: DesignSystem.sans(
+            color: p.onSurfaceVariant,
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1.4,
+          ),
           children: [
             if (isRequired)
-              const TextSpan(
-                text: ' *',
-                style: TextStyle(color: DesignSystem.error),
+              TextSpan(
+                text: '  *',
+                style: TextStyle(color: p.primary),
               ),
           ],
         ),
@@ -548,30 +594,61 @@ class PickerField extends StatelessWidget {
   final String? value;
   final String hint;
   final VoidCallback onTap;
+  final Color? dotColor;
 
   const PickerField({
     super.key,
     required this.value,
     required this.hint,
     required this.onTap,
+    this.dotColor,
   });
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
+    final hasValue = value != null;
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(6),
+      borderRadius: BorderRadius.circular(Radii.sm),
       child: InputDecorator(
-        decoration: const InputDecoration(
-          suffixIcon: Icon(Icons.keyboard_arrow_down),
-        ),
-        child: Text(
-          value ?? hint,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: value == null
-                ? DesignSystem.onSurfaceVariant.withValues(alpha: 0.7)
-                : DesignSystem.onSurface,
+        decoration: InputDecoration(
+          suffixIcon: Icon(Icons.keyboard_arrow_down, color: p.onSurfaceVariant),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(Radii.sm),
+            borderSide: BorderSide(
+              color: hasValue && dotColor != null
+                  ? dotColor!.withValues(alpha: 0.45)
+                  : p.outlineVariant,
+            ),
           ),
+        ),
+        child: Row(
+          children: [
+            if (dotColor != null && hasValue) ...[
+              Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: dotColor,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: Insets.s8),
+            ],
+            Expanded(
+              child: Text(
+                value ?? hint,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: hasValue
+                          ? p.onSurface
+                          : p.onSurfaceVariant.withValues(alpha: 0.7),
+                    ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -584,46 +661,47 @@ Future<String?> showOptionSheet({
   required List<String> options,
   String? selected,
 }) {
-  return showModalBottomSheet<String>(
+  return DesignSystem.luxeSheet<String>(
     context: context,
-    backgroundColor: DesignSystem.surfaceContainerLow,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-    ),
     builder: (context) {
+      final p = context.palette;
       return SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.only(bottom: Insets.s12),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
                 child: Text(
                   title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(fontWeight: FontWeight.w700),
                 ),
               ),
               Flexible(
                 child: ListView.separated(
                   shrinkWrap: true,
                   itemCount: options.length,
-                  separatorBuilder: (context, index) => Divider(
-                    height: 1,
-                    color: Colors.white.withValues(alpha: 0.06),
-                  ),
+                  separatorBuilder: (context, index) =>
+                      Divider(height: 1, color: p.divider),
                   itemBuilder: (context, index) {
                     final option = options[index];
+                    final isSelected = selected == option;
                     return ListTile(
-                      title: Text(option),
-                      trailing: selected == option
-                          ? const Icon(
-                              Icons.check,
-                              color: DesignSystem.primaryContainer,
-                            )
+                      title: Text(
+                        option,
+                        style: TextStyle(
+                          color: isSelected ? p.primary : p.onSurface,
+                          fontWeight:
+                              isSelected ? FontWeight.w700 : FontWeight.w500,
+                        ),
+                      ),
+                      trailing: isSelected
+                          ? Icon(Icons.check, color: p.primary)
                           : null,
                       onTap: () => Navigator.of(context).pop(option),
                     );
@@ -638,26 +716,28 @@ Future<String?> showOptionSheet({
   );
 }
 
+/// Lead / task status hues from the brand palette (colors_and_type.css).
+/// Mid-tone, restrained, and readable on both the light and dark themes.
 Color statusColor(String status) {
   switch (status) {
     case 'Qualified':
-      return const Color(0xFF45D067);
+      return const Color(0xFF7B5BCB); // qualified — regal lavender
     case 'Working deal':
-      return const Color(0xFF8A4DFF);
+      return const Color(0xFFE0A23B); // negotiation — warm amber
     case 'Deal closed':
-      return const Color(0xFF2F5AA8);
+    case 'Completed':
+      return const Color(0xFF2E9D63); // won — deep green
     case 'Did not respond':
-      return const Color(0xFFFFC928);
+      return const Color(0xFF2E6FB4); // info — quiet blue
     case 'Lost deal':
-      return const Color(0xFF8A8E98);
+      return const Color(0xFF98A1B4); // lost — neutral
     case 'Future prospect':
-      return const Color(0xFF00BCD4);
+      return const Color(0xFF2F8FB1); // viewing — dusty teal
     case 'Unqualified':
-      return const Color(0xFFE25A52);
     case 'Overdue':
-      return const Color(0xFFE25A52);
+      return const Color(0xFFC0392B); // danger — terracotta
     default:
-      return DesignSystem.primaryContainer;
+      return const Color(0xFFC9A24A); // gold — contacted / pending
   }
 }
 

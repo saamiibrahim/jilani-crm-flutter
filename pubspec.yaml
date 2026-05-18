@@ -62,7 +62,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/jilani_logo.png
-    # - assets/image_0.png
+    - assets/logo-monogram.png
+    - assets/logo-horizontal.png
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

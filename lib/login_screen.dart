@@ -1,6 +1,4 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'app_state.dart';
@@ -39,58 +37,40 @@ class _LoginScreenState extends State<LoginScreen> {
   void _login() {
     if (_formKey.currentState!.validate()) {
       context.read<AppState>().initialize(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
+            _emailController.text.trim(),
+            _passwordController.text.trim(),
+          );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.palette;
     return Scaffold(
-      backgroundColor: DesignSystem.background,
+      backgroundColor: palette.surface,
       body: Stack(
         children: [
-          // ── Ambient Background Glows ──
+          // Brand medallion watermark.
           Positioned(
-            top: -80,
-            right: -80,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.6,
-              height: MediaQuery.of(context).size.width * 0.6,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    DesignSystem.primaryContainer.withValues(alpha: 0.10),
-                    Colors.transparent,
-                  ],
+            right: -90,
+            top: -50,
+            child: IgnorePointer(
+              child: Opacity(
+                opacity: 0.05,
+                child: Image.asset(
+                  'assets/logo-monogram.png',
+                  width: 320,
+                  height: 320,
+                  fit: BoxFit.contain,
+                  errorBuilder: (_, _, _) => const SizedBox.shrink(),
                 ),
               ),
             ),
           ),
-          Positioned(
-            bottom: -40,
-            left: -40,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.4,
-              height: MediaQuery.of(context).size.width * 0.4,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    DesignSystem.surfaceContainerHigh.withValues(alpha: 0.30),
-                    Colors.transparent,
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          // ── Main Content ──
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(vertical: Insets.s24),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 400),
                   child: Form(
@@ -98,293 +78,75 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // ── Branding Section ──
-                        Padding(
-                          padding: const EdgeInsets.only(top: 24, bottom: 20),
-                          child: Column(
-                            children: [
-                              // Logo
-                              Image.asset(
-                                'assets/jilani_logo.png',
-                                width: 72,
-                                height: 72,
-                                fit: BoxFit.contain,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    width: 72,
-                                    height: 72,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: DesignSystem.primaryContainer,
-                                        width: 1.5,
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'J',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 36,
-                                          fontWeight: FontWeight.w700,
-                                          color: DesignSystem.primaryContainer,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              const SizedBox(height: 16),
-                              // Title
-                              Text(
-                                'JILANI\nPROPERTIES',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                  color: DesignSystem.primary,
-                                  letterSpacing: 20 * 0.15, // tighter tracking
-                                  height: 1.3,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              // Gold Divider Bar
-                              Container(
-                                width: 72,
-                                height: 2,
-                                color: DesignSystem.primaryContainer,
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // ── Form Card ──
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 28,
-                              ),
-                              decoration: BoxDecoration(
-                                color: DesignSystem.surfaceContainerLow
-                                    .withValues(alpha: 0.40),
-                                border: Border.symmetric(
-                                  horizontal: BorderSide(
-                                    color: DesignSystem.outlineVariant
-                                        .withValues(alpha: 0.30),
-                                    width: 1,
+                        _Branding(palette: palette),
+                        const SizedBox(height: Insets.s32),
+                        _FormCard(
+                          palette: palette,
+                          children: [
+                            _label('EMAIL ADDRESS', palette),
+                            const SizedBox(height: Insets.s8),
+                            _Field(
+                              controller: _emailController,
+                              focusNode: _emailFocus,
+                              hint: 'executive@jillani.com',
+                              icon: Icons.alternate_email,
+                              keyboardType: TextInputType.emailAddress,
+                              palette: palette,
+                              validator: (value) =>
+                                  (value == null || value.isEmpty)
+                                      ? 'Please enter your email'
+                                      : null,
+                            ),
+                            const SizedBox(height: Insets.s20),
+                            _label('PASSWORD', palette),
+                            const SizedBox(height: Insets.s8),
+                            _Field(
+                              controller: _passwordController,
+                              focusNode: _passwordFocus,
+                              hint: '••••••••',
+                              icon: Icons.lock_outline,
+                              obscureText: true,
+                              palette: palette,
+                              validator: (value) =>
+                                  (value == null || value.isEmpty)
+                                      ? 'Please enter your password'
+                                      : null,
+                            ),
+                            const SizedBox(height: Insets.s20),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: GestureDetector(
+                                onTap: () {},
+                                child: Text(
+                                  'FORGOT PASSWORD?',
+                                  style: DesignSystem.sans(
+                                    color: palette.primary,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.0,
                                   ),
                                 ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  // ── Email Field ──
-                                  _buildFieldLabel('EMAIL ADDRESS'),
-                                  const SizedBox(height: 4),
-                                  TextFormField(
-                                    controller: _emailController,
-                                    focusNode: _emailFocus,
-                                    style: GoogleFonts.plusJakartaSans(
-                                      color: DesignSystem.onSurface,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    decoration: InputDecoration(
-                                      hintText: 'executive@jillani.com',
-                                      hintStyle: GoogleFonts.plusJakartaSans(
-                                        color:
-                                            DesignSystem.surfaceContainerHigh,
-                                        fontSize: 14,
-                                      ),
-                                      filled: true,
-                                      fillColor: const Color(0xFF070F17)
-                                          .withValues(
-                                            alpha: 0.50,
-                                          ), // surface-container-lowest/50
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                            vertical: 16,
-                                          ),
-                                      border: InputBorder.none,
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: DesignSystem.outlineVariant
-                                              .withValues(alpha: 0.50),
-                                          width: 1,
-                                        ),
-                                      ),
-                                      focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: DesignSystem.primaryContainer,
-                                          width: 1,
-                                        ),
-                                      ),
-                                      errorBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: DesignSystem.error,
-                                        ),
-                                      ),
-                                      focusedErrorBorder:
-                                          const UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: DesignSystem.error,
-                                            ),
-                                          ),
-                                      suffixIcon: Icon(
-                                        Icons.alternate_email,
-                                        size: 20,
-                                        color: _emailFocus.hasFocus
-                                            ? DesignSystem.primaryContainer
-                                            : DesignSystem.outlineVariant,
-                                      ),
-                                    ),
-                                    keyboardType: TextInputType.emailAddress,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your email';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  const SizedBox(height: 16),
-
-                                  // ── Password Field ──
-                                  _buildFieldLabel('PASSWORD'),
-                                  const SizedBox(height: 4),
-                                  TextFormField(
-                                    controller: _passwordController,
-                                    focusNode: _passwordFocus,
-                                    obscureText: true,
-                                    style: GoogleFonts.plusJakartaSans(
-                                      color: DesignSystem.onSurface,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    decoration: InputDecoration(
-                                      hintText: '••••••••',
-                                      hintStyle: GoogleFonts.plusJakartaSans(
-                                        color:
-                                            DesignSystem.surfaceContainerHigh,
-                                        fontSize: 14,
-                                      ),
-                                      filled: true,
-                                      fillColor: const Color(
-                                        0xFF070F17,
-                                      ).withValues(alpha: 0.50),
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                            vertical: 16,
-                                          ),
-                                      border: InputBorder.none,
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: DesignSystem.outlineVariant
-                                              .withValues(alpha: 0.50),
-                                          width: 1,
-                                        ),
-                                      ),
-                                      focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: DesignSystem.primaryContainer,
-                                          width: 1,
-                                        ),
-                                      ),
-                                      errorBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: DesignSystem.error,
-                                        ),
-                                      ),
-                                      focusedErrorBorder:
-                                          const UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: DesignSystem.error,
-                                            ),
-                                          ),
-                                      suffixIcon: Icon(
-                                        Icons.lock_outline,
-                                        size: 20,
-                                        color: _passwordFocus.hasFocus
-                                            ? DesignSystem.primaryContainer
-                                            : DesignSystem.outlineVariant,
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your password';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  const SizedBox(height: 24),
-
-                                  // ── Forgot Password ──
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: GestureDetector(
-                                      onTap: () {},
-                                      child: Text(
-                                        'FORGOT PASSWORD?',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w700,
-                                          letterSpacing:
-                                              10 * 0.1, // widest tracking
-                                          color: DesignSystem.primary,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 24),
-
-                                  // ── Sign In Button ──
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            DesignSystem.primaryContainer,
-                                        foregroundColor:
-                                            DesignSystem.onPrimaryContainer,
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 16,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            4,
-                                          ),
-                                        ),
-                                        elevation: 0,
-                                        shadowColor: DesignSystem
-                                            .primaryContainer
-                                            .withValues(alpha: 0.20),
-                                      ),
-                                      onPressed: _login,
-                                      child: Text(
-                                        'SIGN IN',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w700,
-                                          letterSpacing: 11 * 0.25, // 0.25em
-                                          color:
-                                              DesignSystem.onPrimaryContainer,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
-                          ),
+                            const SizedBox(height: Insets.s24),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 52,
+                              child: ElevatedButton(
+                                onPressed: _login,
+                                child: Text(
+                                  'SIGN IN',
+                                  style: DesignSystem.sans(
+                                    color: palette.onPrimaryContainer,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 2.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 24),
                       ],
                     ),
                   ),
@@ -397,18 +159,174 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildFieldLabel(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 1),
-      child: Text(
-        text,
-        style: GoogleFonts.plusJakartaSans(
-          fontSize: 11,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 11 * 0.05, // 0.05em
-          color: DesignSystem.onSurfaceVariant,
+  Widget _label(String text, JillaniPalette palette) {
+    return Text(
+      text,
+      style: DesignSystem.sans(
+        color: palette.onSurfaceVariant,
+        fontSize: 11,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 1.4,
+      ),
+    );
+  }
+}
+
+class _Branding extends StatelessWidget {
+  final JillaniPalette palette;
+  const _Branding({required this.palette});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Image.asset(
+          'assets/jilani_logo.png',
+          width: 72,
+          height: 72,
+          fit: BoxFit.contain,
+          errorBuilder: (context, error, stackTrace) => Container(
+            width: 72,
+            height: 72,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: palette.primary, width: 1.5),
+            ),
+            child: Center(
+              child: Text(
+                'J',
+                style: DesignSystem.serif(
+                  color: palette.primary,
+                  fontSize: 34,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: Insets.s16),
+        Text(
+          'Jillani Properties',
+          textAlign: TextAlign.center,
+          style: DesignSystem.serif(
+            color: palette.onSurface,
+            fontSize: 26,
+            fontWeight: FontWeight.w600,
+            height: 1.2,
+          ),
+        ),
+        const SizedBox(height: Insets.s8),
+        Text(
+          'SALES',
+          style: DesignSystem.sans(
+            color: palette.primary,
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 4.0,
+          ),
+        ),
+        const SizedBox(height: Insets.s12),
+        Container(width: 64, height: 2, color: palette.primaryContainer),
+      ],
+    );
+  }
+}
+
+class _FormCard extends StatelessWidget {
+  final JillaniPalette palette;
+  final List<Widget> children;
+  const _FormCard({required this.palette, required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: Insets.s24),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Insets.s24,
+        vertical: Insets.s32,
+      ),
+      decoration: BoxDecoration(
+        color: palette.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(Radii.md),
+        border: Border.all(color: palette.outlineVariant),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: children,
+      ),
+    );
+  }
+}
+
+class _Field extends StatelessWidget {
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final String hint;
+  final IconData icon;
+  final bool obscureText;
+  final TextInputType? keyboardType;
+  final JillaniPalette palette;
+  final String? Function(String?) validator;
+
+  const _Field({
+    required this.controller,
+    required this.focusNode,
+    required this.hint,
+    required this.icon,
+    required this.palette,
+    required this.validator,
+    this.obscureText = false,
+    this.keyboardType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final focused = focusNode.hasFocus;
+    return TextFormField(
+      controller: controller,
+      focusNode: focusNode,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      style: DesignSystem.sans(color: palette.onSurface, fontSize: 14),
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: DesignSystem.sans(
+          color: palette.onSurfaceVariant.withValues(alpha: 0.5),
+          fontSize: 14,
+        ),
+        filled: true,
+        fillColor: palette.surface.withValues(alpha: 0.5),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: Insets.s16,
+          vertical: Insets.s16,
+        ),
+        suffixIcon: Icon(
+          icon,
+          size: 20,
+          color: focused ? palette.primary : palette.outline,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(Radii.sm),
+          borderSide: BorderSide(color: palette.outlineVariant),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(Radii.sm),
+          borderSide: BorderSide(color: palette.outlineVariant),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(Radii.sm),
+          borderSide: BorderSide(color: palette.primaryContainer),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(Radii.sm),
+          borderSide: BorderSide(color: palette.error),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(Radii.sm),
+          borderSide: BorderSide(color: palette.error),
         ),
       ),
+      validator: validator,
     );
   }
 }

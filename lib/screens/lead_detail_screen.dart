@@ -71,37 +71,25 @@ class _LeadDetailScreenState extends State<LeadDetailScreen> {
   }
 
   Future<void> _showEditLead() {
-    return showModalBottomSheet<void>(
+    return DesignSystem.luxeSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: DesignSystem.surfaceContainerLow,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-      ),
       builder: (context) => _EditLeadSheet(lead: widget.lead),
     ).then((_) => setState(() {}));
   }
 
   Future<void> _showLog(String title) {
-    return showModalBottomSheet<void>(
+    return DesignSystem.luxeSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: DesignSystem.surfaceContainerLow,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-      ),
       builder: (context) => _SimpleLogSheet(title: title),
     );
   }
 
   Future<void> _showCreateTaskSheet() async {
-    final task = await showModalBottomSheet<CrmTask>(
+    final task = await DesignSystem.luxeSheet<CrmTask>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: DesignSystem.surfaceContainerLow,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-      ),
       builder: (context) => _LeadTaskEditorSheet(lead: widget.lead),
     );
 
@@ -114,28 +102,36 @@ class _LeadDetailScreenState extends State<LeadDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Scaffold(
       appBar: const JilaniAppBar(title: 'Lead details', showBack: true),
       body: ScreenBackdrop(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(18, 18, 18, 28),
+          padding: const EdgeInsets.fromLTRB(
+            Insets.s20,
+            Insets.s20,
+            Insets.s20,
+            Insets.s24,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              _LeadStatusStrip(lead: widget.lead),
+              const SizedBox(height: Insets.s20),
               HorizontalActions(
                 lead: _campaignLead,
                 onMeeting: () => _showLog('Log meeting'),
                 onComment: () => _showLog('Log comment'),
                 onMore: () => _showLog('Log activity'),
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: Insets.s20),
               LeadSummaryBlock(
                 lead: _campaignLead,
                 showOwner: true,
                 onAddLabel: () => _showLog('Add label'),
                 onEdit: _showEditLead,
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: Insets.s16),
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
@@ -144,21 +140,22 @@ class _LeadDetailScreenState extends State<LeadDetailScreen> {
                   label: const Text('Add to phonebook'),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: Insets.s24),
               const FieldLabel(label: 'Owner', isRequired: true),
               PickerField(
                 value: widget.lead.owner,
                 hint: 'Owner',
                 onTap: _pickOwner,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Lead status', isRequired: true),
               PickerField(
                 value: widget.lead.status,
                 hint: 'Lead status',
+                dotColor: statusColor(widget.lead.status),
                 onTap: _pickStatus,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Deal value'),
               TextField(
                 controller: _dealValueController,
@@ -166,14 +163,9 @@ class _LeadDetailScreenState extends State<LeadDetailScreen> {
                 decoration: const InputDecoration(suffixText: 'USD'),
                 onChanged: (value) => widget.lead.dealValue = value,
               ),
-              const SizedBox(height: 24),
-              Text(
-                'Task',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(height: 12),
+              const SizedBox(height: Insets.s24),
+              _SectionHeader(title: 'Task'),
+              const SizedBox(height: Insets.s12),
               if (_tasks.isEmpty)
                 SizedBox(
                   width: double.infinity,
@@ -189,27 +181,108 @@ class _LeadDetailScreenState extends State<LeadDetailScreen> {
                   (task) =>
                       _TaskCard(task: task, onChanged: () => setState(() {})),
                 ),
-              const SizedBox(height: 24),
+              const SizedBox(height: Insets.s24),
+              _SectionHeader(title: 'Activities'),
+              const SizedBox(height: Insets.s16),
               Text(
-                'Activities',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                'TODAY',
+                style: DesignSystem.sans(
+                  color: p.primaryContainer,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.4,
+                ),
               ),
-              const SizedBox(height: 14),
-              Text(
-                'Today',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(height: 12),
+              const SizedBox(height: Insets.s12),
               ..._activities.map(
                 (activity) => _ActivityCard(activity: activity),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _SectionHeader extends StatelessWidget {
+  final String title;
+  const _SectionHeader({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+    );
+  }
+}
+
+class _LeadStatusStrip extends StatelessWidget {
+  final CrmLead lead;
+  const _LeadStatusStrip({required this.lead});
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    final hasDeal = lead.dealValue.trim().isNotEmpty;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(Insets.s16),
+      decoration: BoxDecoration(
+        color: p.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(Radii.md),
+        border: Border.all(color: p.outlineVariant),
+      ),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'STATUS',
+                style: DesignSystem.sans(
+                  color: p.primaryContainer,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              const SizedBox(height: Insets.s8),
+              StatusChip(
+                label: lead.status,
+                color: statusColor(lead.status),
+              ),
+            ],
+          ),
+          const Spacer(),
+          if (hasDeal)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  'DEAL VALUE',
+                  style: DesignSystem.sans(
+                    color: p.primaryContainer,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+                const SizedBox(height: Insets.s8),
+                Text(
+                  '\$${lead.dealValue}',
+                  style: DesignSystem.serif(
+                    color: p.onSurface,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+        ],
       ),
     );
   }
@@ -223,38 +296,42 @@ class _TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: Insets.s12),
       decoration: BoxDecoration(
-        color: DesignSystem.surfaceContainer,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: DesignSystem.outlineVariant),
+        color: p.surfaceContainer,
+        borderRadius: BorderRadius.circular(Radii.md),
+        border: Border.all(color: p.outlineVariant),
       ),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.all(Insets.s16),
             child: Row(
               children: [
-                const Icon(Icons.check_circle, color: Color(0xFF74E37D)),
-                const SizedBox(width: 12),
+                Icon(Icons.task_alt, color: p.primaryContainer),
+                const SizedBox(width: Insets.s12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         task.taskType,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleSmall
+                            ?.copyWith(fontWeight: FontWeight.w700),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Text(
                         formatCrmDateTime(task.dueDate, task.dueTime),
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: p.onSurfaceVariant,
+                            ),
                       ),
                       if (task.notes.isNotEmpty) ...[
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 6),
                         Text(
                           task.notes,
                           style: Theme.of(context).textTheme.bodyMedium,
@@ -267,6 +344,7 @@ class _TaskCard extends StatelessWidget {
               ],
             ),
           ),
+          Divider(height: 1, color: p.divider),
           IntrinsicHeight(
             child: Row(
               children: [
@@ -277,9 +355,13 @@ class _TaskCard extends StatelessWidget {
                     label: const Text('Edit task'),
                   ),
                 ),
+                Container(width: 1, color: p.divider),
                 Expanded(
-                  child: ElevatedButton.icon(
+                  child: TextButton.icon(
                     key: const ValueKey('complete-lead-task-button'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: p.primaryContainer,
+                    ),
                     onPressed: () {
                       task.isCompleted = true;
                       onChanged();
@@ -368,7 +450,12 @@ class _LeadTaskEditorSheetState extends State<_LeadTaskEditorSheet> {
 
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(20, 18, 20, bottomInset + 20),
+        padding: EdgeInsets.fromLTRB(
+          Insets.s20,
+          Insets.s16,
+          Insets.s20,
+          bottomInset + Insets.s20,
+        ),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -380,8 +467,8 @@ class _LeadTaskEditorSheetState extends State<_LeadTaskEditorSheet> {
                     child: Text(
                       'Create task',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
                   ),
                   CompactIconButton(
@@ -392,7 +479,7 @@ class _LeadTaskEditorSheetState extends State<_LeadTaskEditorSheet> {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: Insets.s24),
               const FieldLabel(label: 'Task type', isRequired: true),
               PickerField(
                 key: const ValueKey('lead-detail-task-type-field'),
@@ -400,7 +487,7 @@ class _LeadTaskEditorSheetState extends State<_LeadTaskEditorSheet> {
                 hint: 'Select task type',
                 onTap: _pickTaskType,
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Notes'),
               TextField(
                 controller: _notesController,
@@ -409,18 +496,19 @@ class _LeadTaskEditorSheetState extends State<_LeadTaskEditorSheet> {
                   hintText: 'Add some notes here',
                 ),
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: Insets.s16),
               Row(
                 children: [
                   Expanded(
-                    child: TextButton.icon(
+                    child: OutlinedButton.icon(
                       onPressed: _pickDate,
                       icon: const Icon(Icons.calendar_today, size: 18),
                       label: Text(formatCrmDate(_date)),
                     ),
                   ),
+                  const SizedBox(width: Insets.s12),
                   Expanded(
-                    child: TextButton.icon(
+                    child: OutlinedButton.icon(
                       onPressed: _pickTime,
                       icon: const Icon(Icons.schedule, size: 18),
                       label: Text(_time.format(context)),
@@ -428,10 +516,10 @@ class _LeadTaskEditorSheetState extends State<_LeadTaskEditorSheet> {
                   ),
                 ],
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: Insets.s20),
               SizedBox(
                 width: double.infinity,
-                height: 56,
+                height: 54,
                 child: ElevatedButton(
                   key: const ValueKey('create-lead-detail-task-submit'),
                   onPressed: _canAdd ? _addTask : null,
@@ -453,61 +541,69 @@ class _ActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(13),
+      margin: const EdgeInsets.only(bottom: Insets.s12),
+      padding: const EdgeInsets.all(Insets.s16),
       decoration: BoxDecoration(
-        color: DesignSystem.surfaceContainer,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+        color: p.surfaceContainer,
+        borderRadius: BorderRadius.circular(Radii.md),
+        border: Border.all(color: p.outlineVariant),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
-            radius: 17,
-            backgroundColor: activity.color.withValues(alpha: 0.14),
+          Container(
+            width: 34,
+            height: 34,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: activity.color.withValues(alpha: 0.16),
+            ),
+            alignment: Alignment.center,
             child: Icon(activity.icon, color: activity.color, size: 17),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: Insets.s12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   activity.title,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleSmall
+                      ?.copyWith(fontWeight: FontWeight.w700),
                 ),
                 if (activity.outcome != null) ...[
-                  const SizedBox(height: 10),
-                  Text(
-                    'Outcome',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
+                  const SizedBox(height: Insets.s8),
+                  _MiniLabel(text: 'Outcome'),
                   Text(activity.outcome!),
                 ],
                 if (activity.notes.isNotEmpty) ...[
-                  const SizedBox(height: 10),
-                  Text('Notes', style: Theme.of(context).textTheme.labelMedium),
+                  const SizedBox(height: Insets.s8),
+                  _MiniLabel(text: 'Notes'),
                   Text(activity.notes),
                 ],
-                const SizedBox(height: 12),
+                const SizedBox(height: Insets.s12),
                 Row(
                   children: [
                     Expanded(
                       child: Text(
                         'by ${activity.actor}',
-                        style: Theme.of(context).textTheme.labelMedium
-                            ?.copyWith(color: DesignSystem.onSurfaceVariant),
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(color: p.onSurfaceVariant),
                       ),
                     ),
                     Text(
-                      TimeOfDay.fromDateTime(
-                        activity.timestamp,
-                      ).format(context),
-                      style: Theme.of(context).textTheme.labelMedium,
+                      TimeOfDay.fromDateTime(activity.timestamp)
+                          .format(context),
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelMedium
+                          ?.copyWith(color: p.onSurfaceVariant),
                     ),
                   ],
                 ),
@@ -515,6 +611,28 @@ class _ActivityCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _MiniLabel extends StatelessWidget {
+  final String text;
+  const _MiniLabel({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Text(
+        text.toUpperCase(),
+        style: DesignSystem.sans(
+          color: p.onSurfaceVariant,
+          fontSize: 10,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.0,
+        ),
       ),
     );
   }
@@ -572,7 +690,12 @@ class _EditLeadSheetState extends State<_EditLeadSheet> {
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(20, 18, 20, bottomInset + 20),
+        padding: EdgeInsets.fromLTRB(
+          Insets.s20,
+          Insets.s16,
+          Insets.s20,
+          bottomInset + Insets.s20,
+        ),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -583,7 +706,9 @@ class _EditLeadSheetState extends State<_EditLeadSheet> {
                   Expanded(
                     child: Text(
                       'Edit lead',
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
                   ),
                   CompactIconButton(
@@ -594,24 +719,25 @@ class _EditLeadSheetState extends State<_EditLeadSheet> {
                   ),
                 ],
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: Insets.s20),
               const FieldLabel(label: 'First name', isRequired: true),
               TextField(controller: _firstName),
-              const SizedBox(height: 14),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Last name'),
               TextField(controller: _lastName),
-              const SizedBox(height: 14),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Phone', isRequired: true),
               TextField(controller: _phone),
-              const SizedBox(height: 14),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Email'),
               TextField(controller: _email),
-              const SizedBox(height: 14),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Notes'),
               TextField(controller: _notes, maxLines: 3),
-              const SizedBox(height: 18),
+              const SizedBox(height: Insets.s20),
               SizedBox(
                 width: double.infinity,
+                height: 54,
                 child: ElevatedButton(
                   onPressed: _save,
                   child: const Text('Save'),
@@ -635,7 +761,12 @@ class _SimpleLogSheet extends StatelessWidget {
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(20, 18, 20, bottomInset + 20),
+        padding: EdgeInsets.fromLTRB(
+          Insets.s20,
+          Insets.s16,
+          Insets.s20,
+          bottomInset + Insets.s20,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -645,7 +776,9 @@ class _SimpleLogSheet extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                 ),
                 CompactIconButton(
@@ -656,15 +789,16 @@ class _SimpleLogSheet extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: Insets.s20),
             const FieldLabel(label: 'Notes'),
             const TextField(
               maxLines: 4,
               decoration: InputDecoration(hintText: 'Add some notes here'),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: Insets.s20),
             SizedBox(
               width: double.infinity,
+              height: 54,
               child: ElevatedButton.icon(
                 onPressed: () => Navigator.of(context).pop(),
                 icon: const Icon(Icons.check, size: 18),

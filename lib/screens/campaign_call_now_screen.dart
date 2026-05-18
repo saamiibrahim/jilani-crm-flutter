@@ -60,8 +60,8 @@ class _CampaignCallNowScreenState extends State<CampaignCallNowScreen> {
 
     if (!mounted) return;
     final result = await Navigator.of(context).push<WrapUpResult>(
-      MaterialPageRoute(
-        builder: (context) => WrapUpScreen(
+      DesignSystem.route(
+        WrapUpScreen(
           campaign: widget.campaign,
           lead: _currentLead,
           currentIndex: _currentIndex,
@@ -84,6 +84,9 @@ class _CampaignCallNowScreenState extends State<CampaignCallNowScreen> {
       );
     }
 
+    final p = context.palette;
+    final lead = _currentLead;
+
     return Scaffold(
       appBar: _buildAppBar(context),
       body: ScreenBackdrop(
@@ -97,18 +100,96 @@ class _CampaignCallNowScreenState extends State<CampaignCallNowScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 28, 20, 28),
-                child: LeadSummaryBlock(lead: _currentLead, onEdit: () {}),
+                padding: const EdgeInsets.fromLTRB(
+                  Insets.s24,
+                  Insets.s32,
+                  Insets.s24,
+                  Insets.s24,
+                ),
+                child: Column(
+                  children: [
+                    LeadAvatar(radius: 46, name: lead.name),
+                    const SizedBox(height: Insets.s20),
+                    Text(
+                      lead.name,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      lead.phone,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: p.onSurfaceVariant,
+                          ),
+                    ),
+                    const SizedBox(height: Insets.s16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 7,
+                      ),
+                      decoration: BoxDecoration(
+                        color: p.primaryContainer.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(Radii.pill),
+                        border: Border.all(
+                          color: p.primaryContainer.withValues(alpha: 0.35),
+                        ),
+                      ),
+                      child: Text(
+                        'READY TO CALL',
+                        style: DesignSystem.sans(
+                          color: p.primaryContainer,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.4,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: Insets.s24),
+                    if ((lead.notes ?? '').isNotEmpty)
+                      _ContextCard(notes: lead.notes!),
+                    const SizedBox(height: Insets.s16),
+                    Container(
+                      padding: const EdgeInsets.all(Insets.s16),
+                      decoration: BoxDecoration(
+                        color: p.surfaceContainer,
+                        borderRadius: BorderRadius.circular(Radii.md),
+                        border: Border.all(color: p.outlineVariant),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InfoField(
+                            label: 'Email',
+                            value: lead.email ?? '-',
+                          ),
+                          const SizedBox(height: Insets.s16),
+                          InfoField(
+                            label: 'Campaign',
+                            value: lead.campaignTitle,
+                          ),
+                          const SizedBox(height: Insets.s16),
+                          InfoField(label: 'Owner', value: lead.owner),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
         ),
       ),
       bottomNavigationBar: SafeArea(
-        minimum: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+        minimum: const EdgeInsets.fromLTRB(
+          Insets.s20,
+          Insets.s8,
+          Insets.s20,
+          Insets.s20,
+        ),
         child: SizedBox(
           width: double.infinity,
-          height: 58,
+          height: 56,
           child: ElevatedButton.icon(
             key: const ValueKey('call-now-button'),
             onPressed: _callLead,
@@ -121,6 +202,7 @@ class _CampaignCallNowScreenState extends State<CampaignCallNowScreen> {
   }
 
   AppBar _buildAppBar(BuildContext context) {
+    final p = context.palette;
     return AppBar(
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
@@ -133,8 +215,9 @@ class _CampaignCallNowScreenState extends State<CampaignCallNowScreen> {
           onPressed: _advanceLead,
           child: Text(
             'Skip',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: DesignSystem.onSurfaceVariant,
+            style: DesignSystem.sans(
+              color: p.onSurfaceVariant,
+              fontSize: 14,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -142,9 +225,64 @@ class _CampaignCallNowScreenState extends State<CampaignCallNowScreen> {
       ],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
-        child: Container(
-          color: Colors.white.withValues(alpha: 0.06),
-          height: 1,
+        child: Container(color: p.divider, height: 1),
+      ),
+    );
+  }
+}
+
+class _ContextCard extends StatelessWidget {
+  final String notes;
+
+  const _ContextCard({required this.notes});
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: p.surfaceContainer,
+        borderRadius: BorderRadius.circular(Radii.sm),
+        border: Border.all(color: p.outlineVariant),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(width: 3, color: p.primaryContainer),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(Insets.s16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'CONTEXT',
+                      style: DesignSystem.sans(
+                        color: p.primaryContainer,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.8,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      notes,
+                      style: DesignSystem.serif(
+                        color: p.onSurface,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.italic,
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -164,31 +302,35 @@ class _CampaignProgressHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      padding: const EdgeInsets.symmetric(
+        horizontal: Insets.s20,
+        vertical: Insets.s16,
+      ),
       decoration: BoxDecoration(
-        color: DesignSystem.surfaceContainerLow,
-        border: Border(
-          bottom: BorderSide(color: Colors.white.withValues(alpha: 0.06)),
-        ),
+        color: p.surfaceContainerLow,
+        border: Border(bottom: BorderSide(color: p.divider)),
       ),
       child: Row(
         children: [
           Expanded(
             child: Text(
               campaignTitle,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.w700),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: Insets.s12),
           Text(
             '${currentIndex + 1}/$totalLeads',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: DesignSystem.primaryContainer,
+            style: DesignSystem.sans(
+              color: p.primaryContainer,
+              fontSize: 14,
               fontWeight: FontWeight.w700,
             ),
           ),

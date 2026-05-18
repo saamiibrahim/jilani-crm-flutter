@@ -10,6 +10,7 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -18,7 +19,7 @@ class DashboardScreen extends StatelessWidget {
           actions: [
             ProfileButton(
               onTap: () => Navigator.of(context).push(
-                MaterialPageRoute<void>(builder: (_) => const SettingsScreen()),
+                DesignSystem.route<void>(const SettingsScreen()),
               ),
             ),
           ],
@@ -32,10 +33,7 @@ class DashboardScreen extends StatelessWidget {
                     Tab(text: 'MY PRODUCTIVITY'),
                   ],
                 ),
-                Container(
-                  height: 1,
-                  color: Colors.white.withValues(alpha: 0.06),
-                ),
+                Container(height: 1, color: p.divider),
               ],
             ),
           ),
@@ -54,22 +52,22 @@ class DashboardScreen extends StatelessWidget {
                   DashboardBreakdown(
                     label: 'Facebook',
                     value: 0,
-                    color: Color(0xFF1877F2),
+                    color: Color(0xFF2E6FB4),
                   ),
                   DashboardBreakdown(
                     label: 'TikTok',
                     value: 0,
-                    color: Color(0xFF111111),
+                    color: Color(0xFF98A1B4),
                   ),
                   DashboardBreakdown(
                     label: 'Website',
                     value: 0,
-                    color: Color(0xFF7A3BD4),
+                    color: Color(0xFF7B5BCB),
                   ),
                   DashboardBreakdown(
                     label: 'CSV/Manual',
                     value: 3,
-                    color: DesignSystem.primaryContainer,
+                    color: Color(0xFFC9A24A),
                   ),
                 ],
               ),
@@ -115,10 +113,15 @@ class _DashboardTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 96),
+      padding: const EdgeInsets.fromLTRB(
+        Insets.s20,
+        Insets.s20,
+        Insets.s20,
+        96,
+      ),
       children: [
-        _AgentMetricCard(metrics: metrics),
-        const SizedBox(height: 16),
+        _MetricGrid(metrics: metrics),
+        const SizedBox(height: Insets.s16),
         _BreakdownCard(
           title: title,
           totalLabel: totalLabel,
@@ -126,7 +129,7 @@ class _DashboardTab extends StatelessWidget {
           breakdowns: breakdowns,
         ),
         if (extraTitle != null) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: Insets.s16),
           _BreakdownCard(
             title: extraTitle!,
             totalLabel: '',
@@ -139,66 +142,71 @@ class _DashboardTab extends StatelessWidget {
   }
 }
 
-class _AgentMetricCard extends StatelessWidget {
+class _MetricGrid extends StatelessWidget {
   final List<DashboardMetric> metrics;
 
-  const _AgentMetricCard({required this.metrics});
+  const _MetricGrid({required this.metrics});
 
   @override
   Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      mainAxisSpacing: Insets.s12,
+      crossAxisSpacing: Insets.s12,
+      childAspectRatio: 1.7,
+      children: [
+        for (var i = 0; i < metrics.length; i++)
+          _MetricCard(metric: metrics[i], accent: i == 0),
+      ],
+    );
+  }
+}
+
+class _MetricCard extends StatelessWidget {
+  final DashboardMetric metric;
+  final bool accent;
+
+  const _MetricCard({required this.metric, required this.accent});
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(Insets.s16),
       decoration: BoxDecoration(
-        color: DesignSystem.primaryContainer.withValues(alpha: 0.18),
-        borderRadius: BorderRadius.circular(8),
+        color: accent
+            ? p.primaryContainer.withValues(alpha: 0.14)
+            : p.surfaceContainer,
+        borderRadius: BorderRadius.circular(Radii.md),
         border: Border.all(
-          color: DesignSystem.primaryContainer.withValues(alpha: 0.25),
+          color: accent
+              ? p.primaryContainer.withValues(alpha: 0.30)
+              : p.outlineVariant,
         ),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              const LeadAvatar(radius: 22),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  'Ali yawar',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
-                ),
-              ),
-              const Icon(
-                Icons.workspace_premium,
-                color: DesignSystem.primaryContainer,
-              ),
-            ],
+          Text(
+            metric.label.toUpperCase(),
+            style: DesignSystem.sans(
+              color: p.onSurfaceVariant,
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.2,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 18),
-          ...metrics.map(
-            (metric) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      metric.label,
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: DesignSystem.onSurfaceVariant,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    metric.value,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: DesignSystem.onSurface,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
+          Text(
+            metric.value,
+            style: DesignSystem.serif(
+              color: p.onSurface,
+              fontSize: 28,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ],
@@ -222,64 +230,81 @@ class _BreakdownCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     final maxValue = breakdowns.fold<int>(
       1,
       (max, item) => item.value > max ? item.value : max,
     );
 
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(Insets.s20),
       decoration: BoxDecoration(
-        color: DesignSystem.surfaceContainer,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        color: p.surfaceContainer,
+        borderRadius: BorderRadius.circular(Radii.md),
+        border: Border.all(color: p.outlineVariant),
       ),
       child: Column(
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
                 child: Text(
                   title,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
               if (total != null)
                 Text(
                   '$totalLabel: $total',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: DesignSystem.onSurfaceVariant,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: p.onSurfaceVariant),
                 ),
             ],
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: Insets.s20),
           ...breakdowns.map(
             (item) => Padding(
-              padding: const EdgeInsets.only(bottom: 14),
+              padding: const EdgeInsets.only(bottom: Insets.s16),
               child: Column(
                 children: [
                   Row(
                     children: [
-                      Expanded(child: Text(item.label)),
+                      Container(
+                        width: 8,
+                        height: 8,
+                        margin: const EdgeInsets.only(right: Insets.s8),
+                        decoration: BoxDecoration(
+                          color: item.color,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          item.label,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
                       Text(
                         '${item.value}',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        style: DesignSystem.serif(
+                          color: p.onSurface,
+                          fontSize: 16,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: Insets.s8),
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(Radii.pill),
                     child: LinearProgressIndicator(
                       minHeight: 5,
                       value: item.value == 0 ? 0 : item.value / maxValue,
                       color: item.color,
-                      backgroundColor: DesignSystem.surfaceContainerHigh,
+                      backgroundColor: p.surfaceContainerHigh,
                     ),
                   ),
                 ],

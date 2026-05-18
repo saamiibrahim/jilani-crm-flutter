@@ -20,7 +20,7 @@ class TasksScreen extends StatelessWidget {
             IconButton(icon: const Icon(Icons.search), onPressed: () {}),
             ProfileButton(
               onTap: () => Navigator.of(context).push(
-                MaterialPageRoute<void>(builder: (_) => const SettingsScreen()),
+                DesignSystem.route<void>(const SettingsScreen()),
               ),
             ),
           ],
@@ -30,7 +30,12 @@ class TasksScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Padding(
-                padding: EdgeInsets.fromLTRB(18, 18, 18, 10),
+                padding: EdgeInsets.fromLTRB(
+                  Insets.s20,
+                  Insets.s20,
+                  Insets.s20,
+                  Insets.s8,
+                ),
                 child: _TaskTabBar(),
               ),
               Expanded(
@@ -67,26 +72,39 @@ class _TaskTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TabBar(
-      indicator: BoxDecoration(
-        color: DesignSystem.primaryContainer,
-        borderRadius: BorderRadius.circular(22),
+    final p = context.palette;
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: p.surfaceContainer,
+        borderRadius: BorderRadius.circular(Radii.pill),
+        border: Border.all(color: p.outlineVariant),
       ),
-      indicatorSize: TabBarIndicatorSize.tab,
-      dividerColor: Colors.transparent,
-      labelColor: DesignSystem.onPrimaryContainer,
-      unselectedLabelColor: DesignSystem.onSurfaceVariant,
-      labelStyle: Theme.of(
-        context,
-      ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700),
-      unselectedLabelStyle: Theme.of(
-        context,
-      ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
-      tabs: const [
-        _TaskTab(label: 'Today', dotColor: DesignSystem.onPrimaryContainer),
-        _TaskTab(label: 'Overdue', dotColor: DesignSystem.statusRed),
-        _TaskTab(label: 'Future', dotColor: Color(0xFF8A4DFF)),
-      ],
+      child: TabBar(
+        indicator: BoxDecoration(
+          color: p.primaryContainer,
+          borderRadius: BorderRadius.circular(Radii.pill),
+        ),
+        indicatorSize: TabBarIndicatorSize.tab,
+        dividerColor: Colors.transparent,
+        labelColor: p.onPrimaryContainer,
+        unselectedLabelColor: p.onSurfaceVariant,
+        labelStyle: DesignSystem.sans(
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.4,
+        ),
+        unselectedLabelStyle: DesignSystem.sans(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.4,
+        ),
+        tabs: const [
+          _TaskTab(label: 'Today', dotColor: Color(0xFFC9A24A)),
+          _TaskTab(label: 'Overdue', dotColor: Color(0xFFC0392B)),
+          _TaskTab(label: 'Future', dotColor: Color(0xFF7B5BCB)),
+        ],
+      ),
     );
   }
 }
@@ -100,7 +118,7 @@ class _TaskTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tab(
-      height: 44,
+      height: 40,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -109,7 +127,7 @@ class _TaskTab extends StatelessWidget {
             height: 7,
             decoration: BoxDecoration(color: dotColor, shape: BoxShape.circle),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: Insets.s8),
           Flexible(
             child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
           ),
@@ -141,40 +159,90 @@ class _TaskTabContentState extends State<_TaskTabContent> {
     if (lead == null) return;
 
     await Navigator.of(context).push<void>(
-      MaterialPageRoute(builder: (_) => LeadDetailScreen(lead: lead)),
+      DesignSystem.route(LeadDetailScreen(lead: lead)),
     );
     if (mounted) setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final visibleTasks = widget.tasks
-        .where((task) => !task.isCompleted)
-        .toList();
+    final p = context.palette;
+    final visibleTasks =
+        widget.tasks.where((task) => !task.isCompleted).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(18, 10, 18, 12),
+          padding: const EdgeInsets.fromLTRB(
+            Insets.s20,
+            Insets.s12,
+            Insets.s20,
+            Insets.s12,
+          ),
           child: Text(
             'Found: ${visibleTasks.length}',
-            style: Theme.of(
-              context,
-            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+            style: Theme.of(context)
+                .textTheme
+                .titleSmall
+                ?.copyWith(color: p.onSurfaceVariant),
           ),
         ),
         Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.fromLTRB(18, 0, 18, 96),
-            itemCount: visibleTasks.length,
-            itemBuilder: (context, index) {
-              final task = visibleTasks[index];
-              return _TaskListCard(task: task, onTap: () => _openLead(task));
-            },
-          ),
+          child: visibleTasks.isEmpty
+              ? const _EmptyTasks()
+              : ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(
+                    Insets.s20,
+                    0,
+                    Insets.s20,
+                    96,
+                  ),
+                  itemCount: visibleTasks.length,
+                  itemBuilder: (context, index) {
+                    final task = visibleTasks[index];
+                    return _TaskListCard(
+                      task: task,
+                      onTap: () => _openLead(task),
+                    );
+                  },
+                ),
         ),
       ],
+    );
+  }
+}
+
+class _EmptyTasks extends StatelessWidget {
+  const _EmptyTasks();
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(Insets.s32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.task_alt, size: 44, color: p.onSurfaceVariant),
+            const SizedBox(height: Insets.s16),
+            Text(
+              'Nothing due here',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: Insets.s8),
+            Text(
+              'Tasks you schedule will show up in this list.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: p.onSurfaceVariant),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -187,31 +255,33 @@ class _TaskListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return InkWell(
       key: ValueKey('task-card-${task.id}'),
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(Radii.md),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(14),
+        margin: const EdgeInsets.only(bottom: Insets.s12),
+        padding: const EdgeInsets.all(Insets.s16),
         decoration: BoxDecoration(
-          color: DesignSystem.surfaceContainer,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+          color: p.surfaceContainer,
+          borderRadius: BorderRadius.circular(Radii.md),
+          border: Border.all(color: p.outlineVariant),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const LeadAvatar(radius: 18),
-                const SizedBox(width: 12),
+                LeadAvatar(radius: 18, name: task.leadName),
+                const SizedBox(width: Insets.s12),
                 Expanded(
                   child: Text(
                     task.leadName,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall
+                        ?.copyWith(fontWeight: FontWeight.w700),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -219,15 +289,15 @@ class _TaskListCard extends StatelessWidget {
                 StatusChip(label: task.status, color: statusColor(task.status)),
               ],
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: Insets.s16),
             Row(
               children: [
                 Icon(
                   task.taskType == 'Call back' ? Icons.call : Icons.chat,
-                  color: DesignSystem.primaryContainer,
+                  color: p.primaryContainer,
                   size: 18,
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: Insets.s8),
                 Expanded(
                   child: Text(
                     task.taskType,
@@ -236,16 +306,16 @@ class _TaskListCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: Insets.s12),
             Align(
               alignment: Alignment.centerRight,
               child: Text(
-                'Due date\n${formatCrmDateTime(task.dueDate, task.dueTime)}',
+                'Due  ${formatCrmDateTime(task.dueDate, task.dueTime)}',
                 textAlign: TextAlign.right,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: DesignSystem.onSurfaceVariant,
-                  height: 1.35,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: p.onSurfaceVariant),
               ),
             ),
           ],

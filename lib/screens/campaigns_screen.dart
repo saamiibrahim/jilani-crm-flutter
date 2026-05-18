@@ -25,9 +25,7 @@ class _CampaignsScreenState extends State<CampaignsScreen> {
   Future<void> _openCallingSession(Campaign campaign) async {
     final results = await Navigator.push<List<WrapUpResult>>(
       context,
-      MaterialPageRoute(
-        builder: (context) => CampaignCallNowScreen(campaign: campaign),
-      ),
+      DesignSystem.route(CampaignCallNowScreen(campaign: campaign)),
     );
 
     if (!mounted || results == null) return;
@@ -40,6 +38,8 @@ class _CampaignsScreenState extends State<CampaignsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
+    final campaigns = DummyData.campaigns;
     return Scaffold(
       appBar: JilaniAppBar(
         showLogoTitle: true,
@@ -48,7 +48,7 @@ class _CampaignsScreenState extends State<CampaignsScreen> {
           ProfileButton(
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute<void>(builder: (_) => const SettingsScreen()),
+                DesignSystem.route<void>(const SettingsScreen()),
               );
             },
           ),
@@ -58,78 +58,117 @@ class _CampaignsScreenState extends State<CampaignsScreen> {
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 720),
-            child: ListView.builder(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 96),
-              itemCount: DummyData.campaigns.length + 1,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 18),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+            child: campaigns.isEmpty
+                ? const _EmptyCampaigns()
+                : ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(
+                      Insets.s20,
+                      Insets.s24,
+                      Insets.s20,
+                      96,
+                    ),
+                    itemCount: campaigns.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: Insets.s20),
+                          child: Row(
                             children: [
-                              Text(
-                                'CAMPAIGNS',
-                                style: Theme.of(context).textTheme.labelSmall
-                                    ?.copyWith(
-                                      color: DesignSystem.primaryContainer,
-                                      letterSpacing: 1.4,
-                                      fontWeight: FontWeight.w700,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'CAMPAIGNS',
+                                      style: DesignSystem.sans(
+                                        color: p.primaryContainer,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 1.6,
+                                      ),
                                     ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      '$_pendingLeads Pending Leads',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium,
+                                    ),
+                                  ],
+                                ),
                               ),
-                              const SizedBox(height: 8),
-                              Text(
-                                '$_pendingLeads PENDING LEADS',
-                                style: Theme.of(context).textTheme.titleSmall
-                                    ?.copyWith(
-                                      color: DesignSystem.onSurface,
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: 0.4,
-                                    ),
+                              const SizedBox(width: Insets.s12),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: p.surfaceContainerHigh,
+                                  borderRadius:
+                                      BorderRadius.circular(Radii.sm),
+                                  border:
+                                      Border.all(color: p.outlineVariant),
+                                ),
+                                child: Text(
+                                  '${campaigns.length} ACTIVE',
+                                  style: DesignSystem.sans(
+                                    color: p.primaryContainer,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.8,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: DesignSystem.surfaceContainerHigh,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: DesignSystem.outlineVariant.withValues(
-                                alpha: 0.7,
-                              ),
-                            ),
-                          ),
-                          child: Text(
-                            '${DummyData.campaigns.length} ACTIVE',
-                            style: Theme.of(context).textTheme.labelMedium
-                                ?.copyWith(
-                                  color: DesignSystem.primaryContainer,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
+                        );
+                      }
 
-                final campaign = DummyData.campaigns[index - 1];
-                return CampaignCard(
-                  key: ValueKey('campaign-card-${campaign.title}'),
-                  campaign: campaign,
-                  onStartCalling: () => _openCallingSession(campaign),
-                );
-              },
-            ),
+                      final campaign = campaigns[index - 1];
+                      return CampaignCard(
+                        key: ValueKey('campaign-card-${campaign.title}'),
+                        campaign: campaign,
+                        onStartCalling: () => _openCallingSession(campaign),
+                      );
+                    },
+                  ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _EmptyCampaigns extends StatelessWidget {
+  const _EmptyCampaigns();
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(Insets.s32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.campaign_outlined, size: 44, color: p.onSurfaceVariant),
+            const SizedBox(height: Insets.s16),
+            Text(
+              'No active campaigns',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: Insets.s8),
+            Text(
+              'New campaigns will appear here once they are assigned to you.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: p.onSurfaceVariant),
+            ),
+          ],
         ),
       ),
     );

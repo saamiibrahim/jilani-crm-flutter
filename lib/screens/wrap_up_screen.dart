@@ -59,13 +59,9 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
   }
 
   Future<void> _showCreateTaskSheet() async {
-    final task = await showModalBottomSheet<CrmTask>(
+    final task = await DesignSystem.luxeSheet<CrmTask>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: DesignSystem.surfaceContainerLow,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-      ),
       builder: (context) => _TaskEditorSheet(lead: widget.lead),
     );
 
@@ -73,13 +69,9 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
   }
 
   Future<void> _showNoteLog(String title) {
-    return showModalBottomSheet<void>(
+    return DesignSystem.luxeSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: DesignSystem.surfaceContainerLow,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-      ),
       builder: (context) => _LogActivitySheet(title: title),
     );
   }
@@ -101,11 +93,17 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Scaffold(
       appBar: const JilaniAppBar(title: 'Wrap up', showBack: true),
       body: ScreenBackdrop(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(20, 18, 20, 28),
+          padding: const EdgeInsets.fromLTRB(
+            Insets.s20,
+            Insets.s16,
+            Insets.s20,
+            Insets.s24,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -115,13 +113,13 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
                 onComment: () => _showNoteLog('Log comment'),
                 onMore: () => _showNoteLog('Log activity'),
               ),
-              const SizedBox(height: 22),
+              const SizedBox(height: Insets.s20),
               LeadSummaryBlock(
                 lead: widget.lead,
                 onAddLabel: () => _showNoteLog('Add label'),
                 onEdit: () => _showNoteLog('Edit lead'),
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: Insets.s16),
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
@@ -130,46 +128,59 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
                   label: const Text('Add to phonebook'),
                 ),
               ),
-              const SizedBox(height: 22),
+              const SizedBox(height: Insets.s24),
               const FieldLabel(label: 'Owner', isRequired: true),
               PickerField(
                 value: widget.lead.owner,
                 hint: 'Select owner',
                 onTap: () {},
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Call outcome', isRequired: true),
               PickerField(
                 key: const ValueKey('call-outcome-field'),
                 value: _selectedOutcome,
                 hint: 'Select call outcome',
+                dotColor: _selectedOutcome == null
+                    ? null
+                    : statusColor(_selectedOutcome!),
                 onTap: _pickOutcome,
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Lead status', isRequired: true),
               PickerField(
                 key: const ValueKey('lead-status-field'),
                 value: _selectedStatus,
                 hint: 'Select lead status',
+                dotColor: _selectedStatus == null
+                    ? null
+                    : statusColor(_selectedStatus!),
                 onTap: _pickStatus,
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Deal value'),
               TextField(
                 controller: _dealValueController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(suffixText: 'USD'),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Notes'),
               TextField(
                 controller: _notesController,
                 maxLines: 3,
+                style: DesignSystem.serif(
+                  color: p.onSurface,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.italic,
+                  height: 1.5,
+                ),
                 decoration: const InputDecoration(
                   hintText: 'Add some notes here',
                 ),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Task'),
               if (_task == null)
                 SizedBox(
@@ -187,19 +198,30 @@ class _WrapUpScreenState extends State<WrapUpScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        minimum: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-        child: SizedBox(
-          width: double.infinity,
-          height: 58,
-          child: ElevatedButton.icon(
-            key: const ValueKey('save-and-call-next-button'),
-            onPressed: _canSave ? _saveAndCallNext : null,
-            icon: const Icon(Icons.arrow_forward, size: 20),
-            label: Text(
-              widget.currentIndex >= widget.totalLeads - 1
-                  ? 'Save and finish'
-                  : 'Save and call next',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: p.surface,
+          border: Border(top: BorderSide(color: p.divider)),
+        ),
+        child: SafeArea(
+          minimum: const EdgeInsets.fromLTRB(
+            Insets.s20,
+            Insets.s12,
+            Insets.s20,
+            Insets.s20,
+          ),
+          child: SizedBox(
+            width: double.infinity,
+            height: 54,
+            child: ElevatedButton.icon(
+              key: const ValueKey('save-and-call-next-button'),
+              onPressed: _canSave ? _saveAndCallNext : null,
+              icon: const Icon(Icons.arrow_forward, size: 20),
+              label: Text(
+                widget.currentIndex >= widget.totalLeads - 1
+                    ? 'Save and finish'
+                    : 'Save and call next',
+              ),
             ),
           ),
         ),
@@ -279,7 +301,12 @@ class _TaskEditorSheetState extends State<_TaskEditorSheet> {
 
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(20, 18, 20, bottomInset + 20),
+        padding: EdgeInsets.fromLTRB(
+          Insets.s20,
+          Insets.s16,
+          Insets.s20,
+          bottomInset + Insets.s20,
+        ),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -291,8 +318,8 @@ class _TaskEditorSheetState extends State<_TaskEditorSheet> {
                     child: Text(
                       'Create task',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
                   ),
                   CompactIconButton(
@@ -303,7 +330,7 @@ class _TaskEditorSheetState extends State<_TaskEditorSheet> {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: Insets.s24),
               const FieldLabel(label: 'Task type', isRequired: true),
               PickerField(
                 key: const ValueKey('task-type-field'),
@@ -311,7 +338,7 @@ class _TaskEditorSheetState extends State<_TaskEditorSheet> {
                 hint: 'Select task type',
                 onTap: _pickTaskType,
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: Insets.s16),
               const FieldLabel(label: 'Notes'),
               TextField(
                 controller: _notesController,
@@ -320,18 +347,19 @@ class _TaskEditorSheetState extends State<_TaskEditorSheet> {
                   hintText: 'Add some notes here',
                 ),
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: Insets.s16),
               Row(
                 children: [
                   Expanded(
-                    child: TextButton.icon(
+                    child: OutlinedButton.icon(
                       onPressed: _pickDate,
                       icon: const Icon(Icons.calendar_today, size: 18),
                       label: Text(formatCrmDate(_date)),
                     ),
                   ),
+                  const SizedBox(width: Insets.s12),
                   Expanded(
-                    child: TextButton.icon(
+                    child: OutlinedButton.icon(
                       onPressed: _pickTime,
                       icon: const Icon(Icons.schedule, size: 18),
                       label: Text(_time.format(context)),
@@ -339,10 +367,10 @@ class _TaskEditorSheetState extends State<_TaskEditorSheet> {
                   ),
                 ],
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: Insets.s20),
               SizedBox(
                 width: double.infinity,
-                height: 56,
+                height: 54,
                 child: ElevatedButton(
                   key: const ValueKey('create-task-submit'),
                   onPressed: _canAdd ? _addTask : null,
@@ -365,31 +393,29 @@ class _TaskPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: DesignSystem.surfaceContainer,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: DesignSystem.outlineVariant),
+        color: p.surfaceContainer,
+        borderRadius: BorderRadius.circular(Radii.md),
+        border: Border.all(color: p.outlineVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(Insets.s16),
             child: Row(
               children: [
-                const Icon(
-                  Icons.task_alt,
-                  color: DesignSystem.primaryContainer,
-                ),
-                const SizedBox(width: 12),
+                Icon(Icons.task_alt, color: p.primaryContainer),
+                const SizedBox(width: Insets.s12),
                 Expanded(
                   child: Text(
                     task.taskType,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                 ),
                 StatusChip(label: task.status, color: statusColor(task.status)),
@@ -397,9 +423,16 @@ class _TaskPreview extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
-            child: Text(formatCrmDateTime(task.dueDate, task.dueTime)),
+            padding: const EdgeInsets.fromLTRB(Insets.s16, 0, Insets.s16, 14),
+            child: Text(
+              formatCrmDateTime(task.dueDate, task.dueTime),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: p.onSurfaceVariant),
+            ),
           ),
+          Divider(height: 1, color: p.divider),
           Row(
             children: [
               Expanded(
@@ -409,9 +442,13 @@ class _TaskPreview extends StatelessWidget {
                   label: const Text('Edit task'),
                 ),
               ),
+              Container(width: 1, height: 44, color: p.divider),
               Expanded(
-                child: ElevatedButton.icon(
+                child: TextButton.icon(
                   onPressed: () {},
+                  style: TextButton.styleFrom(
+                    foregroundColor: p.primaryContainer,
+                  ),
                   icon: const Icon(Icons.check, size: 18),
                   label: const Text('Complete task'),
                 ),
@@ -435,7 +472,12 @@ class _LogActivitySheet extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(20, 18, 20, bottomInset + 20),
+        padding: EdgeInsets.fromLTRB(
+          Insets.s20,
+          Insets.s16,
+          Insets.s20,
+          bottomInset + Insets.s20,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -446,8 +488,8 @@ class _LogActivitySheet extends StatelessWidget {
                   child: Text(
                     title,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                 ),
                 CompactIconButton(
@@ -458,16 +500,16 @@ class _LogActivitySheet extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 22),
+            const SizedBox(height: Insets.s20),
             const FieldLabel(label: 'Notes'),
             const TextField(
               maxLines: 4,
               decoration: InputDecoration(hintText: 'Add some notes here'),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: Insets.s20),
             SizedBox(
               width: double.infinity,
-              height: 56,
+              height: 54,
               child: ElevatedButton.icon(
                 onPressed: () => Navigator.of(context).pop(),
                 icon: const Icon(Icons.check, size: 18),

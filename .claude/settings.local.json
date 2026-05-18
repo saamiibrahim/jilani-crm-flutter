@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"E:\\\\JelaniWork\\\\jilani\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(Get-ChildItem -Path \"E:\\\\JelaniWork\\\\jilani\" -Directory -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object FullName)",
+      "Bash(Get-ChildItem -Path E:\\\\JelaniWork\\\\jilani -Recurse -Include \"*.dart\")",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "Bash(flutter pub *)",
+      "Bash(flutter analyze *)",
+      "Bash(flutter test *)",
+      "Read(//c/Users/webnl/.claude/projects/E--JelaniWork-jilani/**)",
+      "Read(//c/Users/webnl/.claude/projects/E--JelaniWork-jilani/memory/**)"
+    ]
+  }
+}
