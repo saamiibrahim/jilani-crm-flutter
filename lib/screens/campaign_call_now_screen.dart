@@ -122,34 +122,13 @@ class _CampaignCallNowScreenState extends State<CampaignCallNowScreen> {
                             color: p.onSurfaceVariant,
                           ),
                     ),
-                    const SizedBox(height: Insets.s16),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 7,
-                      ),
-                      decoration: BoxDecoration(
-                        color: p.primaryContainer.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(Radii.pill),
-                        border: Border.all(
-                          color: p.primaryContainer.withValues(alpha: 0.35),
-                        ),
-                      ),
-                      child: Text(
-                        'READY TO CALL',
-                        style: DesignSystem.sans(
-                          color: p.primaryContainer,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.4,
-                        ),
-                      ),
-                    ),
                     const SizedBox(height: Insets.s24),
-                    if ((lead.notes ?? '').isNotEmpty)
+                    if ((lead.notes ?? '').isNotEmpty) ...[
                       _ContextCard(notes: lead.notes!),
-                    const SizedBox(height: Insets.s16),
+                      const SizedBox(height: Insets.s16),
+                    ],
                     Container(
+                      width: double.infinity,
                       padding: const EdgeInsets.all(Insets.s16),
                       decoration: BoxDecoration(
                         color: p.surfaceContainer,

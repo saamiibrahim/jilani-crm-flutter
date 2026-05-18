@@ -370,6 +370,7 @@ class LeadSummaryBlock extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               LeadAvatar(radius: 24, name: lead.name),
               const SizedBox(width: Insets.s12),
@@ -380,29 +381,37 @@ class LeadSummaryBlock extends StatelessWidget {
                       .textTheme
                       .titleMedium
                       ?.copyWith(fontWeight: FontWeight.w700),
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              if (onAddLabel != null) ...[
-                const SizedBox(width: Insets.s8),
-                CompactIconButton(
-                  tooltip: 'Add label',
-                  icon: Icons.label_outline,
-                  onPressed: onAddLabel!,
-                ),
-              ],
-              if (onEdit != null) ...[
-                const SizedBox(width: Insets.s8),
-                CompactIconButton(
-                  tooltip: 'Edit lead',
-                  icon: Icons.edit_outlined,
-                  filled: true,
-                  onPressed: onEdit!,
-                ),
-              ],
             ],
           ),
+          if (onAddLabel != null || onEdit != null) ...[
+            const SizedBox(height: Insets.s12),
+            Row(
+              children: [
+                if (onAddLabel != null)
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: onAddLabel!,
+                      icon: const Icon(Icons.label_outline, size: 16),
+                      label: const Text('Add label'),
+                    ),
+                  ),
+                if (onAddLabel != null && onEdit != null)
+                  const SizedBox(width: Insets.s8),
+                if (onEdit != null)
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: onEdit!,
+                      icon: const Icon(Icons.edit_outlined, size: 16),
+                      label: const Text('Edit'),
+                    ),
+                  ),
+              ],
+            ),
+          ],
           const SizedBox(height: Insets.s16),
           LayoutBuilder(
             builder: (context, constraints) {

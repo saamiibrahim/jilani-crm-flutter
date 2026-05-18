@@ -51,9 +51,9 @@ class _MainLayoutState extends State<MainLayout> {
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: DesignSystem.surfaceContainerLow,
+          color: context.palette.surfaceContainerLow,
           border: Border(
-            top: BorderSide(color: Colors.white.withValues(alpha: 0.05)),
+            top: BorderSide(color: context.palette.divider),
           ),
         ),
         child: BottomNavigationBar(

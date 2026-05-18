@@ -100,6 +100,23 @@ class _LeadDetailScreenState extends State<LeadDetailScreen> {
     });
   }
 
+  Future<void> _editTask(CrmTask task) async {
+    final updated = await DesignSystem.luxeSheet<CrmTask>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) =>
+          _LeadTaskEditorSheet(lead: widget.lead, existing: task),
+    );
+
+    if (updated == null) return;
+    final index = DummyData.tasks.indexWhere((t) => t.id == updated.id);
+    if (index == -1) return;
+    setState(() {
+      DummyData.tasks[index] = updated;
+      widget.lead.lastUpdated = DateTime.now();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final p = context.palette;
@@ -179,7 +196,11 @@ class _LeadDetailScreenState extends State<LeadDetailScreen> {
               else
                 ..._tasks.map(
                   (task) =>
-                      _TaskCard(task: task, onChanged: () => setState(() {})),
+                      _TaskCard(
+                        task: task,
+                        onChanged: () => setState(() {}),
+                        onEdit: () => _editTask(task),
+                      ),
                 ),
               const SizedBox(height: Insets.s24),
               _SectionHeader(title: 'Activities'),
@@ -291,8 +312,13 @@ class _LeadStatusStrip extends StatelessWidget {
 class _TaskCard extends StatelessWidget {
   final CrmTask task;
   final VoidCallback onChanged;
+  final VoidCallback onEdit;
 
-  const _TaskCard({required this.task, required this.onChanged});
+  const _TaskCard({
+    required this.task,
+    required this.onChanged,
+    required this.onEdit,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -350,7 +376,7 @@ class _TaskCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextButton.icon(
-                    onPressed: () {},
+                    onPressed: onEdit,
                     icon: const Icon(Icons.edit, size: 17),
                     label: const Text('Edit task'),
                   ),
@@ -381,20 +407,32 @@ class _TaskCard extends StatelessWidget {
 
 class _LeadTaskEditorSheet extends StatefulWidget {
   final CrmLead lead;
+  final CrmTask? existing;
 
-  const _LeadTaskEditorSheet({required this.lead});
+  const _LeadTaskEditorSheet({required this.lead, this.existing});
 
   @override
   State<_LeadTaskEditorSheet> createState() => _LeadTaskEditorSheetState();
 }
 
 class _LeadTaskEditorSheetState extends State<_LeadTaskEditorSheet> {
-  final TextEditingController _notesController = TextEditingController();
+  late final TextEditingController _notesController;
   String? _taskType;
-  DateTime _date = DateTime.now();
-  TimeOfDay _time = const TimeOfDay(hour: 10, minute: 0);
+  late DateTime _date;
+  late TimeOfDay _time;
 
+  bool get _isEditing => widget.existing != null;
   bool get _canAdd => _taskType != null;
+
+  @override
+  void initState() {
+    super.initState();
+    final existing = widget.existing;
+    _notesController = TextEditingController(text: existing?.notes ?? '');
+    _taskType = existing?.taskType;
+    _date = existing?.dueDate ?? DateTime.now();
+    _time = existing?.dueTime ?? const TimeOfDay(hour: 10, minute: 0);
+  }
 
   @override
   void dispose() {
@@ -413,10 +451,12 @@ class _LeadTaskEditorSheetState extends State<_LeadTaskEditorSheet> {
   }
 
   Future<void> _pickDate() async {
+    final today = DateUtils.dateOnly(DateTime.now());
+    final initial = _date.isBefore(today) ? today : _date;
     final selected = await showDatePicker(
       context: context,
-      initialDate: _date,
-      firstDate: DateTime(2024),
+      initialDate: initial,
+      firstDate: today,
       lastDate: DateTime(2030),
     );
     if (selected != null) setState(() => _date = selected);
@@ -429,17 +469,19 @@ class _LeadTaskEditorSheetState extends State<_LeadTaskEditorSheet> {
 
   void _addTask() {
     if (!_canAdd) return;
+    final existing = widget.existing;
     Navigator.of(context).pop(
       CrmTask(
-        id: 'task-${DateTime.now().millisecondsSinceEpoch}',
+        id: existing?.id ??
+            'task-${DateTime.now().millisecondsSinceEpoch}',
         leadId: widget.lead.id,
         leadName: widget.lead.name,
         taskType: _taskType!,
-        status: 'Pending',
+        status: existing?.status ?? 'Pending',
         dueDate: _date,
         dueTime: _time,
         notes: _notesController.text.trim(),
-        statusColor: statusColor('Working deal'),
+        statusColor: statusColor(existing?.status ?? 'Working deal'),
       ),
     );
   }
@@ -465,7 +507,7 @@ class _LeadTaskEditorSheetState extends State<_LeadTaskEditorSheet> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Create task',
+                      _isEditing ? 'Edit task' : 'Create task',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
@@ -523,7 +565,7 @@ class _LeadTaskEditorSheetState extends State<_LeadTaskEditorSheet> {
                 child: ElevatedButton(
                   key: const ValueKey('create-lead-detail-task-submit'),
                   onPressed: _canAdd ? _addTask : null,
-                  child: const Text('Add task'),
+                  child: Text(_isEditing ? 'Save task' : 'Add task'),
                 ),
               ),
             ],
